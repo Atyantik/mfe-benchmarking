@@ -12,6 +12,11 @@ any change must bump `SPEC_VERSION` and force a full re-run.
 SPEC_VERSION = 1
 ```
 
+**Amendments** (pre-measurement only — once `results/` is non-empty these require a version bump):
+- *2026-08-21*: the product row's name cell is a link. Step 6 of the interaction script
+  requires a client-side navigation to the detail page, and the original DOM description
+  gave it nothing to click. Internal inconsistency, fixed before any results existed.
+
 ---
 
 ## Constant vs variable
@@ -68,11 +73,16 @@ important number in the study: **what does a page cost when it needs no framewor
 Hydration mode is a **build-time switch** on this remote (see § Hydration modes). All four modes are
 measured; none is the "real" one.
 
+`/faq/contact` is an **independence fixture**, not part of the measured surface: it exists so
+`packages/bench/src/independence.mjs` can prove a remote can add a route inside its own subtree with
+no shell rebuild. Never measure it, and never let it grow.
+
 ### `/product` — product remote, list
 
 - `<h1>` — `Products`
 - Server-side loader returns **exactly 200 rows** from the fixture (below)
-- A `<table>` with one `<tr>` per row, **4** `<td>` each: name, sku, price, an `Add` `<button>`
+- A `<table>` with one `<tr>` per row, **4** `<td>` each: name (a `<a>` link to `/product/:id`),
+  sku, price, an `Add` `<button>`
 - The `Add` button calls `cart.add(item)` through `@mf-eval/contracts`
 
 200 rows is deliberate: enough that hydration cost is measurable above noise, small enough that the

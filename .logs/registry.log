@@ -1,0 +1,5 @@
+./run-stack.sh: line 27: setsid: command not found
+[registry] :4000 reading /Users/tirthbodawala/workspace/module-federation/packages/registry/registry.json
+[registry] :4000 reading /Users/tirthbodawala/workspace/module-federation/packages/registry/registry.json
+[registry] :4000 reading /Users/tirthbodawala/workspace/module-federation/packages/registry/registry.json
+[registry] :4000 reading /Users/tirthbodawala/workspace/module-federation/packages/registry/registry.json

@@ -9,7 +9,10 @@
   "scripts": {
     "typecheck": "tsc -b --pretty",
     "bench": "pnpm --filter @mf-eval/bench run bench",
-    "clean": "rm -rf stacks/*/*/dist stacks/*/*/dist-ssr packages/*/dist"
+    "clean": "rm -rf stacks/*/*/dist stacks/*/*/dist-ssr packages/*/dist",
+    "stack": "node scripts/stack.mjs",
+    "verify": "pnpm --filter @mf-eval/bench run all",
+    "test": "pnpm -r --filter \"./packages/**\" run test"
   },
   "devDependencies": {
     "typescript": "catalog:",

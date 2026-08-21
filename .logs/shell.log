@@ -1,0 +1,72 @@
+./run-stack.sh: line 27: setsid: command not found
+[shell] :3100 -> http://localhost:3100/static/js/index.283a7ca0.js
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+No `HydrateFallback` element provided to render during initial hydration
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[shell] :3100 -> http://localhost:3100/static/js/index.fe454bd2.js
+[shell] :3100 -> http://localhost:3100/static/js/index.fe454bd2.js
+[shell] :3100 -> http://localhost:3100/static/js/index.98fbd1a0.js
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ] Error: [ Federation Runtime ]: Failed to get manifest. #RUNTIME-003
+args: {"manifestUrl":"http://localhost:9/ssr/mf-manifest.json","moduleName":"faq","hostName":"shell"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/runtime#runtime-003
+Original Error Message:
+ TypeError: fetch failed
+    at /Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3167:15
+    at logAndReport (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:10:12)
+    at Object.error (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3166:92)
+    at getManifest (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1502:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async asyncLoadProcess (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1535:34)
+    at async SnapshotHandler.loadRemoteSnapshotInfo (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1450:36)
+    at async Array.afterResolve (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1601:60)
+    at async RemoteHandler.getRemoteModuleAndOptions (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:2012:27)
+    at async RemoteHandler.loadRemote (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1767:64)
+[ Federation Runtime ] Error: [ Federation Runtime ]: Failed to get manifest. #RUNTIME-003
+args: {"manifestUrl":"http://localhost:9/ssr/mf-manifest.json","moduleName":"faq","hostName":"shell"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/runtime#runtime-003
+Original Error Message:
+ TypeError: fetch failed
+    at /Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3167:15
+    at logAndReport (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:10:12)
+    at Object.error (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3166:92)
+    at getManifest (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1502:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async asyncLoadProcess (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1535:34)
+    at async SnapshotHandler.loadRemoteSnapshotInfo (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1450:36)
+    at async Array.afterResolve (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1601:60)
+    at async RemoteHandler.getRemoteModuleAndOptions (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:2012:27)
+    at async RemoteHandler.loadRemote (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1767:64)
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.

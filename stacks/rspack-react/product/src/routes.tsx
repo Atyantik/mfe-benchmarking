@@ -1,0 +1,15 @@
+import type { RouteDescriptor } from '@mf-eval/contracts';
+
+/**
+ * The product team owns /product/* outright. Adding /product/:id/reviews tomorrow is
+ * a product deploy — the shell never enumerates these paths (docs/topology.md § Rule 1).
+ */
+export const routes: RouteDescriptor[] = [
+  {
+    path: 'product',
+    children: [
+      { index: true, lazy: () => import('./List') },
+      { path: ':id', lazy: () => import('./Detail') },
+    ],
+  },
+];

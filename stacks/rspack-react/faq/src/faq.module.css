@@ -1,0 +1,4 @@
+/* CSS Modules: MF ships no style isolation, so every class must be scoped. */
+.entry { margin: 0 0 1.5rem; }
+.question { font-size: 1.05rem; margin: 0 0 0.35rem; color: var(--mf-fg, #111); }
+.answer { margin: 0; line-height: 1.5; color: var(--mf-muted, #444); }

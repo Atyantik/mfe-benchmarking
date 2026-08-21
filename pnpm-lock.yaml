@@ -9,6 +9,9 @@ catalogs:
     '@hono/node-server':
       specifier: 2.1.1
       version: 2.1.1
+    '@module-federation/enhanced':
+      specifier: 2.8.2
+      version: 2.8.2
     '@module-federation/node':
       specifier: 2.7.49
       version: 2.7.49
@@ -42,6 +45,9 @@ catalogs:
     react-dom:
       specifier: 19.2.8
       version: 19.2.8
+    react-router:
+      specifier: 8.3.0
+      version: 8.3.0
     typescript:
       specifier: 5.9.3
       version: 5.9.3
@@ -56,6 +62,69 @@ importers:
       playwright:
         specifier: 'catalog:'
         version: 1.62.1
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/bench:
+    dependencies:
+      playwright:
+        specifier: 'catalog:'
+        version: 1.62.1
+
+  packages/contracts:
+    devDependencies:
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/react-contracts:
+    dependencies:
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/registry:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.2.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  packages/rsbuild-preset:
+    dependencies:
+      '@module-federation/rsbuild-plugin':
+        specifier: '*'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: '*'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+    devDependencies:
+      '@types/node':
+        specifier: 'catalog:'
+        version: 26.2.0
       typescript:
         specifier: 'catalog:'
         version: 5.9.3
@@ -112,6 +181,187 @@ importers:
       '@module-federation/node':
         specifier: 'catalog:'
         version: 2.7.49(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@module-federation/rsbuild-plugin':
+        specifier: 'catalog:'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: 'catalog:'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+      '@rsbuild/plugin-react':
+        specifier: 'catalog:'
+        version: 2.1.0(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  stacks/rspack-react/cart:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../../../packages/contracts
+      '@mf-eval/react-contracts':
+        specifier: workspace:*
+        version: link:../../../packages/react-contracts
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@mf-eval/rsbuild-preset':
+        specifier: workspace:*
+        version: link:../../../packages/rsbuild-preset
+      '@module-federation/rsbuild-plugin':
+        specifier: 'catalog:'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: 'catalog:'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+      '@rsbuild/plugin-react':
+        specifier: 'catalog:'
+        version: 2.1.0(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  stacks/rspack-react/faq:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../../../packages/contracts
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@mf-eval/rsbuild-preset':
+        specifier: workspace:*
+        version: link:../../../packages/rsbuild-preset
+      '@module-federation/rsbuild-plugin':
+        specifier: 'catalog:'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: 'catalog:'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+      '@rsbuild/plugin-react':
+        specifier: 'catalog:'
+        version: 2.1.0(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  stacks/rspack-react/product:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../../../packages/contracts
+      '@mf-eval/react-contracts':
+        specifier: workspace:*
+        version: link:../../../packages/react-contracts
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+      react-router:
+        specifier: 'catalog:'
+        version: 8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+    devDependencies:
+      '@mf-eval/rsbuild-preset':
+        specifier: workspace:*
+        version: link:../../../packages/rsbuild-preset
+      '@module-federation/rsbuild-plugin':
+        specifier: 'catalog:'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: 'catalog:'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+      '@rsbuild/plugin-react':
+        specifier: 'catalog:'
+        version: 2.1.0(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  stacks/rspack-react/shell:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../../../packages/contracts
+      '@mf-eval/react-contracts':
+        specifier: workspace:*
+        version: link:../../../packages/react-contracts
+      '@module-federation/enhanced':
+        specifier: 'catalog:'
+        version: 2.8.2(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@module-federation/node':
+        specifier: 'catalog:'
+        version: 2.7.49(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+      react-router:
+        specifier: 'catalog:'
+        version: 8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+    devDependencies:
+      '@mf-eval/rsbuild-preset':
+        specifier: workspace:*
+        version: link:../../../packages/rsbuild-preset
       '@module-federation/rsbuild-plugin':
         specifier: 'catalog:'
         version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
@@ -410,6 +660,9 @@ packages:
     resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
     engines: {node: '>=16'}
 
+  cookie-es@3.1.1:
+    resolution: {integrity: sha512-UaXxwISYJPTr9hwQxMFYZ7kNhSXboMXP+Z3TRX6f1/NyaGPfuNUZOWP1pUEb75B2HjfklIYLVRfWiFZJyC6Npg==}
+
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
 
@@ -474,6 +727,16 @@ packages:
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
     engines: {node: '>=0.10.0'}
+
+  react-router@8.3.0:
+    resolution: {integrity: sha512-qyPMvW83jGIct3yiieisxdk9M745anqhpIMKN5m1t6yBMfgVPpt77aHOqs5fUlEJRMCGffg9BaQLH9oPVOL7xQ==}
+    engines: {node: '>=22.22.0'}
+    peerDependencies:
+      react: '>=19.2.7'
+      react-dom: '>=19.2.7'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
 
   react@19.2.8:
     resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
@@ -843,6 +1106,8 @@ snapshots:
 
   commander@11.1.0: {}
 
+  cookie-es@3.1.1: {}
+
   csstype@3.2.3: {}
 
   encoding@0.1.13:
@@ -890,6 +1155,13 @@ snapshots:
       scheduler: 0.27.0
 
   react-refresh@0.18.0: {}
+
+  react-router@8.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+    dependencies:
+      cookie-es: 3.1.1
+      react: 19.2.8
+    optionalDependencies:
+      react-dom: 19.2.8(react@19.2.8)
 
   react@19.2.8: {}
 

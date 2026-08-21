@@ -57,6 +57,29 @@ Two gaps that matter to us:
 The bench must track RSS across N hot-swaps (`packages/bench` → server probes). Expect to find a leak.
 Requires `output.chunkFilename: '[id]-[contenthash].js'` on remotes or hash-diffing can't detect change.
 
+### Measured 2026-08-21: `revalidate()` alone does not pick up a redeployed remote
+
+We shipped a genuinely new route in the `faq` remote, rebuilt only that remote, and called
+`POST /__revalidate` on the running shell. Result:
+
+```json
+{ "ok": true, "shouldReload": false, "ms": 26.39, "rssMb": 118.7 }
+```
+
+`shouldReload: false` — no change detected, and the new route stayed 404.
+
+**Why.** `revalidate()` hash-diffs `remoteEntry.js`. The container's bytes did not change, because
+the route code lives in a separate exposed chunk (`__federation_expose_routes*.js`). The container is
+a stable shim; changing a route does not change it.
+
+**What worked**: bumping the remote's version in the registry. The shell's resolved-set key changed,
+it re-registered with `force: true`, and the new route was live — with the shell never rebuilt and
+never restarted (verified by pid and bundle hash in `packages/bench/src/independence.mjs`).
+
+**Guidance.** Treat the registry as the source of truth for "what is deployed", not `revalidate()`.
+A deploy must bump the version. `revalidate()` remains useful for same-version content changes and
+for local dev, but it is not a deployment mechanism, and the docs' framing invites that mistake.
+
 ---
 
 ## 3. Footprint: Module Federation's own runtime is the dominant cost

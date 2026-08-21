@@ -1,0 +1,14 @@
+{
+  "name": "@mf-eval/bench",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "verify": "node src/verify.mjs",
+    "independence": "node src/independence.mjs",
+    "all": "node src/verify.mjs && node src/independence.mjs"
+  },
+  "dependencies": {
+    "playwright": "catalog:"
+  }
+}

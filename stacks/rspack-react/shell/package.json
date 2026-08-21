@@ -1,0 +1,26 @@
+{
+  "name": "@mf-eval/rspack-react-shell",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": { "build": "rsbuild build", "start": "node server.mjs" },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "@mf-eval/contracts": "workspace:*",
+    "@mf-eval/react-contracts": "workspace:*",
+    "@module-federation/enhanced": "catalog:",
+    "@module-federation/node": "catalog:",
+    "hono": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "react-router": "catalog:"
+  },
+  "devDependencies": {
+    "@mf-eval/rsbuild-preset": "workspace:*",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:"
+  }
+}

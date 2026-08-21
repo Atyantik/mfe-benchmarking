@@ -1,0 +1,22 @@
+[
+  {
+    "name": "registry",
+    "pid": 1212
+  },
+  {
+    "name": "faq",
+    "pid": 1214
+  },
+  {
+    "name": "product",
+    "pid": 1217
+  },
+  {
+    "name": "cart",
+    "pid": 1218
+  },
+  {
+    "name": "shell",
+    "pid": 1220
+  }
+]

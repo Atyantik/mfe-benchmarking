@@ -1,0 +1,26 @@
+{
+  "revision": "r2",
+  "remotes": [
+    {
+      "name": "faq",
+      "kind": "route",
+      "version": "1.1.0",
+      "web": "http://localhost:3101/mf-manifest.json",
+      "node": "http://localhost:3101/ssr/mf-manifest.json"
+    },
+    {
+      "name": "product",
+      "kind": "route",
+      "version": "1.0.0",
+      "web": "http://localhost:3102/mf-manifest.json",
+      "node": "http://localhost:3102/ssr/mf-manifest.json"
+    },
+    {
+      "name": "cart",
+      "kind": "component",
+      "version": "1.0.0",
+      "web": "http://localhost:3103/mf-manifest.json",
+      "node": "http://localhost:3103/ssr/mf-manifest.json"
+    }
+  ]
+}
