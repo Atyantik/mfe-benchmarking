@@ -62,3 +62,7 @@ results/               generated measurements
 | `/mf-v2` | What the official docs get wrong or bury, plus this repo's version rules |
 | `/mf-topology` | Adding a remote, exposing routes, registry, cross-remote state, debugging federated SSR |
 | `/mf-bench` | Metric definitions and what makes two numbers honestly comparable |
+
+> Skills live in `.agents/skills/` and are symlinked into `.claude/skills/`. That keeps them in
+> version control (a global gitignore commonly excludes `.claude/`) and makes them usable by other
+> agent tooling, not just Claude Code.
