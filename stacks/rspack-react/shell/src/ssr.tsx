@@ -6,14 +6,14 @@
  * trip MF's synchronous share resolution (docs/spike-rspack-ssr.md § trap 4).
  */
 import { renderToString } from 'react-dom/server';
-import { createStaticHandler, createStaticRouter, StaticRouterProvider } from 'react-router';
+import { createStaticHandler, createStaticRouter, matchRoutes, StaticRouterProvider } from 'react-router';
 import { createCartStore, serializeCartState, CART_STATE_GLOBAL } from '@mf-eval/contracts';
 
 import { App } from './App';
-import { buildPreloadPlan, renderPreloadTags } from './assets';
+import { buildPreloadPlan, renderPreloadTags, type UsedExposes } from './assets';
 import { readCartCookie } from './cart-cookie';
 import { fetchRegistry } from './registry-client';
-import { loadRemotes } from './remotes';
+import { loadRemotes, routeOwner, SLOT_SOURCES } from './remotes';
 import { buildRoutes, resolveLazyRoutes } from './router';
 
 export interface RenderInput {
@@ -34,13 +34,6 @@ export interface RenderOutput {
   ssrMs: number;
 }
 
-/** Which exposes each render touched, so we preload those and not everything. */
-const USED_EXPOSES: Record<string, string[]> = {
-  faq: ['./routes'],
-  product: ['./routes'],
-  cart: ['./MiniCart', './CartDrawer'],
-};
-
 export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   const started = performance.now();
 
@@ -48,6 +41,7 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   // are different artifacts and must never share a URL.
   const { registry: nodeRegistry, stale } = await fetchRegistry('node', input.cohort);
   const { routes: remoteRoutes, slots, failures } = await loadRemotes(nodeRegistry.remotes);
+  for (const e of nodeRegistry.remotes) if (e.kind === 'route') allRouteOwners.add(e.name);
 
   // Per request. A module-global store would leak one user's cart into another user's
   // response — the sharpest correctness trap in this architecture.
@@ -74,15 +68,22 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   }
 
   const router = createStaticRouter(routes, context);
+
+  // Observe, do not guess. Which slots render depends on the page: MiniCart is on every
+  // page, CartDrawer only on product detail.
+  const usedSlots = new Set<string>();
   const appHtml = renderToString(
-    <App store={store} slots={slots}>
+    <App store={store} slots={slots} onSlotUse={(n) => usedSlots.add(n)}>
       <StaticRouterProvider router={router} context={context} />
     </App>,
   );
 
   // Preload from the WEB registry so the browser does not rediscover the chain.
   const { registry: webRegistry } = await fetchRegistry('web', input.cohort);
-  const plan = await buildPreloadPlan(webRegistry.remotes, USED_EXPOSES);
+  const plan = await buildPreloadPlan(
+    webRegistry.remotes,
+    computeNeeds(routes, input.url, usedSlots),
+  );
 
   const bootstrap = {
     // Pinned so the client loads EXACTLY what the server rendered against. Re-querying
@@ -111,6 +112,54 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
     ssrMs: performance.now() - started,
   };
 }
+
+/**
+ * Exactly what this render needs from each remote — no more.
+ *
+ * Every route remote contributes its `./routes` descriptor because the shell merges all
+ * of them into one router on every page (a structural cost of this topology). But the
+ * page CONTENT is attributed per route via the chunk name, so /faq pulls faq-index.css
+ * and neither faq-contact.css nor anything at all from product.
+ */
+function computeNeeds(
+  routes: Parameters<typeof matchRoutes>[0],
+  url: string,
+  usedSlots: Set<string>,
+): UsedExposes {
+  const needs: UsedExposes = {};
+
+  // Every route remote ships its descriptor on every page — the shell merges all of
+  // them into one router. That is a real structural cost of this topology, and it is
+  // why these are tiny modules that must never import a page component.
+  for (const owner of allRouteOwners) {
+    needs[owner] = { exposes: ['./routes'], routeChunks: [] };
+  }
+
+  // matchRoutes returns the whole chain: [shell layout, remote top-level, leaf].
+  // The owner is recorded on the remote's top-level descriptor; the id is on the leaf.
+  const matches = matchRoutes(routes, new URL(url).pathname) ?? [];
+  let owner: string | undefined;
+  const chunks: string[] = [];
+  for (const m of matches) {
+    owner ??= routeOwner.get(m.route as object);
+    const id = (m.route as { id?: string }).id;
+    if (id) chunks.push(id.replace(/\./g, '-'));
+  }
+  if (owner) {
+    needs[owner] = { exposes: ['./routes'], routeChunks: chunks };
+  }
+
+  for (const src of SLOT_SOURCES) {
+    if (!usedSlots.has(src.slot)) continue;
+    const need = (needs[src.remote] ??= { exposes: [], routeChunks: [] });
+    if (!need.exposes.includes(src.expose)) need.exposes.push(src.expose);
+  }
+
+  return needs;
+}
+
+/** Populated as remotes load; route remotes always contribute their descriptor. */
+const allRouteOwners = new Set<string>();
 
 /** `</script>` inside JSON would close the tag early and inject markup. */
 function jsonScript(value: unknown): string {

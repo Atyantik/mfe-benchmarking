@@ -71,16 +71,30 @@ export function useCartActions(): { add: (item: CartItem) => void; clear: () => 
  */
 export type SlotName = 'cart.drawer' | 'cart.mini';
 
-const SlotContext = createContext<Partial<Record<SlotName, ComponentType>>>({});
+interface SlotRegistry {
+  slots: Partial<Record<SlotName, ComponentType>>;
+  /**
+   * Called during render for each slot that is actually filled.
+   *
+   * The server uses this to know which remote components a page really rendered, so it
+   * can inject exactly their CSS and nothing else. Guessing statically would be wrong:
+   * MiniCart is on every page, CartDrawer only on product detail.
+   */
+  onUse?: (name: SlotName) => void;
+}
+
+const SlotContext = createContext<SlotRegistry>({ slots: {} });
 
 export function SlotProvider({
   slots,
+  onUse,
   children,
 }: {
   slots: Partial<Record<SlotName, ComponentType>>;
+  onUse?: (name: SlotName) => void;
   children: ReactNode;
 }) {
-  return <SlotContext.Provider value={slots}>{children}</SlotContext.Provider>;
+  return <SlotContext.Provider value={{ slots, onUse }}>{children}</SlotContext.Provider>;
 }
 
 /**
@@ -89,9 +103,11 @@ export function SlotProvider({
  * the page, not break it.
  */
 export function Slot({ name, fallback = null }: { name: SlotName; fallback?: ReactNode }) {
-  const slots = useContext(SlotContext);
+  const { slots, onUse } = useContext(SlotContext);
   const Filled = slots[name];
   if (!Filled) return <>{fallback}</>;
+  // Safe during renderToString (single pass). On the client it is a no-op — no onUse.
+  onUse?.(name);
   return <Filled />;
 }
 

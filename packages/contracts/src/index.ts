@@ -33,6 +33,17 @@ export type HydrationMode = 'off' | 'deferred-idle' | 'deferred-visible' | 'full
  * before first render, so a static import puts every page in the critical path.
  */
 export interface RouteDescriptor {
+  /**
+   * Stable route id, e.g. "faq.index". MUST equal the webpackChunkName given to this
+   * route's dynamic import, with dots replaced by dashes ("faq-index").
+   *
+   * Why this exists: MF's manifest lists assets per EXPOSE, not per route, so a remote
+   * exposing `./routes` reports every route's CSS/JS in one flat `async` list. Without a
+   * per-route key the shell cannot tell which stylesheet belongs to the page it just
+   * rendered, and /faq would download /faq/contact's CSS. Naming the chunk after the
+   * route id makes the flat list attributable again.
+   */
+  id?: string;
   path?: string;
   index?: boolean;
   lazy?: () => Promise<unknown>;

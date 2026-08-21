@@ -2,16 +2,27 @@
  * SSR asset injection — docs/constraints.md §6.
  *
  * Without this, a cold load of a federated route costs three STRICTLY SEQUENTIAL round
- * trips before one remote component can render, and hydration waits on all of them:
+ * trips before one remote component renders, and hydration waits on all of them:
  *
  *     mf-manifest.json  ->  remoteEntry.js  ->  the exposed module's chunk
  *
- * The server already knows all three URLs at render time — they are in the manifest it
- * just read. Emitting preload tags collapses the chain. Modern.js does this for you;
- * on a custom server it is ours to build.
+ * Three rules learned the hard way, each one a bug we shipped first:
  *
- * Note this reads the WEB manifests, not the node ones the server rendered with. They
- * are different artifacts with different asset lists (docs/spike-rspack-ssr.md § trap 5).
+ *  1. NEVER preload a remote's `shared` assets. Every remote emits its own fallback copy
+ *     of react, react-router and the contracts. At runtime MF's share scope executes
+ *     exactly one provider's copy — but `<link rel=preload>` *forces the download*
+ *     regardless. Preloading them all made /faq fetch product's 186 kB react-router copy
+ *     that would never execute.
+ *
+ *  2. Route-content CSS lives in the manifest's `async` bucket, not `sync`, because the
+ *     page component sits behind `lazy()`. Reading only `sync` is why stylesheets
+ *     arrived after hydration instead of in the head.
+ *
+ *  3. MF's manifest is per-EXPOSE, not per-route. A remote exposing `./routes` reports
+ *     every one of its routes' assets in one flat `async` list, so /faq would pull
+ *     /faq/contact's CSS. The fix is on the remote side: each route names its chunk after
+ *     its route id (webpackChunkName), which makes the flat list attributable again.
+ *     See RouteDescriptor.id in @mf-eval/contracts.
  */
 import type { RegistryEntry } from '@mf-eval/contracts';
 
@@ -30,17 +41,41 @@ interface Manifest {
 }
 
 export interface PreloadPlan {
-  scripts: string[];
+  /** Render-blocking stylesheets, in cascade order. */
   styles: string[];
+  /** Scripts to warm so hydration does not rediscover them a round trip at a time. */
+  scripts: string[];
 }
+
+/** What one render needs from one remote. */
+export interface RemoteNeed {
+  /** Exposed module paths this render touched, e.g. ['./routes'] or ['./MiniCart']. */
+  exposes: string[];
+  /**
+   * Chunk names of the routes ACTUALLY rendered, e.g. ['faq-index'].
+   *
+   * Empty for a remote whose descriptor was merged into the router but whose pages were
+   * not rendered — that remote contributes its tiny `./routes` module and nothing else.
+   * This is what keeps /faq from downloading product's page code, and /faq from
+   * downloading /faq/contact's CSS.
+   */
+  routeChunks: string[];
+}
+
+export type UsedExposes = Record<string, RemoteNeed>;
 
 const manifestCache = new Map<string, { manifest: Manifest; at: number }>();
 const MANIFEST_TTL_MS = 5_000;
 
-function join(publicPath: string, path: string | undefined, file: string): string {
+function join(publicPath: string, file: string): string {
   const base = publicPath.endsWith('/') ? publicPath : `${publicPath}/`;
-  const mid = path ? `${path.replace(/\/$/, '')}/` : '';
-  return `${base}${mid}${file}`;
+  return `${base}${file}`;
+}
+
+/** `static/css/async/faq-index.3ad0e0.css` belongs to chunk `faq-index`. */
+function chunkOf(file: string): string {
+  const base = file.split('/').pop() ?? file;
+  return base.split('.')[0] ?? '';
 }
 
 async function getManifest(url: string): Promise<Manifest | null> {
@@ -58,55 +93,69 @@ async function getManifest(url: string): Promise<Manifest | null> {
   }
 }
 
-/**
- * Build the preload plan for the remotes and exposed modules this render touched.
- *
- * `usedExposes` is keyed by remote name, e.g. { cart: ['./MiniCart'] }. Passing only
- * what was actually rendered matters: preloading every expose of every remote would
- * trade one waterfall for a pile of wasted bytes.
- */
 export async function buildPreloadPlan(
   webEntries: RegistryEntry[],
-  usedExposes: Record<string, string[]>,
+  used: UsedExposes,
 ): Promise<PreloadPlan> {
-  const scripts: string[] = [];
-  const styles: string[] = [];
+  // Cascade order matters: chrome (header/cart) before page content, so a page can
+  // override chrome rather than racing it. Component remotes are the chrome.
+  const ordered = [...webEntries].sort(
+    (a, b) => (a.kind === 'component' ? 0 : 1) - (b.kind === 'component' ? 0 : 1),
+  );
 
-  await Promise.all(
-    webEntries.map(async (entry) => {
+  const perRemote = await Promise.all(
+    ordered.map(async (entry) => {
+      const scripts: string[] = [];
+      const styles: string[] = [];
+      const need = used[entry.name];
+      if (!need || need.exposes.length === 0) return { scripts, styles };
+
       const manifest = await getManifest(entry.entry);
-      if (!manifest) return;
-
+      if (!manifest) return { scripts, styles };
       const publicPath = manifest.metaData.publicPath ?? new URL('.', entry.entry).href;
 
-      // 1. The container itself — always needed before anything else can load.
-      scripts.push(
-        join(publicPath, manifest.metaData.remoteEntry.path, manifest.metaData.remoteEntry.name),
-      );
+      const re = manifest.metaData.remoteEntry;
+      scripts.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
 
-      // 2. Shared deps this remote will pull (react, react-dom, the contracts).
-      for (const shared of manifest.shared ?? []) {
-        for (const f of shared.assets?.js?.sync ?? []) scripts.push(join(publicPath, undefined, f));
-        for (const f of shared.assets?.css?.sync ?? []) styles.push(join(publicPath, undefined, f));
-      }
+      const wanted = new Set(need.exposes);
+      const rendered = new Set(need.routeChunks);
 
-      // 3. Only the exposes this render actually used.
-      const wanted = new Set(usedExposes[entry.name] ?? []);
       for (const expose of manifest.exposes ?? []) {
         if (!wanted.has(expose.path)) continue;
-        for (const f of expose.assets?.js?.sync ?? []) scripts.push(join(publicPath, undefined, f));
-        for (const f of expose.assets?.css?.sync ?? []) styles.push(join(publicPath, undefined, f));
+        const a = expose.assets;
+
+        // sync = the exposed module itself. Always needed — for a route remote this is
+        // the descriptor, which the shell merges into the router on every page.
+        for (const f of a?.js?.sync ?? []) scripts.push(join(publicPath, f));
+        for (const f of a?.css?.sync ?? []) styles.push(join(publicPath, f));
+
+        // async = the lazy() chunks behind it, one per route. Take ONLY the ones whose
+        // chunk name matches a route this render actually produced.
+        for (const f of a?.js?.async ?? []) {
+          if (rendered.has(chunkOf(f))) scripts.push(join(publicPath, f));
+        }
+        for (const f of a?.css?.async ?? []) {
+          if (rendered.has(chunkOf(f))) styles.push(join(publicPath, f));
+        }
       }
+
+      // Deliberately NOT iterating manifest.shared — rule 1 in the file header.
+      return { scripts, styles };
     }),
   );
 
-  return { scripts: [...new Set(scripts)], styles: [...new Set(styles)] };
+  return {
+    styles: [...new Set(perRemote.flatMap((r) => r.styles))],
+    scripts: [...new Set(perRemote.flatMap((r) => r.scripts))],
+  };
 }
 
 export function renderPreloadTags(plan: PreloadPlan): string {
   return [
+    // Real stylesheets in <head>, so first paint is styled instead of flashing unstyled
+    // until the JS that happens to own the CSS finally executes.
     ...plan.styles.map((href) => `<link rel="stylesheet" href="${href}">`),
-    // `as="script"` not modulepreload: MF web remoteEntry is a classic script
+    // `as="script"`, not modulepreload: an MF web remoteEntry is a classic script
     // (remoteEntry.type === "global"), not an ES module.
     ...plan.scripts.map((href) => `<link rel="preload" as="script" href="${href}" crossorigin>`),
   ].join('');

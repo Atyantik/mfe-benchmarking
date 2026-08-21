@@ -103,6 +103,40 @@ const ssrBadge = /data-testid="cart-count"[^>]*>(\d+)</.exec(reloadedHtml)?.[1];
 // This is the gate: the count must be right in the HTML itself, not only after hydration.
 record('badge is correct in SERVER-RENDERED HTML on reload', ssrBadge === '3', `ssr badge=${ssrBadge}`);
 
+console.log('\n— per-route asset isolation —');
+{
+  const cssOf = async (path) => {
+    const html = await (await fetch(BASE + path)).text();
+    const head = /<head>([\s\S]*?)<\/head>/.exec(html)?.[1] ?? '';
+    return [...head.matchAll(/<link rel="stylesheet" href="([^"]+)"/g)].map((m) => m[1]);
+  };
+  const faq = await cssOf('/faq');
+  const contact = await cssOf('/faq/contact');
+  const list = await cssOf('/product');
+  const detail = await cssOf('/product/p-0001');
+  const has = (arr, s) => arr.some((u) => u.includes(s));
+
+  // MF's manifest is per-expose, not per-route, so without chunk-name attribution every
+  // one of these would fail — /faq would carry its sibling's and its neighbours' CSS.
+  record('/faq does not carry product CSS', !has(faq, 'product-'));
+  record('/faq does not carry its sibling route CSS', has(faq, 'faq-index') && !has(faq, 'faq-contact'));
+  record('/faq/contact carries only its own CSS', has(contact, 'faq-contact') && !has(contact, 'faq-index'));
+  record('/product list and detail CSS are separate', has(list, 'product-list') && !has(list, 'product-detail'));
+  record('/product/p-0001 carries detail CSS', has(detail, 'product-detail') && !has(detail, 'product-list'));
+  // CartDrawer renders only on detail — observed during render, not guessed.
+  record('CartDrawer CSS only where it renders', has(detail, 'CartDrawer') && !has(faq, 'CartDrawer'));
+  // MiniCart is chrome: same URL everywhere so the browser caches it across navigations.
+  record('MiniCart CSS present on every page at a stable URL',
+    has(faq, 'MiniCart') && has(detail, 'MiniCart') &&
+    faq.find((u) => u.includes('MiniCart')) === detail.find((u) => u.includes('MiniCart')));
+  // Shell CSS must come FIRST: it defines the --mf-* custom properties every remote's
+  // stylesheet reads, and chrome must be overridable by page content, not the reverse.
+  const shellFirst = (list) => (list[0] ?? '').includes(':3100/static/css/');
+  record('shell CSS is first in the cascade on every route',
+    [faq, contact, list, detail].every(shellFirst),
+    `first on /faq = ${faq[0] ?? 'none'}`);
+}
+
 console.log('\n— cleanliness —');
 record('no console errors', consoleErrors.length === 0, consoleErrors.slice(0, 3).join(' | '));
 record('no hydration mismatch warnings', hydrationWarnings.length === 0, hydrationWarnings.slice(0, 3).join(' | '));

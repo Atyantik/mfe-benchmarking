@@ -50,10 +50,18 @@ async function loadOne<T>(remote: string, id: string): Promise<T> {
 }
 
 /** Which exposed components fill which slot. Owned by the shell, not by the remotes. */
-const SLOT_SOURCES: { slot: SlotName; remote: string; module: string }[] = [
-  { slot: 'cart.mini', remote: 'cart', module: 'cart/MiniCart' },
-  { slot: 'cart.drawer', remote: 'cart', module: 'cart/CartDrawer' },
+export const SLOT_SOURCES: { slot: SlotName; remote: string; module: string; expose: string }[] = [
+  { slot: 'cart.mini', remote: 'cart', module: 'cart/MiniCart', expose: './MiniCart' },
+  { slot: 'cart.drawer', remote: 'cart', module: 'cart/CartDrawer', expose: './CartDrawer' },
 ];
+
+/**
+ * Maps a merged top-level route descriptor back to the remote that supplied it, so a
+ * render can report which remote actually owns the current URL. WeakMap rather than a
+ * property on the descriptor: React Router owns those objects, and we should not add
+ * fields to something we hand to a library.
+ */
+export const routeOwner = new WeakMap<object, string>();
 
 export async function loadRemotes(entries: RegistryEntry[]): Promise<LoadedRemotes> {
   register(entries);
@@ -69,6 +77,7 @@ export async function loadRemotes(entries: RegistryEntry[]): Promise<LoadedRemot
     ...routeEntries.map(async (entry) => {
       try {
         const mod = await loadOne<{ routes: RouteDescriptor[] }>(entry.name, `${entry.name}/routes`);
+        for (const r of mod.routes) routeOwner.set(r, entry.name);
         routes.push(...mod.routes);
       } catch (err) {
         failures.push({ name: entry.name, error: String(err) });

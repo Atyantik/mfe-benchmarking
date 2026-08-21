@@ -180,6 +180,71 @@ casually.
 
 ---
 
+## 5b. Manifest granularity is per-expose, not per-route — and that leaks CSS across routes
+
+Found while wiring SSR asset injection. **The bundler splits correctly; MF's manifest
+throws the information away.**
+
+Rspack emits one CSS chunk per `lazy()` route, exactly as it should. But a remote that
+exposes `./routes` reports every one of its routes' assets in a single flat list:
+
+```jsonc
+"./routes": {
+  "js":  { "sync": ["__federation_expose_routes.js"],
+           "async": ["712.js", "866.js"] },      // faq index AND faq contact
+  "css": { "sync": [],
+           "async": ["712.css", "866.css"] }     // both, indistinguishable
+}
+```
+
+There is nothing in the manifest that says `712.css` belongs to `/faq` and `866.css` to
+`/faq/contact`. A consumer injecting "the expose's async CSS" therefore ships **every
+route's CSS on every route** — the exact "shell carries all the CSS, most of it unused"
+failure that route-level splitting exists to prevent.
+
+**Fix (remote side): name each route's chunk after its route id.**
+
+```ts
+{ id: 'faq.index',   index: true,      lazy: () => import(/* webpackChunkName: "faq-index" */   './FaqRoute') },
+{ id: 'faq.contact', path: 'contact',  lazy: () => import(/* webpackChunkName: "faq-contact" */ './ContactRoute') },
+```
+
+Assets become `faq-index.<hash>.css` / `faq-contact.<hash>.css`, so the flat list is
+attributable again: the shell matches routes, maps ids to chunk names, and filters. See
+`RouteDescriptor.id` in `@mf-eval/contracts` and `shell/src/assets.ts`.
+
+Measured result — CSS actually sent per route, after the fix:
+
+| route | shell | MiniCart | CartDrawer | faq-index | faq-contact | product-list | product-detail |
+|---|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
+| `/` | Y | Y | | | | | |
+| `/faq` | Y | Y | | Y | | | |
+| `/faq/contact` | Y | Y | | | Y | | |
+| `/product` | Y | Y | | | | Y | |
+| `/product/p-0001` | Y | Y | Y | | | | Y |
+
+Guarded by assertions in `packages/bench/src/verify.mjs` so it cannot silently regress.
+
+### Two related traps in the same area
+
+**Never preload a remote's `shared` assets.** Every remote emits its own *fallback* copy
+of react, react-router and any shared package. At runtime MF's share scope executes
+exactly one provider's copy — but `<link rel="preload">` **forces the download anyway**.
+Injecting them made `/faq` fetch product's 186 kB react-router copy that could never run.
+Shared deps come from the host's bundle.
+
+**Which components rendered must be observed, not assumed.** `MiniCart` is on every page;
+`CartDrawer` only on product detail. A static "these are the cart exposes" map ships
+CartDrawer's CSS site-wide. The `Slot` component reports usage during `renderToString`,
+and only what actually rendered gets injected.
+
+**Structural cost, stated plainly:** the shell merges every route remote's descriptor into
+one router on every page, so every remote's `./routes` module is on the critical path of
+every route — that is the price of one-router SSR. Keep descriptors tiny and never let one
+statically import a page component.
+
+---
+
 ## 6. SSR asset injection is ours to build
 
 Modern.js (`@module-federation/modern-js-v3`) handles collecting the remote chunks touched during a

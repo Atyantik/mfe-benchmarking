@@ -11,10 +11,18 @@ export const routes: RouteDescriptor[] = [
   {
     path: 'faq',
     children: [
-      { index: true, lazy: () => import('./FaqRoute') },
+      {
+        id: 'faq.index',
+        index: true,
+        lazy: () => import(/* webpackChunkName: "faq-index" */ './FaqRoute'),
+      },
       // Added by the FAQ team alone. No shell rebuild, no shell redeploy, no registry
       // change — the shell never enumerates these paths.
-      { path: 'contact', lazy: () => import('./ContactRoute') },
+      {
+        id: 'faq.contact',
+        path: 'contact',
+        lazy: () => import(/* webpackChunkName: "faq-contact" */ './ContactRoute'),
+      },
     ],
   },
 ];

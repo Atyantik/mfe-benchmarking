@@ -5,7 +5,7 @@
  * MF emits CommonJS for the node build and Node would misparse it, silently yielding
  * empty exports (docs/spike-rspack-ssr.md § trap 2). Keeping ESM here instead.
  */
-import { readdirSync } from 'node:fs';
+import { readdirSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,14 +30,21 @@ function discoverAssets() {
   const cssDir = join(HERE, 'dist/web/static/css');
   const clientScript = readdirSync(jsDir).find((f) => /^index\.[a-f0-9]+\.js$/.test(f));
   if (!clientScript) throw new Error(`no client entry found in ${jsDir}`);
-  let styles = [];
-  try {
-    styles = readdirSync(cssDir)
-      .filter((f) => f.endsWith('.css'))
-      .map((f) => `${ORIGIN}/static/css/${f}`);
-  } catch {
-    /* no shell CSS emitted */
-  }
+  // Rsbuild emits the shell's CSS under static/css/async/, not static/css/. A
+  // non-recursive read found nothing, so the shell's own layout CSS was never in the
+  // <head> at all and only arrived once the client bundle executed — a guaranteed flash
+  // of unstyled content on every single page.
+  const styles = [];
+  const walk = (dir, prefix) => {
+    let entries;
+    try { entries = readdirSync(dir); } catch { return; }
+    for (const f of entries) {
+      const full = join(dir, f);
+      if (statSync(full).isDirectory()) walk(full, `${prefix}${f}/`);
+      else if (f.endsWith('.css')) styles.push(`${ORIGIN}/static/css/${prefix}${f}`);
+    }
+  };
+  walk(cssDir, '');
   return { clientScript: `${ORIGIN}/static/js/${clientScript}`, styles };
 }
 

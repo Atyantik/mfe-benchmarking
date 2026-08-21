@@ -6,15 +6,20 @@ import type { ComponentType } from 'react';
 export function App({
   store,
   slots,
+  onSlotUse,
   children,
 }: {
   store: CartStore;
   slots: Partial<Record<SlotName, ComponentType>>;
+  /** Server-only: records which slots actually rendered, for CSS/JS injection. */
+  onSlotUse?: (name: SlotName) => void;
   children: ReactNode;
 }) {
   return (
     <CartProvider store={store}>
-      <SlotProvider slots={slots}>{children}</SlotProvider>
+      <SlotProvider slots={slots} onUse={onSlotUse}>
+        {children}
+      </SlotProvider>
     </CartProvider>
   );
 }
