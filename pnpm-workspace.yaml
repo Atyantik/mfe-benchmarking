@@ -1,0 +1,47 @@
+# Single source of truth for every dependency version in this repo.
+#
+# Every app MUST reference deps as "catalog:" — never a literal version, never a range.
+# This is not style. Unequal transitive dependency versions between two apps would make
+# the byte comparison between them meaningless, and the whole point of this repo is that
+# the byte comparison is trustworthy. pnpm enforces it; reviewers don't have to.
+
+packages:
+  - 'packages/*'
+  - 'stacks/*/*'
+  - 'spike/*/*'
+
+catalog:
+  # ---- Module Federation (pinned to 2.8.2 release train) ----
+  '@module-federation/enhanced': 2.8.2
+  '@module-federation/rsbuild-plugin': 2.8.2
+  '@module-federation/runtime': 2.8.2
+  '@module-federation/bridge-react': 2.8.2
+  '@module-federation/node': 2.7.49        # trails the train; latest published
+  '@module-federation/vite': 1.20.7        # churns weekly — bump deliberately, see docs/constraints.md
+
+  # ---- Bundlers ----
+  '@rsbuild/core': 2.1.13
+  '@rsbuild/plugin-react': 2.1.0
+  # vite 8.1.0 / plugin-react 5.1.4 deliberately match what @module-federation/vite's own
+  # example suite is tested against — NOT npm latest (8.2.2 / 6.1.0). Tested beats newest.
+  vite: 8.1.0
+  '@vitejs/plugin-react': 5.1.4
+
+  # ---- Framework ----
+  react: 19.2.8
+  react-dom: 19.2.8
+  react-router: 8.3.0                      # requires react >=19.2.7
+
+  # ---- SSR server ----
+  hono: 4.13.3
+  '@hono/node-server': 2.1.1
+
+  # ---- Tooling ----
+  # typescript 5.9.3, not 7.0.2 latest: TS7 is the native rewrite, too new for the
+  # plugin ecosystem we depend on. 5.9.3 is what MF's own examples use.
+  typescript: 5.9.3
+  '@playwright/test': 1.62.1
+  playwright: 1.62.1
+  '@types/node': 26.2.0
+  '@types/react': 19.2.18
+  '@types/react-dom': 19.2.4

@@ -1,0 +1,24 @@
+{
+  "name": "@spike/rspack-ssr-shell",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "build": "rsbuild build",
+    "start": "node server.mjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "hono": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@module-federation/node": "catalog:",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:"
+  }
+}

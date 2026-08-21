@@ -1,0 +1,24 @@
+{
+  "name": "@spike/rspack-ssr-remote",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "rsbuild build",
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "hono": "catalog:",
+    "@hono/node-server": "catalog:"
+  },
+  "devDependencies": {
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "typescript": "catalog:"
+  }
+}
