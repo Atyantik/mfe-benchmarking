@@ -34,13 +34,27 @@ export interface AppPorts {
 }
 
 /**
- * Opt into MF's own footprint levers (docs/constraints.md §3), via MF_OPTIMIZE=1.
+ * MF's own footprint levers (docs/constraints.md §3). ON by default; MF_OPTIMIZE=0 opts out.
  *
- * Off by default so the baseline stays honest — these change RUNTIME CAPABILITIES, not
- * just size, and a build that silently had them on would not be comparable to one that
- * did not.
+ * `externalRuntime` + `provideExternalRuntime` share one runtime-core instead of shipping
+ * one per remote. `disableRemote` is applied only to remotes, which in this topology are
+ * pure producers — if a remote ever starts CONSUMING another remote, that flag must come
+ * off or its remote-loading code will have been stripped.
  */
-export const OPTIMIZE = process.env['MF_OPTIMIZE'] === '1';
+export const OPTIMIZE = process.env['MF_OPTIMIZE'] !== '0';
+
+/**
+ * Emit native ES modules for the browser. ON by default; MF_ESM=0 opts out.
+ *
+ * The web output is already modern syntax with no polyfills, but it is delivered as a
+ * classic script because a Module Federation web container defaults to
+ * `library.type: 'global'`. ESM containers are a different loading path: the host uses
+ * native dynamic import() rather than injecting a <script>.
+ *
+ * The NODE build stays CommonJS regardless — MF emits CJS there and Node would misparse
+ * an ESM/CJS mismatch (docs/spike-rspack-ssr.md, trap 2).
+ */
+export const ESM = process.env['MF_ESM'] !== '0';
 
 export interface MfAppOptions {
   /** MF container name. Also the registry key. */
@@ -112,6 +126,14 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
   // is genuinely a different artifact (remoteEntry type commonjs-module vs global).
   const web = { ...base };
   const node = { ...base };
+  // ESM applies to the BROWSER build only. The node build must stay CommonJS — MF emits
+  // CJS there and Node would misparse a mismatch, silently yielding empty exports.
+  if (ESM) {
+    // `library.type: 'module'` requires the library NAME to be unset; webpack/rspack
+    // rejects the combination outright.
+    (web as { library?: unknown }).library = { type: 'module' };
+    (web as { remoteType?: string }).remoteType = 'module';
+  }
   if (opts.exposesWeb) web.exposes = opts.exposesWeb;
   if (opts.exposesNode) node.exposes = opts.exposesNode;
   return { web, node };
@@ -128,7 +150,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
       web: {
         source: {
           entry: { index: opts.clientEntry },
-          ...(opts.define ? { define: opts.define } : {}),
+          define: { ...(opts.define ?? {}), __MF_ESM__: JSON.stringify(ESM) },
         },
         output: {
           target: 'web',
@@ -139,11 +161,29 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
           filename: { js: '[name].[contenthash:8].js' },
         },
         plugins: [pluginModuleFederation(webMf, { environment: 'web' })],
+        ...(ESM
+          ? {
+              tools: {
+                rspack: (config: { experiments?: Record<string, unknown>; output?: Record<string, unknown> }) => {
+                  config.experiments = { ...config.experiments, outputModule: true };
+                  config.output = {
+                    ...config.output,
+                    module: true,
+                    chunkFormat: 'module',
+                    chunkLoading: 'import',
+                    library: { type: 'module' },
+                  };
+                },
+              },
+            }
+          : {}),
       },
       node: {
         source: {
           entry: { index: opts.serverEntry },
-          ...(opts.define ? { define: opts.define } : {}),
+          // __MF_ESM__ is needed on BOTH sides: the server decides how to write the
+          // script tag, the client is what the tag points at.
+          define: { ...(opts.define ?? {}), __MF_ESM__: JSON.stringify(ESM) },
         },
         output: {
           target: 'node',

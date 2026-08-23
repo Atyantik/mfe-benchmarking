@@ -1,22 +1,22 @@
 [
   {
     "name": "registry",
-    "pid": 90930
+    "pid": 95027
   },
   {
     "name": "faq",
-    "pid": 90931
+    "pid": 95028
   },
   {
     "name": "product",
-    "pid": 90932
+    "pid": 95038
   },
   {
     "name": "cart",
-    "pid": 90934
+    "pid": 95039
   },
   {
     "name": "shell",
-    "pid": 90935
+    "pid": 95040
   }
 ]

@@ -43,8 +43,10 @@ interface Manifest {
 export interface PreloadPlan {
   /** Render-blocking stylesheets, in cascade order. */
   styles: string[];
-  /** Scripts to warm so hydration does not rediscover them a round trip at a time. */
+  /** Classic scripts to warm — `<link rel=preload as=script>`. */
   scripts: string[];
+  /** ES modules to warm — `<link rel=modulepreload>`. Wrong hint = no cache hit. */
+  modules: string[];
 }
 
 /** What one render needs from one remote. */
@@ -115,18 +117,23 @@ export async function buildPreloadPlan(
   const perRemote = await Promise.all(
     ordered.map(async (entry) => {
       const scripts: string[] = [];
+      const modules: string[] = [];
       const styles: string[] = [];
       const need = used[entry.name];
-      if (!need || need.exposes.length === 0) return { scripts, styles };
+      if (!need || need.exposes.length === 0) return { scripts, modules, styles };
 
       const manifest = await getManifest(entry.entry);
-      if (!manifest) return { scripts, styles };
+      if (!manifest) return { scripts, modules, styles };
+      // The manifest states whether this container is an ES module or a classic script,
+      // so the hint follows the artefact instead of being guessed.
+      const isModule = manifest.metaData.remoteEntry.type === 'module';
+      const js = isModule ? modules : scripts;
       const publicPath = manifest.metaData.publicPath ?? new URL('.', entry.entry).href;
 
       const wantScripts = need.scriptsNeeded !== false;
       if (wantScripts) {
         const re = manifest.metaData.remoteEntry;
-        scripts.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
+        js.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
       }
 
       const wanted = new Set(need.exposes);
@@ -138,14 +145,14 @@ export async function buildPreloadPlan(
 
         // sync = the exposed module itself. Always needed — for a route remote this is
         // the descriptor, which the shell merges into the router on every page.
-        if (wantScripts) for (const f of a?.js?.sync ?? []) scripts.push(join(publicPath, f));
+        if (wantScripts) for (const f of a?.js?.sync ?? []) js.push(join(publicPath, f));
         for (const f of a?.css?.sync ?? []) styles.push(join(publicPath, f));
 
         // async = the lazy() chunks behind it, one per route. Take ONLY the ones whose
         // chunk name matches a route this render actually produced.
         if (wantScripts) {
           for (const f of a?.js?.async ?? []) {
-            if (rendered.has(chunkOf(f))) scripts.push(join(publicPath, f));
+            if (rendered.has(chunkOf(f))) js.push(join(publicPath, f));
           }
         }
         for (const f of a?.css?.async ?? []) {
@@ -154,13 +161,14 @@ export async function buildPreloadPlan(
       }
 
       // Deliberately NOT iterating manifest.shared — rule 1 in the file header.
-      return { scripts, styles };
+      return { scripts, modules, styles };
     }),
   );
 
   return {
     styles: dedupeByContentHash(perRemote.flatMap((r) => r.styles)),
     scripts: [...new Set(perRemote.flatMap((r) => r.scripts))],
+    modules: [...new Set(perRemote.flatMap((r) => r.modules))],
   };
 }
 
@@ -196,10 +204,13 @@ export function renderPreloadTags(plan: PreloadPlan): string {
     // `as="script"`, not modulepreload: an MF web remoteEntry is a classic script
     // (remoteEntry.type === "global"), not an ES module.
     //
-    // NO `crossorigin` attribute. A preload only satisfies a later request when the CORS
-    // modes match, and Module Federation's script loader does not set crossOrigin. With
-    // the attribute here the preloaded copy was unusable and every remote script was
-    // downloaded twice — remoteEntry.js included, on every page.
+    // NO `crossorigin` on classic preloads. A preload only satisfies a later request when
+    // the CORS modes match, and Module Federation's script loader does not set
+    // crossOrigin. With the attribute here the preloaded copy was unusable and every
+    // remote script was downloaded twice — remoteEntry.js included, on every page.
     ...plan.scripts.map((href) => `<link rel="preload" as="script" href="${href}">`),
+    // ES modules are always fetched in CORS mode, so modulepreload MUST carry
+    // crossorigin — the mirror image of the classic-script rule above.
+    ...plan.modules.map((href) => `<link rel="modulepreload" href="${href}" crossorigin>`),
   ].join('');
 }

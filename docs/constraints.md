@@ -402,6 +402,61 @@ wrong way to describe a session. **In a session, the framework and MF runtime ar
 
 ---
 
+## 11. Output format: modern syntax, no polyfills, native ES modules
+
+Checked because Core Web Vitals tooling flags "legacy JavaScript". Three separate
+questions get conflated under that heading; only the third needed work.
+
+**Is it ES5?** No. Rsbuild compiles for `chrome >= 107, edge >= 107, firefox >= 104,
+safari >= 16` with output syntax `es2017`. The bundles are full of arrow functions,
+`let`, `class`, `async`, optional chaining and nullish coalescing.
+
+**Is it CommonJS, or does it carry polyfills?** No, on both counts. Zero occurrences
+across every web bundle of: `core-js`, `regenerator`, `es.array`/`es.object`/`es.promise`
+shims, `__spreadArray`, `_toConsumableArray`, `_asyncToGenerator`,
+`_interopRequireDefault`, `Object.defineProperty(exports`. Lighthouse's *Avoid serving
+legacy JavaScript* audit has nothing to match.
+
+**Is it delivered as a module?** It was not — this was the real gap. A Module Federation
+web container defaults to `library.type: 'global'`, a classic script loaded by injecting
+a `<script>` tag. Now ESM by default:
+
+```js
+// remoteEntry.js, tail
+export{__webpack_exports__get as get,__webpack_exports__init as init};
+```
+
+Native `export`, native `import()` for chunks, no `self.webpackChunk` global, and the
+manifest advertises `"remoteEntry": { "type": "module" }`.
+
+### How to do it on Rspack
+
+```ts
+// BROWSER build only
+library: { type: 'module' },      // the library NAME must be unset — rspack rejects both
+remoteType: 'module',             // host loads remotes with native import()
+// plus, on the rspack config:
+experiments.outputModule = true;
+output.module = true; output.chunkFormat = 'module'; output.chunkLoading = 'import';
+```
+
+Two traps:
+
+- **Scope it to the browser environment.** Putting `library`/`remoteType` in the shared
+  base breaks the Node build, which must stay CommonJS (§8, trap 2). Symptom is
+  `Library name must be unset`.
+- **The preload hint must follow the container kind.** A classic script wants
+  `<link rel="preload" as="script">` *without* `crossorigin`; an ES module wants
+  `<link rel="modulepreload">` *with* it, because modules are always fetched in CORS
+  mode. Get it backwards and the preloaded copy cannot satisfy the real request, so the
+  file downloads twice (§10). The manifest states which kind it is, so the hint is derived
+  rather than guessed.
+
+Effect is small on bytes (125,501 vs 126,280 cold) — the point is the delivery format, and
+that native ESM is the precondition for replacing MF's share scope with an import map.
+
+---
+
 ## Reference implementations worth reading
 
 | Path | Why |

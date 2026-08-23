@@ -158,7 +158,11 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
     `</head><body><div id="root">${appHtml}</div>` +
     (personalized.length > 0
       ? `<script>window.${CART_STATE_GLOBAL}=${jsonScript(bootstrap)}</script>` +
-        `<script src="${input.clientScript}" defer></script>`
+        // A module script is deferred by default, so `defer` is redundant on that path
+        // and invalid-looking; a classic script still needs it.
+        (__MF_ESM__
+          ? `<script type="module" src="${input.clientScript}"></script>`
+          : `<script src="${input.clientScript}" defer></script>`)
       : '') +
     `</body></html>`;
 
