@@ -202,3 +202,8 @@ Original Error Message:
 [ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
 [ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
 [ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[shell] :3100 -> http://localhost:3100/static/js/index.edee968b.js
+[shell] :3100 -> http://localhost:3100/static/js/index.edee968b.js
+[shell] :3100 -> http://localhost:3100/static/js/index.edee968b.js
+[shell] :3100 -> http://localhost:3100/static/js/index.799277ba.js
+[shell] :3100 -> http://localhost:3100/static/js/index.799277ba.js

@@ -85,7 +85,6 @@ app.get('*', async (c) => {
   try {
     const out = await render({
       url: new URL(c.req.url, ORIGIN).href,
-      cookie: c.req.header('cookie') ?? null,
       cohort: c.req.query('cohort') ?? c.req.header('x-mf-cohort') ?? 'default',
       clientScript: assets.clientScript,
       shellStyles: assets.styles,
@@ -93,7 +92,7 @@ app.get('*', async (c) => {
 
     c.header('server-timing', `ssr;dur=${out.ssrMs.toFixed(1)}`);
     // Lets the bench assert that a static page really shipped no client JS.
-    c.header('x-mf-islands', String(out.islandCount));
+    c.header('x-mf-personalized', String(out.personalizedCount));
     if (out.degraded) c.header('x-mf-registry', 'stale');
     if (out.failures.length) c.header('x-mf-remote-failures', out.failures.map((f) => f.name).join(','));
     if (!out.html) return c.body(null, out.status);

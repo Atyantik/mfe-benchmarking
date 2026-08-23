@@ -10,13 +10,15 @@ export const routes: RouteDescriptor[] = [
     children: [
       {
         id: 'product.list',
-        interactive: true,
+        // Cart state is a server-owned cookie, so this page needs no client JS at all.
+        interactive: false,
         index: true,
         lazy: () => import(/* webpackChunkName: "product-list" */ './List'),
       },
       {
         id: 'product.detail',
-        interactive: true,
+        // Cart state is a server-owned cookie, so this page needs no client JS at all.
+        interactive: false,
         path: ':id',
         lazy: () => import(/* webpackChunkName: "product-detail" */ './Detail'),
       },

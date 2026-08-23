@@ -60,6 +60,15 @@ export interface RemoteNeed {
    * downloading /faq/contact's CSS.
    */
   routeChunks: string[];
+  /**
+   * Whether this remote's SCRIPTS are needed at all.
+   *
+   * False for route remotes under the MPA shell: their pages are server-rendered and
+   * never hydrated, so the component code will never execute in the browser. Preloading
+   * it would download a file that cannot run — the exact waste this whole exercise is
+   * about. Their CSS is still required, because the server-rendered markup uses it.
+   */
+  scriptsNeeded?: boolean;
 }
 
 export type UsedExposes = Record<string, RemoteNeed>;
@@ -114,8 +123,11 @@ export async function buildPreloadPlan(
       if (!manifest) return { scripts, styles };
       const publicPath = manifest.metaData.publicPath ?? new URL('.', entry.entry).href;
 
-      const re = manifest.metaData.remoteEntry;
-      scripts.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
+      const wantScripts = need.scriptsNeeded !== false;
+      if (wantScripts) {
+        const re = manifest.metaData.remoteEntry;
+        scripts.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
+      }
 
       const wanted = new Set(need.exposes);
       const rendered = new Set(need.routeChunks);
@@ -126,13 +138,15 @@ export async function buildPreloadPlan(
 
         // sync = the exposed module itself. Always needed — for a route remote this is
         // the descriptor, which the shell merges into the router on every page.
-        for (const f of a?.js?.sync ?? []) scripts.push(join(publicPath, f));
+        if (wantScripts) for (const f of a?.js?.sync ?? []) scripts.push(join(publicPath, f));
         for (const f of a?.css?.sync ?? []) styles.push(join(publicPath, f));
 
         // async = the lazy() chunks behind it, one per route. Take ONLY the ones whose
         // chunk name matches a route this render actually produced.
-        for (const f of a?.js?.async ?? []) {
-          if (rendered.has(chunkOf(f))) scripts.push(join(publicPath, f));
+        if (wantScripts) {
+          for (const f of a?.js?.async ?? []) {
+            if (rendered.has(chunkOf(f))) scripts.push(join(publicPath, f));
+          }
         }
         for (const f of a?.css?.async ?? []) {
           if (rendered.has(chunkOf(f))) styles.push(join(publicPath, f));
@@ -145,9 +159,33 @@ export async function buildPreloadPlan(
   );
 
   return {
-    styles: [...new Set(perRemote.flatMap((r) => r.styles))],
+    styles: dedupeByContentHash(perRemote.flatMap((r) => r.styles)),
     scripts: [...new Set(perRemote.flatMap((r) => r.scripts))],
   };
+}
+
+/**
+ * Drop stylesheets that are byte-identical to one already in the list.
+ *
+ * A personalized slot ships two exposes — the live component and its placeholder — and
+ * both import the same CSS module, so the bundler emits two files with different names
+ * and the SAME content hash. Loading both is pure duplication. The hash segment of the
+ * filename is the identity, so identical hashes mean identical bytes.
+ */
+function dedupeByContentHash(urls: string[]): string[] {
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const url of urls) {
+    const file = url.split('/').pop() ?? url;
+    const parts = file.split('.');
+    // name.<hash>.css -> the hash is the second-to-last segment.
+    const hash = parts.length >= 3 ? parts[parts.length - 2] : file;
+    const key = hash ?? file;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    out.push(url);
+  }
+  return out;
 }
 
 export function renderPreloadTags(plan: PreloadPlan): string {

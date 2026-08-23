@@ -1,26 +1,26 @@
 [
   {
     "name": "registry",
-    "pid": 68544
+    "pid": 78040
   },
   {
     "name": "faq",
-    "pid": 68553
+    "pid": 78041
   },
   {
     "name": "product",
-    "pid": 68554
+    "pid": 78044
   },
   {
     "name": "cart",
-    "pid": 68555
+    "pid": 78046
   },
   {
     "name": "shell",
-    "pid": 68556
+    "pid": 78047
   },
   {
     "name": "mpa",
-    "pid": 68557
+    "pid": 78048
   }
 ]

@@ -335,6 +335,34 @@ other direction.
 
 ---
 
+## 9. The personalized-widget floor
+
+Measured 2026-08-23 on the MPA shell with `externalRuntime` enabled, per page, gzip,
+executable assets only (V8 coverage, nested zero-count ranges subtracted):
+
+| asset | gzip | executed |
+|---|---:|---:|
+| `react-dom` | 56,362 | **22.5%** |
+| shell entry (MF runtime + bootstrap) | 33,050 | 56.1% |
+| `cart/remoteEntry.js` | 15,730 | 44.7% |
+| **`MiniCart` — the actual feature** | **1,258** | **97.1%** |
+
+**~105 kB of framework and federation runtime to render 1.3 kB of cart badge**, and
+because the cart lives in the header it is on every page in the site.
+
+Zero dead bytes and zero foreign bytes — nothing loads that belongs to another page. The
+remaining cost is not waste in the "wrong page" sense; it is the price of rendering a
+personalized widget with React.
+
+The highest-leverage change available is therefore **not** a federation setting: it is the
+framework the cart remote is built with. The cart mounts into its own root, shares nothing
+with page content, and needs no React ecosystem — so Preact (~5 kB) or a web component
+(~1 kB) would remove roughly 50 kB from every page in the site. This is the strongest
+argument yet for the per-framework fan-out, and it says the first framework to swap is the
+one in the header, not the one rendering the pages.
+
+---
+
 ## Reference implementations worth reading
 
 | Path | Why |

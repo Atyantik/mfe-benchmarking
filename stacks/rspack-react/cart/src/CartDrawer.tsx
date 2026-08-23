@@ -2,7 +2,7 @@ import { useCart } from '@mf-eval/react-contracts';
 import { formatPrice } from '@mf-eval/contracts/fixtures';
 import styles from './cart.module.css';
 
-/** Owned by the cart team, rendered inside the PRODUCT team's page. */
+/** Client-only, like MiniCart. Owned by the cart team, rendered on the product team's page. */
 export default function CartDrawer() {
   const cart = useCart();
   return (
@@ -18,7 +18,7 @@ export default function CartDrawer() {
               <span>{formatPrice(item.price)}</span>
             </div>
           ))}
-          <div className={`${styles.row} ${styles.total}`}>
+          <div className={`${styles.row} ${styles['total-row']}`}>
             <span>Total</span>
             <span data-testid="cart-drawer-total">{formatPrice(cart.totalCents)}</span>
           </div>

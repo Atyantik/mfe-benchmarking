@@ -125,3 +125,50 @@ sufficient — it converted a clear `RUNTIME-006` into an opaque
 
 **Reverses if:** a later Rsbuild or MF release changes the node output contract. Re-run the spike on
 every MF or Rsbuild bump; it is fast and it is the canary.
+
+---
+
+### D11 — MPA is the target. SPA is a rejected reference lane.
+**2026-08-23**
+
+The SPA was never the goal; it exists only because measuring it produced the evidence for
+this decision. Every page is owned and deployed by one team, `/faq*` included, and a single
+client router puts every remote's container on the critical path of every page — which is
+the coupling the project exists to remove, reappearing at the asset layer.
+
+Kept in-tree as the rejected alternative, not as a co-equal variant.
+
+---
+
+### D12 — SSR/CSR split is decided by purpose, not by convenience.
+**2026-08-23**
+
+The rule, in priority order:
+
+1. **Anything that must reach SEO, GEO/AEO, or Core Web Vitals is server-rendered.**
+   Page content, chrome, copy, links. Identical for every visitor, therefore
+   shared-cacheable at a CDN.
+2. **Anything personalized is client-rendered only.** The cart is per-user, useless to a
+   crawler, and putting it in the HTML would make every response user-specific and
+   destroy shared caching. Its state is recreated on the client from a cookie (or query
+   params) — never held as client-owned state that could be lost.
+3. **Every personalized region gets a server-rendered placeholder** that reserves its
+   exact box, so mounting the live component costs zero CLS.
+
+This reverses an earlier mistake. Cart state was briefly moved server-side (read from the
+cookie during SSR) because it made the badge correct in the initial HTML. That was wrong:
+it made every response user-specific, put personalization on the TTFB path, and gave a
+crawler data it has no use for. Verified now by assertion — two visitors with different
+carts receive **byte-identical** HTML.
+
+Consequences, measured:
+- Page content is never hydrated, so its component JS is never even preloaded — only its
+  CSS, which the server-rendered markup needs.
+- The 200-row product table is inert markup; Add works by delegated listener, so making it
+  interactive costs no framework reconciliation.
+- `createRoot`, not `hydrateRoot`, for personalized regions: the server deliberately
+  rendered something different, so claiming a hydration match would be a lie.
+
+**Open cost:** the cart sits in the header, so it sets the JS floor for EVERY page —
+currently ~131 kB gzip, of which react-dom is 56 kB at 22.5% executed, to render a badge
+whose own code is 1.3 kB. See docs/constraints.md §9.

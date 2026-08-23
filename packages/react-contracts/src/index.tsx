@@ -108,7 +108,14 @@ export function Slot({ name, fallback = null }: { name: SlotName; fallback?: Rea
   if (!Filled) return <>{fallback}</>;
   // Safe during renderToString (single pass). On the client it is a no-op — no onUse.
   onUse?.(name);
-  return <Filled />;
+  // The wrapper is the anchor the client mounts into. Marking it here rather than at each
+  // call site means a personalized slot placed anywhere in any remote's tree is findable,
+  // without the shell needing to know where it ended up.
+  return (
+    <div data-personalized={name}>
+      <Filled />
+    </div>
+  );
 }
 
 export { EMPTY_CART };

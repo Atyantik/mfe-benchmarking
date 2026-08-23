@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Slot } from '@mf-eval/react-contracts';
 import styles from './shell.module.css';
 
 /**
@@ -6,7 +7,7 @@ import styles from './shell.module.css';
  * which renders an identical anchor. The spec requires identical markup so the two
  * navigation models stay comparable.
  */
-export function Layout({ miniCart, children }: { miniCart: ReactNode; children: ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
@@ -15,7 +16,8 @@ export function Layout({ miniCart, children }: { miniCart: ReactNode; children: 
           <a href="/faq">FAQ</a>
           <a href="/product">Products</a>
         </nav>
-        {miniCart}
+        {/* Personalized: server renders a reserved placeholder, client mounts the live one. */}
+        <Slot name="cart.mini" />
       </header>
       <main>{children}</main>
       <footer className={styles.footer}>Module Federation evaluation harness</footer>

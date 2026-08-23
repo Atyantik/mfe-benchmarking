@@ -1,4 +1,4 @@
-import { Slot, useCartActions } from '@mf-eval/react-contracts';
+import { Slot } from '@mf-eval/react-contracts';
 import type { PageProps, RouteLoaderArgs } from '@mf-eval/contracts';
 import { formatPrice, productById, type Product } from '@mf-eval/contracts/fixtures';
 import styles from './product.module.css';
@@ -15,17 +15,19 @@ export function loader({ params }: RouteLoaderArgs): DetailData {
 
 export function Component({ data }: PageProps<DetailData>) {
   const { product } = data;
-  const { add } = useCartActions();
   return (
     <div className={styles.detail}>
       <h1>{product.name}</h1>
       <p className={styles.price} data-testid="detail-price">{formatPrice(product.price)}</p>
       <p data-testid="detail-description">{product.description}</p>
+      {/* Inert markup; the cart island's delegated listener handles it. See List.tsx. */}
       <button
         type="button"
         className={styles.add}
         data-testid="add-to-cart"
-        onClick={() => add({ id: product.id, name: product.name, price: product.price })}
+        data-add-id={product.id}
+        data-add-name={product.name}
+        data-add-price={product.price}
       >
         Add to cart
       </button>

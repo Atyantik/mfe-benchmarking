@@ -50,9 +50,34 @@ async function loadOne<T>(remote: string, id: string): Promise<T> {
 }
 
 /** Which exposed components fill which slot. Owned by the shell, not by the remotes. */
-export const SLOT_SOURCES: { slot: SlotName; remote: string; module: string; expose: string }[] = [
-  { slot: 'cart.mini', remote: 'cart', module: 'cart/MiniCart', expose: './MiniCart' },
-  { slot: 'cart.drawer', remote: 'cart', module: 'cart/CartDrawer', expose: './CartDrawer' },
+export interface SlotSource {
+  slot: SlotName;
+  remote: string;
+  /** Live component — client only. Personalized, never server-rendered. */
+  module: string;
+  expose: string;
+  /** Reserved-size stand-in the SERVER renders, so mounting the live one shifts nothing. */
+  placeholderModule: string;
+  placeholderExpose: string;
+}
+
+export const SLOT_SOURCES: SlotSource[] = [
+  {
+    slot: 'cart.mini',
+    remote: 'cart',
+    module: 'cart/MiniCart',
+    expose: './MiniCart',
+    placeholderModule: 'cart/MiniCartPlaceholder',
+    placeholderExpose: './MiniCartPlaceholder',
+  },
+  {
+    slot: 'cart.drawer',
+    remote: 'cart',
+    module: 'cart/CartDrawer',
+    expose: './CartDrawer',
+    placeholderModule: 'cart/CartDrawerPlaceholder',
+    placeholderExpose: './CartDrawerPlaceholder',
+  },
 ];
 
 /**
@@ -63,7 +88,18 @@ export const SLOT_SOURCES: { slot: SlotName; remote: string; module: string; exp
  */
 export const routeOwner = new WeakMap<object, string>();
 
-export async function loadRemotes(entries: RegistryEntry[]): Promise<LoadedRemotes> {
+/**
+ * `variant` decides which half of a personalized slot is loaded.
+ *
+ * The server takes 'placeholder' — it must not render per-user content, or every
+ * response becomes user-specific and unshareable by a CDN, and a crawler gets data it
+ * has no use for. The client takes 'live'.
+ */
+export async function loadRemotes(
+  entries: RegistryEntry[],
+  variant: 'live' | 'placeholder' = 'live',
+  onlySlots?: readonly string[],
+): Promise<LoadedRemotes> {
   register(entries);
 
   const failures: { name: string; error: string }[] = [];
@@ -83,12 +119,18 @@ export async function loadRemotes(entries: RegistryEntry[]): Promise<LoadedRemot
         failures.push({ name: entry.name, error: String(err) });
       }
     }),
-    ...SLOT_SOURCES.filter((s) => componentNames.has(s.remote)).map(async (s) => {
+    // `onlySlots` matters: without it the client pulls every slot a component remote
+    // offers, so a page with just a header cart also downloads the drawer it will never
+    // show — component code AND its stylesheet.
+    ...SLOT_SOURCES.filter(
+      (s) => componentNames.has(s.remote) && (!onlySlots || onlySlots.includes(s.slot)),
+    ).map(async (s) => {
+      const id = variant === 'live' ? s.module : s.placeholderModule;
       try {
-        const mod = await loadOne<{ default: ComponentType }>(s.remote, s.module);
+        const mod = await loadOne<{ default: ComponentType }>(s.remote, id);
         slots[s.slot] = mod.default;
       } catch (err) {
-        failures.push({ name: s.module, error: String(err) });
+        failures.push({ name: id, error: String(err) });
       }
     }),
   ]);

@@ -3,11 +3,8 @@ import { formatPrice } from '@mf-eval/contracts/fixtures';
 import styles from './cart.module.css';
 
 /**
- * Owned by the cart team, rendered inside the SHELL's header.
- *
- * The badge count must be correct in the server-rendered HTML, not just after
- * hydration — that is the assertion that proves cross-remote state survives SSR
- * (spec/reference-app.md § Interaction script, step 9).
+ * Client-only. Mounts into the box MiniCartPlaceholder reserved, reading state the
+ * client recreated from the cookie. Never server-rendered — see the placeholder.
  */
 export default function MiniCart() {
   const cart = useCart();
@@ -15,7 +12,7 @@ export default function MiniCart() {
     <button type="button" className={styles.button} data-testid="mini-cart">
       <span>Cart</span>
       <span className={styles.badge} data-testid="cart-count">{cart.count}</span>
-      <span data-testid="cart-total">{formatPrice(cart.totalCents)}</span>
+      <span className={styles.total} data-testid="cart-total">{formatPrice(cart.totalCents)}</span>
     </button>
   );
 }
