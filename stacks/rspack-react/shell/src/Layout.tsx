@@ -3,9 +3,8 @@ import { Slot } from '@mf-eval/react-contracts';
 import styles from './shell.module.css';
 
 /**
- * Same DOM as the SPA shell's Layout — plain <a> instead of react-router's <Link>,
- * which renders an identical anchor. The spec requires identical markup so the two
- * navigation models stay comparable.
+ * Plain <a> elements. A link is a link: the browser navigates, the server responds with
+ * a whole document, and nothing intercepts the click.
  */
 export function Layout({ children }: { children: ReactNode }) {
   return (

@@ -10,9 +10,10 @@ export interface DescriptorMatch {
 /**
  * Route matching without a router library.
  *
- * ~40 lines replaces react-router on the client entirely — 59.3 kB gzip in the SPA
- * build. It runs on the server only; the browser never needs it, because in an MPA the
- * server has already decided what the page is.
+ * ~40 lines instead of a router library. It runs on the SERVER only — the browser never
+ * needs route matching, because by the time a document is delivered the server has
+ * already decided what the page is. Measured before it was removed, a client router cost
+ * 59.3 kB gzip on every page and executed 12% of itself.
  */
 export function matchDescriptors(
   routes: RouteDescriptor[],

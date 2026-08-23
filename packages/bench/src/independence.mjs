@@ -91,7 +91,10 @@ try {
   const homeStatus = await status('/');
   const homeHtml = await body('/');
   record('home still renders when the faq remote is unreachable', homeStatus === 200);
-  record('other remotes still render (cart badge present)', homeHtml.includes('cart-count'));
+  // The cart is client-rendered, so the SERVER HTML carries its placeholder, never a
+  // count. Asserting on the count here would be asserting the architecture is broken.
+  record('other remotes still render (cart placeholder present)',
+    homeHtml.includes('mini-cart-placeholder'));
 } finally {
   writeRegistry(original);
   await sleep(REGISTRY_TTL_MS + 1000);

@@ -12,8 +12,7 @@
     "@mf-eval/react-contracts": "workspace:*",
     "hono": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-router": "catalog:"
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@mf-eval/rsbuild-preset": "workspace:*",
