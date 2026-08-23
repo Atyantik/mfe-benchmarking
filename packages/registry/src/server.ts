@@ -14,8 +14,8 @@ import { Hono } from 'hono';
 import { resolveRegistry, type RegistryFile, type TargetEnv } from './index.ts';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const REGISTRY_PATH = process.env['MF_REGISTRY_FILE'] ?? join(HERE, '..', 'registry.json');
-const PORT = Number(process.env['MF_REGISTRY_PORT'] ?? 4000);
+const REGISTRY_PATH = process.env.MF_REGISTRY_FILE ?? join(HERE, '..', 'registry.json');
+const PORT = Number(process.env.MF_REGISTRY_PORT ?? 4000);
 
 const app = new Hono();
 

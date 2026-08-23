@@ -6,7 +6,7 @@ export default function App({ Widget }: { Widget: ComponentType<{ label: string 
   return (
     <main>
       <h1>Spike shell</h1>
-      <button data-testid="counter" onClick={() => setN((v) => v + 1)}>
+      <button data-testid="counter" onClick={() => { setN((v) => v + 1); }}>
         clicked {n}
       </button>
       <Widget label="from shell SSR" />

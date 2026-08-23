@@ -51,9 +51,10 @@ export async function fetchRegistry(
     if (!res.ok) throw new RegistryUnavailableError(`registry ${res.status}`);
 
     const value = (await res.json()) as RegistryResponse;
+    const etag = res.headers.get('etag');
     cache.set(key, {
       value,
-      ...(res.headers.get('etag') ? { etag: res.headers.get('etag')! } : {}),
+      ...(etag ? { etag } : {}),
       fetchedAt: Date.now(),
     });
     return { registry: value, stale: false };

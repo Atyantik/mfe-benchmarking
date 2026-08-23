@@ -45,11 +45,11 @@ function Masthead() {
       <Container className="flex h-16 items-center gap-4">
         <a href="/" className="flex shrink-0 items-center gap-2.5" aria-label="Northgate Industrial — home">
           <svg viewBox="0 0 32 32" className="size-8" aria-hidden="true">
-            <rect width="32" height="32" rx="5" fill="var(--c-brand-700)" />
+            <rect width="32" height="32" rx="5" fill="var(--color-brand-700)" />
             <path
               d="M9 23V9l7 7 7-7v14"
               fill="none"
-              stroke="#fff"
+              stroke="var(--color-card)"
               strokeWidth="2.6"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -67,6 +67,7 @@ function Masthead() {
               id="site-search"
               type="search"
               name="q"
+              data-testid="site-search"
               placeholder="Search by part number, range or rating"
               className={`${inputClass} h-10 pl-9`}
             />

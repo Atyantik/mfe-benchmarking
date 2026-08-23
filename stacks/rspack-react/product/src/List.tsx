@@ -18,6 +18,7 @@ import {
   Pagination,
   ProductCard,
   ButtonLink,
+  Select,
 } from '@mf-eval/design';
 
 const PAGE_SIZE = 12;
@@ -86,7 +87,7 @@ export function loader({ request }: RouteLoaderArgs): ListData {
   const byAvailability = (p: Product) => availability.length === 0 || availability.includes(p.availability);
   const byRange = (p: Product) => range.length === 0 || range.includes(p.range);
 
-  const count = <T extends string>(items: Product[], key: (p: Product) => T) =>
+  const count = (items: Product[], key: (p: Product) => string) =>
     items.reduce<Record<string, number>>((acc, p) => {
       const k = key(p);
       acc[k] = (acc[k] ?? 0) + 1;
@@ -121,7 +122,8 @@ export function loader({ request }: RouteLoaderArgs): ListData {
 }
 
 export function Component({ data }: PageProps<ListData>) {
-  const single = data.selected.category.length === 1 ? categoryById(data.selected.category[0]!) : undefined;
+  const onlyCategory = data.selected.category.length === 1 ? data.selected.category[0] : undefined;
+  const single = onlyCategory ? categoryById(onlyCategory) : undefined;
   const title = single ? single.name : 'All products';
 
   return (
@@ -277,16 +279,14 @@ function SortBar({ data }: { data: ListData }) {
       </p>
       <div className="flex items-center gap-2">
         <label htmlFor="sort" className="text-[length:var(--fs-sm)] text-ink-600">Sort by</label>
-        <select
+        <Select
           id="sort"
           name="sort"
           defaultValue={data.sort}
-          className="rounded-md border border-line-strong bg-card px-2 py-1.5 text-[length:var(--fs-sm)] text-ink-800"
-        >
-          {(Object.keys(SORTS) as SortKey[]).map((k) => (
-            <option key={k} value={k}>{SORTS[k].label}</option>
-          ))}
-        </select>
+          data-testid="sort-select"
+          className="w-auto"
+          options={(Object.keys(SORTS) as SortKey[]).map((k) => ({ value: k, label: SORTS[k].label }))}
+        />
         <Button type="submit" tone="secondary" size="sm">Apply</Button>
       </div>
     </form>

@@ -74,11 +74,9 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
     status = 404;
     pageNode = <h1>Not found</h1>;
   } else {
-    for (const r of match.chain) owner ??= routeOwner.get(r as object);
+    for (const r of match.chain) owner ??= routeOwner.get(r);
     routeChunks = match.chain
-      .map((r) => r.id)
-      .filter(Boolean)
-      .map((id) => (id as string).replace(/\./g, '-'));
+      .flatMap((r) => (r.id ? [r.id.replace(/\./g, '-')] : []));
 
     const mod = (await match.leaf.lazy?.()) as
       | {
@@ -98,7 +96,7 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
       status = 500;
       pageNode = <h1>Route has no component</h1>;
     } else {
-      let data: unknown = null;
+      let data: unknown;
       try {
         data = (await loader?.({ params: match.params, request: new Request(input.url) })) ?? null;
       } catch (err) {
@@ -159,7 +157,11 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
     `<meta name="viewport" content="width=device-width,initial-scale=1">` +
     `<title>Reference Store</title>` +
     input.shellStyles.map((href) => `<link rel="stylesheet" href="${href}">`).join('') +
-    renderPreloadTags(personalized.length > 0 ? plan : { styles: plan.styles, scripts: [] }) +
+    // No personalized region means no script will ever execute on this page, so warming
+    // one would be a forced download of something that cannot run. Stylesheets still matter.
+    renderPreloadTags(
+      personalized.length > 0 ? plan : { styles: plan.styles, scripts: [], modules: [] },
+    ) +
     `</head><body><div id="root">${appHtml}</div>` +
     (personalized.length > 0
       ? `<script>window.${CART_STATE_GLOBAL}=${jsonScript(bootstrap)}</script>` +

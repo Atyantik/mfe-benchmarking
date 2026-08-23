@@ -1,0 +1,7 @@
+{
+  "_comment": "The cart is the only app that genuinely runs in the browser, and it is on every page via the header. `own` is small because React itself is shared and counted against the shell; what grows here is cart UI.",
+  "ownJsGzip": 12000,
+  "containerJsGzip": 17000,
+  "cssGzip": 6000,
+  "largestJsGzip": 4000
+}

@@ -1,0 +1,5 @@
+{
+  "extends": "@mf-eval/tsconfig/base.json",
+  "compilerOptions": { "types": ["node"], "allowJs": true, "checkJs": false },
+  "include": ["src", "*.ts"]
+}

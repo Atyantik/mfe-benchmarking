@@ -4,7 +4,12 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rsbuild build",
-    "serve": "node serve.mjs"
+    "serve": "node serve.mjs",
+    "lint": "eslint src *.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
   },
   "dependencies": {
     "@hono/node-server": "catalog:",
@@ -23,6 +28,14 @@
     "@types/react-dom": "catalog:",
     "typescript": "catalog:",
     "@rsbuild/plugin-tailwindcss": "catalog:",
-    "tailwindcss": "catalog:"
+    "tailwindcss": "catalog:",
+    "@mf-eval/tsconfig": "workspace:*",
+    "@mf-eval/vitest-config": "workspace:*",
+    "vitest": "catalog:",
+    "eslint": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "jsdom": "catalog:"
   }
 }

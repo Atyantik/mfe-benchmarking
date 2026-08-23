@@ -8,9 +8,9 @@ import {
   mark,
   type RegistryEntry,
   type RouteDescriptor,
-  type SlotName,
 } from '@mf-eval/contracts';
 import type { ComponentType } from 'react';
+import type { SlotName } from '@mf-eval/react-contracts';
 
 export interface LoadedRemotes {
   routes: RouteDescriptor[];

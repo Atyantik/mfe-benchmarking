@@ -52,8 +52,8 @@ export function resolveRegistry(
 ): RegistryResponse {
   const bucket = cohortBucket(cohort);
   const remotes: RegistryEntry[] = file.remotes.map((r) => {
-    const useCanary = r.canary !== undefined && bucket < r.canary.percent;
-    const source = useCanary ? r.canary! : r;
+    const canary = r.canary;
+    const source = canary && bucket < canary.percent ? canary : r;
     return {
       name: r.name,
       kind: r.kind,

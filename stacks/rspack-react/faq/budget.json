@@ -1,0 +1,7 @@
+{
+  "_comment": "Pure content. Its pages are server-rendered and never hydrated, so `own` should stay in the low kilobytes — a jump means something started shipping JavaScript to a page that does not need it.",
+  "ownJsGzip": 6000,
+  "containerJsGzip": 17000,
+  "cssGzip": 6000,
+  "largestJsGzip": 3000
+}

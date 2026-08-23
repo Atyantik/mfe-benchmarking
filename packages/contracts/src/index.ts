@@ -47,7 +47,8 @@ export interface RouteDescriptor {
   path?: string;
   index?: boolean;
   lazy?: () => Promise<unknown>;
-  loader?: (args: RouteLoaderArgs) => unknown | Promise<unknown>;
+  /** May be async; the shell awaits the result either way. */
+  loader?: (args: RouteLoaderArgs) => unknown;
   children?: RouteDescriptor[];
   /** Defaults to the owning remote's build-time mode when omitted. */
   hydration?: HydrationMode;
@@ -118,7 +119,7 @@ export interface CartStore {
 }
 
 export const EMPTY_CART: CartState = Object.freeze({
-  items: Object.freeze([]) as readonly CartItem[],
+  items: Object.freeze([]),
   count: 0,
   totalCents: 0,
 });
@@ -176,7 +177,7 @@ export function deserializeCartState(raw: unknown): CartState {
   return {
     items,
     count: items.length,
-    totalCents: items.reduce((sum, i) => sum + (i?.price ?? 0), 0),
+    totalCents: items.reduce((sum, i) => sum + i.price, 0),
   };
 }
 

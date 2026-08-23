@@ -10,7 +10,13 @@
  * Interactivity, where it exists, is native HTML — <details> for disclosure, real form
  * controls, real links. Nothing here needs JavaScript to work.
  */
-import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ButtonHTMLAttributes,
+  InputHTMLAttributes,
+  ReactNode,
+  SelectHTMLAttributes,
+} from 'react';
 
 const cx = (...parts: (string | false | null | undefined)[]) => parts.filter(Boolean).join(' ');
 
@@ -101,9 +107,16 @@ export function ButtonLink({
   tone = 'primary',
   size = 'md',
   className,
+  children,
   ...rest
 }: AnchorHTMLAttributes<HTMLAnchorElement> & { tone?: ButtonTone; size?: ButtonSize }) {
-  return <a className={cx(BUTTON_BASE, BUTTON_TONES[tone], BUTTON_SIZES[size], className)} {...rest} />;
+  // `children` is destructured rather than spread so the element visibly has content —
+  // both for readers of this file and for jsx-a11y/anchor-has-content.
+  return (
+    <a className={cx(BUTTON_BASE, BUTTON_TONES[tone], BUTTON_SIZES[size], className)} {...rest}>
+      {children}
+    </a>
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -197,7 +210,7 @@ export function Pagination({
       </a>
       {pages.map((p, i) => (
         <span key={p} className="flex items-center gap-1">
-          {i > 0 && p - (pages[i - 1] as number) > 1 ? <span className="px-1 text-ink-400">…</span> : null}
+          {i > 0 && p - (pages.at(i - 1) ?? p) > 1 ? <span className="px-1 text-ink-400">…</span> : null}
           <a
             href={hrefFor(p)}
             aria-current={p === page ? 'page' : undefined}
@@ -298,6 +311,49 @@ export function Field({
       {children}
       {hint ? <span className="mt-1 block text-[length:var(--fs-xs)] text-ink-500">{hint}</span> : null}
     </label>
+  );
+}
+
+/**
+ * Checkbox. Exists because its absence was pushing apps toward a bare <input>, which is how
+ * a design system starts drifting.
+ */
+export function Checkbox({
+  label,
+  hint,
+  ...rest
+}: InputHTMLAttributes<HTMLInputElement> & { label: ReactNode; hint?: string }) {
+  return (
+    <label className="flex cursor-pointer items-start gap-2 text-[length:var(--fs-sm)] text-ink-600">
+      <input
+        type="checkbox"
+        className="mt-0.5 size-4 shrink-0 accent-[var(--color-brand-700)]"
+        {...rest}
+      />
+      <span>
+        {label}
+        {hint ? <span className="mt-0.5 block text-[length:var(--fs-xs)] text-ink-400">{hint}</span> : null}
+      </span>
+    </label>
+  );
+}
+
+/**
+ * Select. Added because its absence had apps hand-rolling a styled <select>, which is the
+ * first step to four of them.
+ */
+export function Select({
+  options,
+  ...rest
+}: SelectHTMLAttributes<HTMLSelectElement> & { options: { value: string; label: string }[] }) {
+  return (
+    <select className={inputClass} {...rest}>
+      {options.map((o) => (
+        <option key={o.value} value={o.value}>
+          {o.label}
+        </option>
+      ))}
+    </select>
   );
 }
 

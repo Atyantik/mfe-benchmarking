@@ -1,0 +1,7 @@
+#!/bin/sh
+# Lint and type-check what is being committed, not the whole repo.
+#
+# A plain hooks directory rather than a package: no install script to approve, nothing to
+# trust, and anyone can read exactly what runs before their commit.
+set -e
+pnpm exec lint-staged

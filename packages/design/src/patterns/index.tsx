@@ -258,6 +258,7 @@ export function FacetOption({
         name={name}
         value={value}
         defaultChecked={checked}
+        data-testid={`facet-${name}-${value}`}
         className="size-4 accent-[var(--color-brand-700)]"
       />
       <span className="flex-1">{label}</span>

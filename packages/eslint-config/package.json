@@ -1,0 +1,20 @@
+{
+  "name": "@mf-eval/eslint-config",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@eslint/js": "catalog:",
+    "@mf-eval/eslint-plugin-mf": "workspace:*",
+    "eslint-plugin-jsx-a11y": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "*"
+  }
+}

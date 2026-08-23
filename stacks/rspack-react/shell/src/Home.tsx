@@ -23,8 +23,7 @@ import {
  * (docs/decision-log.md D8).
  */
 export function Component() {
-  // Deterministic, not random — the same six products every render, on server and client.
-  const featured = CATEGORIES.map((c) => PRODUCTS.find((p) => p.categoryId === c.id)!).slice(0, 4);
+  // Deterministic, not random — the same four products every render, on server and client.
   const popular = PRODUCTS.filter((p) => p.availability === 'in-stock').slice(0, 4);
 
   return (

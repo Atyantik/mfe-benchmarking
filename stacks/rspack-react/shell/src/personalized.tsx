@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client';
-import type { ComponentType } from 'react';
 import { CartProvider, SlotProvider } from '@mf-eval/react-contracts';
 import {
   CART_STATE_GLOBAL,
@@ -27,8 +26,10 @@ interface Bootstrap {
  * construction. The placeholder reserves the same box, so the swap costs no layout shift.
  */
 async function start(): Promise<void> {
-  const boot = (window as unknown as Record<string, Bootstrap>)[CART_STATE_GLOBAL];
-  if (!boot?.personalized?.length) return;
+  // The server only emits this script when there is something personalized to mount, but
+  // a cached document paired with a newer bundle could still land here without it.
+  const boot = (window as unknown as Partial<Record<string, Bootstrap>>)[CART_STATE_GLOBAL];
+  if (!boot || boot.personalized.length === 0) return;
 
   primeRegistry('web', boot.cohort, boot.registry);
 
@@ -48,7 +49,7 @@ async function start(): Promise<void> {
   mark(MARKS.shellHydrateStart);
   for (const spec of boot.personalized) {
     const el = document.querySelector<HTMLElement>(`[data-personalized="${spec.slot}"]`);
-    const Live = slots[spec.slot as 'cart.mini' | 'cart.drawer'] as ComponentType | undefined;
+    const Live = slots[spec.slot as 'cart.mini' | 'cart.drawer'];
     if (!el || !Live) continue;
     mark(MARKS.remoteHydrateStart(spec.slot));
     createRoot(el).render(
@@ -73,9 +74,9 @@ async function start(): Promise<void> {
   document.addEventListener('click', (event) => {
     const target = (event.target as HTMLElement | null)?.closest<HTMLElement>('[data-add-id]');
     if (!target) return;
-    const id = target.dataset['addId'];
-    const name = target.dataset['addName'];
-    const price = Number(target.dataset['addPrice']);
+    const id = target.dataset.addId;
+    const name = target.dataset.addName;
+    const price = Number(target.dataset.addPrice);
     if (!id || !name || Number.isNaN(price)) return;
     store.add({ id, name, price });
   });

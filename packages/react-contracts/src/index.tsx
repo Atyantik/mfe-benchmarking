@@ -41,18 +41,19 @@ export function useCartStore(): CartStore {
 /** Subscribes to cart state. Safe during SSR: the server snapshot is the same store. */
 export function useCart(): CartState {
   const store = useCartStore();
-  return useSyncExternalStore(
-    store.subscribe,
-    store.getSnapshot,
-    // Server snapshot. The store is created per request, so this is correct per user.
-    store.getSnapshot,
-  );
+  // Bound explicitly. createCartStore returns closures rather than prototype methods, so
+  // passing them bare is safe — but saying so in code beats asking every reader to verify
+  // it, and it keeps the store's shape free to change.
+  const subscribe = useCallback((fn: () => void) => store.subscribe(fn), [store]);
+  const snapshot = useCallback(() => store.getSnapshot(), [store]);
+  // Third argument is the server snapshot; the store is per request, so it is the same one.
+  return useSyncExternalStore(subscribe, snapshot, snapshot);
 }
 
 export function useCartActions(): { add: (item: CartItem) => void; clear: () => void } {
   const store = useCartStore();
-  const add = useCallback((item: CartItem) => store.add(item), [store]);
-  const clear = useCallback(() => store.clear(), [store]);
+  const add = useCallback((item: CartItem) => { store.add(item); }, [store]);
+  const clear = useCallback(() => { store.clear(); }, [store]);
   return { add, clear };
 }
 
@@ -80,7 +81,7 @@ interface SlotRegistry {
    * can inject exactly their CSS and nothing else. Guessing statically would be wrong:
    * MiniCart is on every page, CartDrawer only on product detail.
    */
-  onUse?: (name: SlotName) => void;
+  onUse?: ((name: SlotName) => void) | undefined;
 }
 
 const SlotContext = createContext<SlotRegistry>({ slots: {} });
@@ -91,7 +92,7 @@ export function SlotProvider({
   children,
 }: {
   slots: Partial<Record<SlotName, ComponentType>>;
-  onUse?: (name: SlotName) => void;
+  onUse?: ((name: SlotName) => void) | undefined;
   children: ReactNode;
 }) {
   return <SlotContext.Provider value={{ slots, onUse }}>{children}</SlotContext.Provider>;

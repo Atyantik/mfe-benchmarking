@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "_comment": "Every app extends this. Types are the first place a mistake should surface, so an app never configures the compiler itself.",
+  "extends": "./base.json",
+  "compilerOptions": {
+    "types": [
+      "node",
+      // Registers toBeInTheDocument() and friends globally. Without it every DOM
+      // assertion types as an unresolved call and the lint fails on the test, not the code.
+      "@testing-library/jest-dom"
+    ]
+  },
+  "include": ["src", "*.ts", "*.tsx"],
+  "exclude": ["dist", "node_modules"]
+}

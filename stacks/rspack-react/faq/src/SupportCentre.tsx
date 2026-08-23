@@ -77,6 +77,7 @@ export function Component({ data }: PageProps<SupportData>) {
               type="search"
               name="q"
               defaultValue={data.query}
+              data-testid="faq-search"
               placeholder="Search — lead times, RMA, Modbus…"
               className={inputClass}
             />

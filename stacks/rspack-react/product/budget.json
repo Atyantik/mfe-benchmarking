@@ -1,0 +1,7 @@
+{
+  "_comment": "Catalogue pages are server-rendered; `own` covers route chunks and, later, behaviours. The generous-looking headroom is deliberate: the gallery, filter drawer and compare behaviours are still to come and each should cost 1-3 kB.",
+  "ownJsGzip": 14000,
+  "containerJsGzip": 17000,
+  "cssGzip": 6000,
+  "largestJsGzip": 4000
+}

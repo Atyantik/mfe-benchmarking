@@ -7,12 +7,21 @@
  */
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import type { RsbuildConfig, RsbuildPlugin } from '@rsbuild/core';
+import type { RsbuildConfig, RsbuildPlugin, Rspack } from '@rsbuild/core';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
 import type { moduleFederationPlugin } from '@module-federation/sdk';
 
 type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
+
+/**
+ * The OBJECT form of `shared`, deliberately excluding the array form MF also accepts.
+ *
+ * We merge shared maps with object spread. Spreading an array into an object produces
+ * `{ 0: 'react' }` — sharing silently stops working, every remote bundles its own React,
+ * and nothing errors. Constraining the type here makes that unrepresentable.
+ */
+type SharedMap = Exclude<NonNullable<MFOptions['shared']>, readonly unknown[]>;
 
 /**
  * Pinned in pnpm-workspace.yaml. MUST be repeated literally in every `shared` entry:
@@ -21,7 +30,7 @@ type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
  */
 export const REACT_VERSION = '19.2.8';
 
-export const SHARED_REACT: NonNullable<MFOptions['shared']> = {
+export const SHARED_REACT: SharedMap = {
   react: { singleton: true, requiredVersion: REACT_VERSION },
   'react-dom': { singleton: true, requiredVersion: REACT_VERSION },
   // Singleton is load-bearing, not an optimisation: this package holds the React
@@ -44,7 +53,7 @@ export interface AppPorts {
  * pure producers — if a remote ever starts CONSUMING another remote, that flag must come
  * off or its remote-loading code will have been stripped.
  */
-export const OPTIMIZE = process.env['MF_OPTIMIZE'] !== '0';
+export const OPTIMIZE = process.env.MF_OPTIMIZE !== '0';
 
 /**
  * Emit native ES modules for the browser. ON by default; MF_ESM=0 opts out.
@@ -57,7 +66,7 @@ export const OPTIMIZE = process.env['MF_OPTIMIZE'] !== '0';
  * The NODE build stays CommonJS regardless — MF emits CJS there and Node would misparse
  * an ESM/CJS mismatch (docs/spike-rspack-ssr.md, trap 2).
  */
-export const ESM = process.env['MF_ESM'] !== '0';
+export const ESM = process.env.MF_ESM !== '0';
 
 export interface MfAppOptions {
   /** MF container name. Also the registry key. */
@@ -94,7 +103,7 @@ export interface MfAppOptions {
    * fetch its own local chunks.
    */
   isRemote: boolean;
-  extraShared?: MFOptions['shared'];
+  extraShared?: SharedMap;
   /** Build-time constants, applied to both environments. */
   define?: Record<string, string>;
 }
@@ -142,16 +151,15 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
   // Same options both sides today. Kept as two objects because they diverge the moment
   // a host resolves different remote URLs per environment, and because the node build
   // is genuinely a different artifact (remoteEntry type commonjs-module vs global).
-  const web = { ...base };
-  const node = { ...base };
   // ESM applies to the BROWSER build only. The node build must stay CommonJS — MF emits
   // CJS there and Node would misparse a mismatch, silently yielding empty exports.
-  if (ESM) {
-    // `library.type: 'module'` requires the library NAME to be unset; webpack/rspack
-    // rejects the combination outright.
-    (web as { library?: unknown }).library = { type: 'module' };
-    (web as { remoteType?: string }).remoteType = 'module';
-  }
+  //
+  // `library.type: 'module'` requires the library NAME to be unset; rspack rejects the
+  // combination outright with "Library name must be unset".
+  const web: MFOptions = ESM
+    ? { ...base, library: { type: 'module' }, remoteType: 'module' }
+    : { ...base };
+  const node: MFOptions = { ...base };
   if (opts.exposesWeb) web.exposes = opts.exposesWeb;
   if (opts.exposesNode) node.exposes = opts.exposesNode;
   return { web, node };
@@ -175,17 +183,36 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
  * Left alone: at-rules that are not style rules, and the document-level selectors a
  * remote should never be emitting in the first place.
  */
+interface PostcssRule {
+  selectors: string[];
+  parent?: { type?: string; name?: string } | undefined;
+}
+
 function scopeRemoteCss(owner: string) {
   const SKIP = /^(:root|html|body|\*|::?[a-z-]*(selection|backdrop|placeholder|marker))/i;
   return {
     postcssPlugin: `mf-scope-${owner}`,
-    Rule(rule: { selectors: string[]; parent?: { type?: string; name?: string } }) {
+    Rule(rule: PostcssRule) {
       const parentName = rule.parent?.type === 'atrule' ? rule.parent.name : undefined;
       if (parentName && /^(keyframes|font-face|property|counter-style)$/i.test(parentName)) return;
       rule.selectors = rule.selectors.map((sel) =>
         SKIP.test(sel.trim()) ? sel : `[data-owner="${owner}"] ${sel}`,
       );
     },
+  };
+}
+
+/** Native ESM output for the browser build. See the ESM constant for why. */
+function toEsmOutput(config: Rspack.Configuration): void {
+  // No `experiments.outputModule` — that is a webpack option Rspack 2 does not have, and
+  // does not need: `output.module` alone produces real ESM here. Verified by the
+  // `export{ … as get, … as init }` tail on remoteEntry.js.
+  config.output = {
+    ...config.output,
+    module: true,
+    chunkFormat: 'module',
+    chunkLoading: 'import',
+    library: { type: 'module' },
   };
 }
 
@@ -237,18 +264,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
         plugins: [pluginModuleFederation(webMf, { environment: 'web' })],
         ...(ESM
           ? {
-              tools: {
-                rspack: (config: { experiments?: Record<string, unknown>; output?: Record<string, unknown> }) => {
-                  config.experiments = { ...config.experiments, outputModule: true };
-                  config.output = {
-                    ...config.output,
-                    module: true,
-                    chunkFormat: 'module',
-                    chunkLoading: 'import',
-                    library: { type: 'module' },
-                  };
-                },
-              },
+              tools: { rspack: toEsmOutput },
             }
           : {}),
       },

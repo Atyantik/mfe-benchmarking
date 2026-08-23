@@ -4,6 +4,7 @@ import {
   Breadcrumbs,
   Button,
   Card,
+  Checkbox,
   Container,
   Field,
   inputClass,
@@ -37,21 +38,21 @@ export function Component(_props: PageProps<null>) {
             <form method="post" action="/contact" className="flex flex-col gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Full name">
-                  <input name="name" required autoComplete="name" className={inputClass} />
+                  <input name="name" required autoComplete="name" data-testid="contact-name" className={inputClass} />
                 </Field>
                 <Field label="Work email">
-                  <input name="email" type="email" required autoComplete="email" className={inputClass} />
+                  <input name="email" type="email" required autoComplete="email" data-testid="contact-email" className={inputClass} />
                 </Field>
                 <Field label="Company">
-                  <input name="company" autoComplete="organization" className={inputClass} />
+                  <input name="company" autoComplete="organization" data-testid="contact-company" className={inputClass} />
                 </Field>
                 <Field label="Phone" hint="Optional — for complex specifications">
-                  <input name="phone" type="tel" autoComplete="tel" className={inputClass} />
+                  <input name="phone" type="tel" autoComplete="tel" data-testid="contact-phone" className={inputClass} />
                 </Field>
               </div>
 
               <Field label="Product area">
-                <select name="area" className={inputClass} defaultValue="">
+                <select name="area" data-testid="contact-area" className={inputClass} defaultValue="">
                   <option value="" disabled>Select an area</option>
                   {CATEGORIES.map((c) => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -64,13 +65,21 @@ export function Component(_props: PageProps<null>) {
                 label="What are you specifying?"
                 hint="Load, supply voltage, enclosure, environment, and any standards you must meet."
               >
-                <textarea name="detail" rows={6} required minLength={20} className={inputClass} />
+                <textarea
+                  name="detail"
+                  rows={6}
+                  required
+                  minLength={20}
+                  data-testid="contact-detail"
+                  className={inputClass}
+                />
               </Field>
 
-              <label className="flex items-start gap-2 text-[length:var(--fs-sm)] text-ink-600">
-                <input type="checkbox" name="drawings" className="mt-1 size-4 accent-[var(--color-brand-700)]" />
-                <span>I can supply single-line drawings or a panel schedule on request</span>
-              </label>
+              <Checkbox
+                name="drawings"
+                data-testid="contact-drawings"
+                label="I can supply single-line drawings or a panel schedule on request"
+              />
 
               <div className="flex flex-wrap items-center gap-3">
                 <Button type="submit" size="lg">Send enquiry</Button>

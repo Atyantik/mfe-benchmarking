@@ -15,7 +15,10 @@
   "devDependencies": {
     "typescript": "catalog:",
     "@types/node": "catalog:",
-    "@rsbuild/plugin-tailwindcss": "catalog:"
+    "@rsbuild/plugin-tailwindcss": "catalog:",
+    "@module-federation/sdk": "catalog:",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:"
   },
   "dependencies": {
     "@mf-eval/design": "workspace:*",

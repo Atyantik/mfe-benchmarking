@@ -7,16 +7,33 @@
     "node": ">=22"
   },
   "scripts": {
-    "typecheck": "tsc -b --pretty",
-    "bench": "pnpm --filter @mf-eval/bench run bench",
-    "clean": "rm -rf stacks/*/*/dist stacks/*/*/dist-ssr packages/*/dist",
+    "dev": "node scripts/stack.mjs start",
     "stack": "node scripts/stack.mjs",
+    "build": "pnpm -r --filter \"./stacks/**\" run build",
+    "lint": "eslint .",
+    "typecheck": "pnpm -r --parallel run typecheck",
+    "test": "pnpm -r run test",
+    "budget": "node packages/bench/src/budget.mjs",
     "verify": "pnpm --filter @mf-eval/bench run all",
-    "test": "pnpm -r --filter \"./packages/**\" run test"
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm budget",
+    "clean": "rm -rf stacks/*/*/dist packages/*/dist",
+    "prepare": "git config core.hooksPath .githooks"
   },
   "devDependencies": {
     "typescript": "catalog:",
     "@types/node": "catalog:",
-    "playwright": "catalog:"
+    "playwright": "catalog:",
+    "eslint": "catalog:",
+    "@mf-eval/eslint-config": "workspace:*",
+    "vitest": "catalog:",
+    "@mf-eval/vitest-config": "workspace:*",
+    "lint-staged": "catalog:"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs}": [
+      "eslint --fix",
+      "eslint --max-warnings 0"
+    ],
+    "*.json": []
   }
 }

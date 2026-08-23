@@ -15,6 +15,11 @@ export interface DescriptorMatch {
  * already decided what the page is. Measured before it was removed, a client router cost
  * 59.3 kB gzip on every page and executed 12% of itself.
  */
+/** How many `:param` segments a route declares. Fewer is more specific. */
+function dynamicSegments(route: RouteDescriptor): number {
+  return (route.path ?? '').split('/').filter((s) => s.startsWith(':')).length;
+}
+
 export function matchDescriptors(
   routes: RouteDescriptor[],
   pathname: string,
@@ -27,15 +32,21 @@ export function matchDescriptors(
     chain: RouteDescriptor[],
     params: Record<string, string | undefined>,
   ): DescriptorMatch | null => {
-    for (const route of candidates) {
+    // Literal segments before dynamic ones, regardless of declaration order. Otherwise
+    // /product/new renders the detail page for a product called "new" — and which one
+    // wins would depend on the order a remote happened to list its routes in.
+    const ordered = [...candidates].sort(
+      (a, b) => dynamicSegments(a) - dynamicSegments(b),
+    );
+    for (const route of ordered) {
       const own = (route.path ?? '').split('/').filter(Boolean);
       if (own.length > rest.length) continue;
 
       const nextParams = { ...params };
       let ok = true;
-      for (let i = 0; i < own.length; i += 1) {
-        const pattern = own[i] as string;
-        const actual = rest[i] as string;
+      for (const [i, pattern] of own.entries()) {
+        const actual = rest[i];
+        if (actual === undefined) { ok = false; break; }
         if (pattern.startsWith(':')) nextParams[pattern.slice(1)] = actual;
         else if (pattern !== actual) { ok = false; break; }
       }

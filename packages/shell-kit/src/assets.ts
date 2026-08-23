@@ -34,7 +34,9 @@ interface ManifestAssets {
 interface Manifest {
   metaData: {
     publicPath?: string;
-    remoteEntry: { name: string; path?: string };
+    // `type` is how the manifest states whether this container is an ES module or a
+    // classic script, which decides modulepreload vs preload-as-script.
+    remoteEntry: { name: string; path?: string; type?: string };
   };
   shared?: { name: string; assets?: ManifestAssets }[];
   exposes?: { name: string; path: string; assets?: ManifestAssets }[];

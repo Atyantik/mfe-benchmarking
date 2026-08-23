@@ -1,5 +1,4 @@
 {
-  "extends": "../../../tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "composite": false, "types": ["node"] },
-  "include": ["src", "*.ts"]
+  "extends": "@mf-eval/tsconfig/app.json",
+  "include": ["src", "*.ts", "*.tsx"]
 }

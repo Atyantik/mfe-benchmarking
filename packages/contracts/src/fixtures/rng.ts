@@ -38,7 +38,7 @@ export function token(rng: () => number, length: number): string {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let out = '';
   for (let i = 0; i < length; i += 1) {
-    out += alphabet[Math.floor(rng() * alphabet.length)];
+    out += alphabet.charAt(Math.floor(rng() * alphabet.length));
   }
   return out;
 }
