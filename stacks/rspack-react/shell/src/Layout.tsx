@@ -1,35 +1,26 @@
-import { Link, Outlet, useRouteError } from 'react-router';
+import type { ReactNode } from 'react';
 import { Slot } from '@mf-eval/react-contracts';
 import styles from './shell.module.css';
 
-/** Shell owns the chrome: header, footer, nav. The cart inside the header does not. */
-export function Component() {
+/**
+ * Same DOM as the SPA shell's Layout — plain <a> instead of react-router's <Link>,
+ * which renders an identical anchor. The spec requires identical markup so the two
+ * navigation models stay comparable.
+ */
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={styles.page}>
       <header className={styles.header}>
         <nav className={styles.nav}>
-          <Link to="/">Home</Link>
-          <Link to="/faq">FAQ</Link>
-          <Link to="/product">Products</Link>
+          <a href="/">Home</a>
+          <a href="/faq">FAQ</a>
+          <a href="/product">Products</a>
         </nav>
-        {/* Owned by the cart team, rendered in the shell's header. */}
+        {/* Personalized: server renders a reserved placeholder, client mounts the live one. */}
         <Slot name="cart.mini" />
       </header>
-      <main>
-        <Outlet />
-      </main>
+      <main>{children}</main>
       <footer className={styles.footer}>Module Federation evaluation harness</footer>
-    </div>
-  );
-}
-
-/** A failing remote must degrade its route, not take down the shell. */
-export function ErrorBoundary() {
-  const error = useRouteError() as Error | undefined;
-  return (
-    <div className={styles.error} data-testid="route-error">
-      <h1>This section is unavailable</h1>
-      <p>{error?.message ?? 'Unknown error'}</p>
     </div>
   );
 }

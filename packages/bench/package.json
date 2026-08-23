@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "verify": "node src/verify.mjs",
-    "verify:mpa": "node src/verify-mpa.mjs",
     "independence": "node src/independence.mjs",
+    "contamination": "node src/cross-contamination.mjs",
     "measure": "node src/measure.mjs",
     "audit": "node src/audit.mjs",
-    "all": "node src/verify-mpa.mjs && node src/independence.mjs && node src/cross-contamination.mjs",
-    "contamination": "node src/cross-contamination.mjs"
+    "all": "node src/verify.mjs && node src/independence.mjs && node src/cross-contamination.mjs"
   },
   "dependencies": {
     "playwright": "catalog:"

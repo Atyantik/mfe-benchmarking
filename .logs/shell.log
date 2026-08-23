@@ -207,3 +207,44 @@ Original Error Message:
 [shell] :3100 -> http://localhost:3100/static/js/index.edee968b.js
 [shell] :3100 -> http://localhost:3100/static/js/index.799277ba.js
 [shell] :3100 -> http://localhost:3100/static/js/index.799277ba.js
+[shell] :3100 -> http://localhost:3100/static/js/index.799277ba.js
+[shell] :3100 -> http://localhost:3100/static/js/index.0be3839e.js
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "faq" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "product" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ]: The remote "cart" is already registered. Please note that overriding it may cause unexpected errors.
+[ Federation Runtime ] Error: [ Federation Runtime ]: Failed to get manifest. #RUNTIME-003
+args: {"manifestUrl":"http://localhost:9/ssr/mf-manifest.json","moduleName":"faq","hostName":"shell"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/runtime#runtime-003
+Original Error Message:
+ TypeError: fetch failed
+    at /Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3230:15
+    at logAndReport (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:10:12)
+    at Object.error (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3229:92)
+    at getManifest (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1565:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async asyncLoadProcess (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1598:34)
+    at async SnapshotHandler.loadRemoteSnapshotInfo (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1513:36)
+    at async Array.afterResolve (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1664:60)
+    at async RemoteHandler.getRemoteModuleAndOptions (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:2075:27)
+    at async RemoteHandler.loadRemote (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1830:64)
+[ Federation Runtime ] Error: [ Federation Runtime ]: Failed to get manifest. #RUNTIME-003
+args: {"manifestUrl":"http://localhost:9/ssr/mf-manifest.json","moduleName":"faq","hostName":"shell"}
+View the docs to see how to solve: https://module-federation.io/guide/troubleshooting/runtime#runtime-003
+Original Error Message:
+ TypeError: fetch failed
+    at /Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3230:15
+    at logAndReport (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:10:12)
+    at Object.error (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:3229:92)
+    at getManifest (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1565:36)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async asyncLoadProcess (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1598:34)
+    at async SnapshotHandler.loadRemoteSnapshotInfo (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1513:36)
+    at async Array.afterResolve (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1664:60)
+    at async RemoteHandler.getRemoteModuleAndOptions (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:2075:27)
+    at async RemoteHandler.loadRemote (/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/shell/dist/node/index.js:1830:64)

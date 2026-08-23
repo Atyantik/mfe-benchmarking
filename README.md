@@ -1,10 +1,14 @@
 # Module Federation v2 — evaluation harness
 
-Can a website be split so that `shell`, `home`, `faq`, `product` and `cart` are each owned and
-deployed by a different team — **with no team blocked on a shell deploy** — while the user still gets
-server rendering, fast first paint, and the smallest JS payload we can manage?
+Can a website be split so that `shell`, `faq`, `product` and `cart` are each owned and deployed by a
+different team — **with no team blocked on a shell deploy** — while the user still gets server
+rendering, fast first paint, and the smallest JS payload we can manage?
 
 This repo answers that with measurements, not opinions.
+
+**The architecture:** multi-page, server-rendered, no client router. Every page is server-rendered
+and never hydrated. The only client JavaScript is for personalized regions, which are rendered
+client-side only and recreated from cookies. Navigation is a plain link and a plain document load.
 
 ## What is being measured
 
@@ -31,8 +35,7 @@ spec/reference-app.md  FROZEN spec — every stack implements exactly this
 packages/contracts     route-descriptor types, cart store, fixtures
 packages/registry      runtime remote registry
 packages/bench         size analyzer, Playwright+CDP runner, server probes
-stacks/rspack-react    shell · faq · product · cart
-stacks/vite-react      same four apps, different substrate
+stacks/rspack-react    shell · faq · product · cart  (the site)
 results/               generated measurements
 ```
 
@@ -49,10 +52,10 @@ results/               generated measurements
 ## Status
 
 - [x] Phase 0 — skills, verified constraints, frozen spec, pinned versions
-- [~] Phase 1 — Rspack + React vertical slice (SSR spike PASSED, see docs/spike-rspack-ssr.md)
-- [ ] Phase 2 — measurement harness
-- [ ] Phase 3 — Vite + React, same spec
-- [ ] Phase 4 — decision gate, then fan out to Preact / Solid / Svelte / Vue
+- [x] Phase 1 — MPA + SSR + Module Federation, four independently deployed apps
+- [x] Phase 2 — measurement harness (size, coverage-based waste, contamination)
+- [ ] Phase 3 — cart remote off React (biggest remaining win, see constraints.md §9)
+- [ ] Phase 4 — Vite substrate, then Preact / Solid / Svelte
 
 ## Skills
 

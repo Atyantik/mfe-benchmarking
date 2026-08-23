@@ -22,12 +22,9 @@ import { chromium } from 'playwright';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 
-const VARIANTS = [
-  { id: 'spa', base: 'http://localhost:3100' },
-  { id: 'mpa', base: 'http://localhost:3200' },
-];
+const VARIANTS = [{ id: 'site', base: 'http://localhost:3100' }];
 const ROUTES = ['/', '/faq', '/faq/contact', '/product', '/product/p-0001'];
-const PORT_OWNER = { 3100: 'shell', 3200: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart' };
+const PORT_OWNER = { 3100: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart' };
 
 /** Which remotes legitimately contribute to each route. Anything else is foreign. */
 const EXPECTED_OWNERS = {

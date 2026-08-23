@@ -16,13 +16,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 
 export const VARIANTS = [
-  { id: 'spa', label: 'SPA (react-router, one client tree)', base: 'http://localhost:3100' },
-  { id: 'mpa', label: 'MPA (no client router, islands)', base: 'http://localhost:3200' },
+  { id: 'site', label: 'server-rendered pages, client-only personalization', base: 'http://localhost:3100' },
 ];
 
 export const ROUTES = ['/', '/faq', '/faq/contact', '/product', '/product/p-0001'];
 
-const REMOTE_PORTS = { 3100: 'host', 3200: 'host', 3101: 'faq', 3102: 'product', 3103: 'cart' };
+const REMOTE_PORTS = { 3100: 'host', 3101: 'faq', 3102: 'product', 3103: 'cart' };
 
 /** Attribute a response to a cost centre. "The bundle is big" is not an actionable finding. */
 function classify(url, body) {

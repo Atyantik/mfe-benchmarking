@@ -5,9 +5,14 @@ import { defineMfApp } from '@mf-eval/rsbuild-preset';
 const REGISTRY_URL = process.env.MF_REGISTRY_URL ?? 'http://localhost:4000';
 
 /**
- * HOST. Deliberately has NO `remotes` block — every remote is resolved at request time
- * from the registry, which is what makes "add a whole new page repo" possible without
- * rebuilding the shell (docs/topology.md § Rule 3).
+ * The host.
+ *
+ * No client router — react-router is not a dependency of this app at all. Routes are
+ * matched on the server; pages are rendered once and never hydrated. The only client
+ * JavaScript is for personalized regions (docs/decision-log.md D12).
+ *
+ * Remotes are resolved at request time from the registry, never from a build-time
+ * `remotes` block, so adding a page repo needs no shell rebuild.
  */
 export default defineConfig({
   plugins: [pluginReact()],
@@ -18,6 +23,5 @@ export default defineConfig({
     clientEntry: './src/entry.client.tsx',
     serverEntry: './src/entry.server.tsx',
     define: { __MF_REGISTRY_URL__: JSON.stringify(REGISTRY_URL) },
-    extraShared: { 'react-router': { singleton: true, requiredVersion: '8.3.0' } },
   }),
 });

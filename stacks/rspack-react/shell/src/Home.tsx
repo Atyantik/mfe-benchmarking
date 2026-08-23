@@ -1,14 +1,7 @@
-import { Link } from 'react-router';
 import { formatPrice, HOME_CARDS, HOME_INTRO } from '@mf-eval/contracts/fixtures';
 import styles from './shell.module.css';
 
-/**
- * THE CONTROL. Rendered by the shell itself, no federation involved.
- *
- * The difference between this page and a federated one, with content held equivalent,
- * is the only honest measurement of what federation itself costs
- * (docs/decision-log.md D8).
- */
+/** THE CONTROL — shell-native, no federation. Identical DOM to the SPA shell's Home. */
 export function Component() {
   return (
     <>
@@ -23,7 +16,7 @@ export function Component() {
           </article>
         ))}
       </div>
-      <p><Link to="/product">Browse products</Link></p>
+      <p><a href="/product">Browse products</a></p>
     </>
   );
 }

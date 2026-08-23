@@ -10,12 +10,9 @@
  */
 import { chromium } from 'playwright';
 
-const VARIANTS = [
-  { id: 'spa', base: 'http://localhost:3100' },
-  { id: 'mpa', base: 'http://localhost:3200' },
-];
+const VARIANTS = [{ id: 'site', base: 'http://localhost:3100' }];
 
-const PORT_OWNER = { 3100: 'shell', 3200: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart', 4000: 'registry' };
+const PORT_OWNER = { 3100: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart', 4000: 'registry' };
 
 /**
  * Who is allowed to appear on each route.
