@@ -9,7 +9,8 @@
     "contamination": "node src/cross-contamination.mjs",
     "measure": "node src/measure.mjs",
     "audit": "node src/audit.mjs",
-    "all": "node src/verify.mjs && node src/independence.mjs && node src/cross-contamination.mjs"
+    "all": "node src/verify.mjs && node src/independence.mjs && node src/cross-contamination.mjs",
+    "warm": "node src/warm.mjs"
   },
   "dependencies": {
     "playwright": "catalog:"

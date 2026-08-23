@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
+import { compress } from 'hono/compress';
 
 const require = createRequire(import.meta.url);
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -51,6 +52,29 @@ function discoverAssets() {
 let assets = discoverAssets();
 
 const app = new Hono();
+// Nothing was compressed before this: every measurement was raw bytes on the wire.
+app.use('*', compress());
+/**
+ * Caching policy. Two classes of asset, and the distinction is load-bearing:
+ *
+ *   Content-hashed files (name.<hash>.js/css) are immutable — a change produces a new
+ *   URL, so they can be cached for a year and never revalidated.
+ *
+ *   remoteEntry.js and mf-manifest.json are NOT hashed: their URLs are the stable
+ *   contract the registry points at, and a redeploy replaces them in place. They must
+ *   revalidate every time or independent deployment silently stops working — a team
+ *   would ship and nobody would see it.
+ */
+const HASHED = /\.[a-f0-9]{8,}\.(js|css)$/;
+app.use('*', async (c, next) => {
+  await next();
+  const path = new URL(c.req.url).pathname;
+  if (HASHED.test(path)) c.header('Cache-Control', 'public, max-age=31536000, immutable');
+  else if (path.endsWith('remoteEntry.js') || path.endsWith('mf-manifest.json')) {
+    c.header('Cache-Control', 'public, max-age=0, must-revalidate');
+  }
+});
+
 app.use('/static/*', serveStatic({ root: './dist/web' }));
 
 /**
@@ -91,6 +115,9 @@ app.get('*', async (c) => {
     });
 
     c.header('server-timing', `ssr;dur=${out.ssrMs.toFixed(1)}`);
+    // The document carries no per-user data, so a CDN may share it; keep the TTL
+    // short so a remote redeploy shows up quickly.
+    c.header('Cache-Control', 'public, max-age=0, s-maxage=60, must-revalidate');
     // Lets the bench assert that a static page really shipped no client JS.
     c.header('x-mf-personalized', String(out.personalizedCount));
     if (out.degraded) c.header('x-mf-registry', 'stale');

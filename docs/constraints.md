@@ -363,6 +363,45 @@ one in the header, not the one rendering the pages.
 
 ---
 
+## 10. Three free wins that had nothing to do with Module Federation
+
+Found while asking whether MF's client runtime earns its place. None of these required an
+architecture change, a framework change, or any loss of function.
+
+**Nothing was compressed.** The static servers sent raw bytes. Every "gzip" figure in this
+repo was computed by the bench, not actually transferred. Real wire cost was ~3.5x the
+reported number until `compress()` was added to each server.
+
+**Every remote script was downloaded twice.** Our injected preload carried `crossorigin`;
+Module Federation's script loader does not set `crossOrigin`. A preload only satisfies a
+later request when the CORS modes match, so the preloaded copy was unusable and the
+browser fetched `remoteEntry.js` — and each exposed chunk — a second time on every page.
+Removing the attribute fixed it. **A preload with the wrong CORS mode is worse than no
+preload at all**: it is a guaranteed duplicate download.
+
+**Nothing was cacheable.** No `Cache-Control` anywhere, so every navigation refetched
+everything. The fix has to distinguish two classes, and the distinction is load-bearing:
+
+| asset | policy | why |
+|---|---|---|
+| `name.<hash>.js` / `.css` | `max-age=31536000, immutable` | content-addressed; a change is a new URL |
+| `remoteEntry.js`, `mf-manifest.json` | `max-age=0, must-revalidate` | **not** hashed — they are the stable contract the registry points at, replaced in place by a deploy. Cache them and independent deployment silently stops working: a team ships and nobody sees it. |
+| the HTML document | `s-maxage=60, must-revalidate` | carries no per-user data, so a shared cache may hold it |
+
+Measured effect on a five-page session (bytes actually on the wire, `Network.loadingFinished`):
+
+| | before | after |
+|---|---:|---:|
+| first page (cold) | 449,592 | **126,280** |
+| second page | 185,883 | **29,310** |
+| third page | 115,102 | **18,756** |
+
+The per-page figures elsewhere in this repo are cold-cache worst case by construction —
+one fresh context per route. That is the right way to measure a first-time visitor and the
+wrong way to describe a session. **In a session, the framework and MF runtime are paid once.**
+
+---
+
 ## Reference implementations worth reading
 
 | Path | Why |

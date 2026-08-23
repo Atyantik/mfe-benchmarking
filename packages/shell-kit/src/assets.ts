@@ -195,6 +195,11 @@ export function renderPreloadTags(plan: PreloadPlan): string {
     ...plan.styles.map((href) => `<link rel="stylesheet" href="${href}">`),
     // `as="script"`, not modulepreload: an MF web remoteEntry is a classic script
     // (remoteEntry.type === "global"), not an ES module.
-    ...plan.scripts.map((href) => `<link rel="preload" as="script" href="${href}" crossorigin>`),
+    //
+    // NO `crossorigin` attribute. A preload only satisfies a later request when the CORS
+    // modes match, and Module Federation's script loader does not set crossOrigin. With
+    // the attribute here the preloaded copy was unusable and every remote script was
+    // downloaded twice — remoteEntry.js included, on every page.
+    ...plan.scripts.map((href) => `<link rel="preload" as="script" href="${href}">`),
   ].join('');
 }
