@@ -10,9 +10,9 @@ import {
 } from '@mf-eval/contracts';
 
 import { App } from './App';
-import { CART_COOKIE, cartCookieValue } from './cart-cookie';
-import { primeRegistry } from './registry-client';
-import { loadRemotes } from './remotes';
+import { CART_COOKIE, cartCookieValue } from '@mf-eval/shell-kit';
+import { primeRegistry } from '@mf-eval/shell-kit';
+import { loadRemotes } from '@mf-eval/shell-kit';
 import { buildRoutes, resolveLazyRoutes } from './router';
 
 interface Bootstrap {

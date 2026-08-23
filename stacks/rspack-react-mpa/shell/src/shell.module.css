@@ -1,0 +1,22 @@
+:root {
+  --mf-fg: #14161a; --mf-muted: #565b63; --mf-border: #dfe2e6;
+  --mf-surface: #fff; --mf-accent: #2f6feb; --mf-bg: #fbfbfc;
+}
+.page { max-width: 68rem; margin: 0 auto; padding: 1rem; color: var(--mf-fg);
+  font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+.header { display: flex; align-items: center; gap: 1rem; padding: .6rem 0;
+  border-bottom: 1px solid var(--mf-border); }
+.nav { display: flex; gap: .9rem; flex: 1; }
+.nav a { color: var(--mf-fg); text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+.footer { margin-top: 2rem; padding: .8rem 0; border-top: 1px solid var(--mf-border);
+  color: var(--mf-muted); font-size: .85rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: .8rem; }
+.card { border: 1px solid var(--mf-border); border-radius: 8px; padding: .7rem; }
+.card h2 { font-size: 1rem; margin: 0 0 .3rem; }
+.card p { margin: 0 0 .4rem; color: var(--mf-muted); font-size: .85rem; }
+.error { border: 1px solid #d33; border-radius: 8px; padding: .8rem; color: #900; }
+
+/* Cross-document view transitions: MPA navigations animate like an SPA, at zero JS cost.
+   This is the answer to "MPA feels janky" — it is a browser feature, not a framework. */
+@view-transition { navigation: auto; }

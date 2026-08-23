@@ -13,6 +13,8 @@ export const routes: RouteDescriptor[] = [
     children: [
       {
         id: 'faq.index',
+        // Static content: under the MPA shell this page ships ZERO framework JS.
+        interactive: false,
         index: true,
         lazy: () => import(/* webpackChunkName: "faq-index" */ './FaqRoute'),
       },
@@ -20,6 +22,7 @@ export const routes: RouteDescriptor[] = [
       // change — the shell never enumerates these paths.
       {
         id: 'faq.contact',
+        interactive: false,
         path: 'contact',
         lazy: () => import(/* webpackChunkName: "faq-contact" */ './ContactRoute'),
       },

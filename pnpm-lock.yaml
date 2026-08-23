@@ -129,6 +129,25 @@ importers:
         specifier: 'catalog:'
         version: 5.9.3
 
+  packages/shell-kit:
+    dependencies:
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+    devDependencies:
+      '@module-federation/enhanced':
+        specifier: 'catalog:'
+        version: 2.8.2(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
   spike/rspack-ssr/remote:
     dependencies:
       '@hono/node-server':
@@ -181,6 +200,58 @@ importers:
       '@module-federation/node':
         specifier: 'catalog:'
         version: 2.7.49(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@module-federation/rsbuild-plugin':
+        specifier: 'catalog:'
+        version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@rsbuild/core':
+        specifier: 'catalog:'
+        version: 2.1.13(@module-federation/runtime-tools@2.8.2)
+      '@rsbuild/plugin-react':
+        specifier: 'catalog:'
+        version: 2.1.0(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))
+      '@types/react':
+        specifier: 'catalog:'
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 19.2.4(@types/react@19.2.18)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+
+  stacks/rspack-react-mpa/shell:
+    dependencies:
+      '@hono/node-server':
+        specifier: 'catalog:'
+        version: 2.1.1(hono@4.13.3)
+      '@mf-eval/contracts':
+        specifier: workspace:*
+        version: link:../../../packages/contracts
+      '@mf-eval/react-contracts':
+        specifier: workspace:*
+        version: link:../../../packages/react-contracts
+      '@mf-eval/shell-kit':
+        specifier: workspace:*
+        version: link:../../../packages/shell-kit
+      '@module-federation/enhanced':
+        specifier: 'catalog:'
+        version: 2.8.2(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      '@module-federation/node':
+        specifier: 'catalog:'
+        version: 2.7.49(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
+      hono:
+        specifier: 'catalog:'
+        version: 4.13.3
+      react:
+        specifier: 'catalog:'
+        version: 19.2.8
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@mf-eval/rsbuild-preset':
+        specifier: workspace:*
+        version: link:../../../packages/rsbuild-preset
       '@module-federation/rsbuild-plugin':
         specifier: 'catalog:'
         version: 2.8.2(@rsbuild/core@2.1.13(@module-federation/runtime-tools@2.8.2))(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)
@@ -340,6 +411,9 @@ importers:
       '@mf-eval/react-contracts':
         specifier: workspace:*
         version: link:../../../packages/react-contracts
+      '@mf-eval/shell-kit':
+        specifier: workspace:*
+        version: link:../../../packages/shell-kit
       '@module-federation/enhanced':
         specifier: 'catalog:'
         version: 2.8.2(@rspack/core@2.1.10(@module-federation/runtime-tools@2.8.2)(@swc/helpers@0.5.23))(typescript@5.9.3)

@@ -1,0 +1,15 @@
+{
+  "name": "@mf-eval/shell-kit",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "exports": { ".": "./src/index.ts" },
+  "dependencies": { "@mf-eval/contracts": "workspace:*" },
+  "peerDependencies": { "@module-federation/enhanced": "*", "react": "*" },
+  "devDependencies": {
+    "@module-federation/enhanced": "catalog:",
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:"
+  }
+}

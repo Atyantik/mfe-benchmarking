@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const S = join(ROOT, 'stacks/rspack-react');
+const M = join(ROOT, 'stacks/rspack-react-mpa');
 const LOG = join(ROOT, '.logs');
 const PIDFILE = join(LOG, 'pids.json');
 mkdirSync(LOG, { recursive: true });
@@ -23,6 +24,8 @@ const SERVICES = [
   { name: 'product',  cwd: join(S, 'product'), args: ['serve.mjs'],  probe: 'http://localhost:3102/mf-manifest.json' },
   { name: 'cart',     cwd: join(S, 'cart'),    args: ['serve.mjs'],  probe: 'http://localhost:3103/mf-manifest.json' },
   { name: 'shell',    cwd: join(S, 'shell'),   args: ['server.mjs'], probe: 'http://localhost:3100/__health' },
+  // Same remotes, same registry, different navigation model. That is the only variable.
+  { name: 'mpa',      cwd: join(M, 'shell'),   args: ['server.mjs'], probe: 'http://localhost:3200/__health' },
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

@@ -10,11 +10,13 @@ export const routes: RouteDescriptor[] = [
     children: [
       {
         id: 'product.list',
+        interactive: true,
         index: true,
         lazy: () => import(/* webpackChunkName: "product-list" */ './List'),
       },
       {
         id: 'product.detail',
+        interactive: true,
         path: ':id',
         lazy: () => import(/* webpackChunkName: "product-detail" */ './Detail'),
       },

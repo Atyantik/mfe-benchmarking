@@ -1,17 +1,20 @@
-import { useLoaderData } from 'react-router';
 import { Slot, useCartActions } from '@mf-eval/react-contracts';
+import type { PageProps, RouteLoaderArgs } from '@mf-eval/contracts';
 import { formatPrice, productById, type Product } from '@mf-eval/contracts/fixtures';
-import type { RouteLoaderArgs } from '@mf-eval/contracts';
 import styles from './product.module.css';
 
-export function loader({ params }: RouteLoaderArgs): { product: Product } {
+export interface DetailData {
+  product: Product;
+}
+
+export function loader({ params }: RouteLoaderArgs): DetailData {
   const product = productById(params['id'] ?? '');
   if (!product) throw new Response('Not found', { status: 404 });
   return { product };
 }
 
-export function Component() {
-  const { product } = useLoaderData() as { product: Product };
+export function Component({ data }: PageProps<DetailData>) {
+  const { product } = data;
   const { add } = useCartActions();
   return (
     <div className={styles.detail}>

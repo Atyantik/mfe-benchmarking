@@ -10,10 +10,10 @@ import { createStaticHandler, createStaticRouter, matchRoutes, StaticRouterProvi
 import { createCartStore, serializeCartState, CART_STATE_GLOBAL } from '@mf-eval/contracts';
 
 import { App } from './App';
-import { buildPreloadPlan, renderPreloadTags, type UsedExposes } from './assets';
-import { readCartCookie } from './cart-cookie';
-import { fetchRegistry } from './registry-client';
-import { loadRemotes, routeOwner, SLOT_SOURCES } from './remotes';
+import { buildPreloadPlan, renderPreloadTags, type UsedExposes } from '@mf-eval/shell-kit';
+import { readCartCookie } from '@mf-eval/shell-kit';
+import { fetchRegistry } from '@mf-eval/shell-kit';
+import { loadRemotes, routeOwner, SLOT_SOURCES } from '@mf-eval/shell-kit';
 import { buildRoutes, resolveLazyRoutes } from './router';
 
 export interface RenderInput {

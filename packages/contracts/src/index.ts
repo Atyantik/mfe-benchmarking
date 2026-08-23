@@ -51,6 +51,32 @@ export interface RouteDescriptor {
   children?: RouteDescriptor[];
   /** Defaults to the owning remote's build-time mode when omitted. */
   hydration?: HydrationMode;
+  /**
+   * Does this page need client JS at all?
+   *
+   * The MPA shell hydrates only routes marked interactive, as isolated islands. A page
+   * with `interactive: false` ships zero framework JS — no router, no react-dom, no MF
+   * runtime. That is the whole point of the MPA axis.
+   *
+   * The SPA shell ignores this: it hydrates the entire tree regardless.
+   */
+  interactive?: boolean;
+}
+
+/**
+ * Props a page component receives.
+ *
+ * Page components take DATA AS PROPS and must not import the host's router. A remote
+ * that calls `useLoaderData()` can only ever be consumed by a host using the same router
+ * version — which would make the remote depend on the shell's internals, and would make
+ * it impossible to render the same remote under two different navigation models (or,
+ * later, a different framework).
+ *
+ * The SPA shell adapts loader data into props; the MPA shell calls the loader directly.
+ */
+export interface PageProps<TData = unknown> {
+  data: TData;
+  params: Record<string, string | undefined>;
 }
 
 export interface RouteLoaderArgs {

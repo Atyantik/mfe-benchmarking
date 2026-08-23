@@ -1,22 +1,18 @@
 {
-  "name": "@mf-eval/rspack-react-shell",
+  "name": "@mf-eval/mpa-react-shell",
   "private": true,
   "version": "1.0.0",
-  "scripts": {
-    "build": "rsbuild build",
-    "start": "node server.mjs"
-  },
+  "scripts": { "build": "rsbuild build", "start": "node server.mjs" },
   "dependencies": {
     "@hono/node-server": "catalog:",
     "@mf-eval/contracts": "workspace:*",
     "@mf-eval/react-contracts": "workspace:*",
+    "@mf-eval/shell-kit": "workspace:*",
     "@module-federation/enhanced": "catalog:",
     "@module-federation/node": "catalog:",
     "hono": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-router": "catalog:",
-    "@mf-eval/shell-kit": "workspace:*"
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@mf-eval/rsbuild-preset": "workspace:*",

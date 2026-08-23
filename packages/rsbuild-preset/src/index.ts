@@ -33,6 +33,15 @@ export interface AppPorts {
   web: number;
 }
 
+/**
+ * Opt into MF's own footprint levers (docs/constraints.md §3), via MF_OPTIMIZE=1.
+ *
+ * Off by default so the baseline stays honest — these change RUNTIME CAPABILITIES, not
+ * just size, and a build that silently had them on would not be comparable to one that
+ * did not.
+ */
+export const OPTIMIZE = process.env['MF_OPTIMIZE'] === '1';
+
 export interface MfAppOptions {
   /** MF container name. Also the registry key. */
   name: string;
@@ -77,10 +86,23 @@ export interface MfAppOptions {
 export const SSR_PATH_SEGMENT = 'ssr';
 
 export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions } {
+  // externalRuntime: remotes stop bundling their own runtime-core and read the host's
+  // from a global. Pairs with provideExternalRuntime on the host — the flags are useless
+  // apart. Only a PURE CONSUMER may provide it: combining it with `exposes` throws.
+  //
+  // disableRemote: our remotes only expose, they never consume another remote, so the
+  // remote-consumption half of the runtime is dead code in them.
+  const experiments = OPTIMIZE
+    ? opts.isRemote
+      ? { externalRuntime: true, optimization: { disableRemote: true } }
+      : { provideExternalRuntime: true }
+    : undefined;
+
   const base: MFOptions = {
     name: opts.name,
     filename: 'remoteEntry.js',
     manifest: true,
+    ...(experiments ? { experiments } : {}),
     ...(opts.exposes ? { exposes: opts.exposes } : {}),
     ...(opts.remotes ? { remotes: opts.remotes } : {}),
     shared: { ...SHARED_REACT, ...opts.extraShared },

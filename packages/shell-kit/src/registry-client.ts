@@ -7,6 +7,7 @@
  */
 import { MARKS, mark, type RegistryResponse } from '@mf-eval/contracts';
 
+declare const __MF_REGISTRY_URL__: string;
 const REGISTRY_URL = __MF_REGISTRY_URL__;
 
 interface CacheEntry {
