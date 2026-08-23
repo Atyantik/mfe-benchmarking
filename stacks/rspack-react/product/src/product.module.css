@@ -1,6 +1,0 @@
-.table { width: 100%; border-collapse: collapse; font-size: .9rem; }
-.table th, .table td { text-align: left; padding: .3rem .5rem; border-bottom: 1px solid var(--mf-border, #e3e3e3); }
-.add { font: inherit; padding: .15rem .5rem; border: 1px solid var(--mf-border, #ccc); border-radius: 5px;
-  background: var(--mf-surface, #fff); cursor: pointer; }
-.detail { max-width: 60ch; }
-.price { font-weight: 600; }

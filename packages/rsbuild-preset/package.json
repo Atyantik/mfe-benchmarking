@@ -4,10 +4,23 @@
   "version": "0.0.0",
   "type": "module",
   "main": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
+  "exports": {
+    ".": "./src/index.ts"
+  },
   "peerDependencies": {
     "@module-federation/rsbuild-plugin": "*",
-    "@rsbuild/core": "*"
+    "@rsbuild/core": "*",
+    "@rsbuild/plugin-tailwindcss": "*"
   },
-  "devDependencies": { "typescript": "catalog:", "@types/node": "catalog:" }
+  "devDependencies": {
+    "typescript": "catalog:",
+    "@types/node": "catalog:",
+    "@rsbuild/plugin-tailwindcss": "catalog:"
+  },
+  "dependencies": {
+    "@mf-eval/design": "workspace:*",
+    "@mf-eval/contracts": "workspace:*",
+    "@mf-eval/react-contracts": "workspace:*",
+    "@mf-eval/shell-kit": "workspace:*"
+  }
 }

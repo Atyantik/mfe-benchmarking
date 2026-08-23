@@ -12,7 +12,8 @@
     "@mf-eval/react-contracts": "workspace:*",
     "hono": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "@mf-eval/design": "workspace:*"
   },
   "devDependencies": {
     "@mf-eval/rsbuild-preset": "workspace:*",
@@ -21,6 +22,8 @@
     "@rsbuild/plugin-react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@rsbuild/plugin-tailwindcss": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

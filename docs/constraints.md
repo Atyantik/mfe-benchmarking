@@ -457,6 +457,43 @@ that native ESM is the precondition for replacing MF's share scope with an impor
 
 ---
 
+## 12. Utility-CSS stylesheets across remotes are order-dependent
+
+Found while building the real site. Each app compiles its own Tailwind, so the page ends up
+with several utility stylesheets that all contain the shared utilities. **They are
+order-dependent, and a media query adds no specificity.**
+
+```
+(no media)          .hidden      => display:none     ← shell
+(min-width: 64rem)  .lg\:block   => display:block    ← shell
+(no media)          .hidden      => display:none     ← remote, loaded second, WINS
+```
+
+A remote emitting a plain `.hidden` silently defeated the shell's `.lg\:block`, which hid
+the site header's search field and utility bar on every page a remote rendered. Nothing in
+either app was wrong; the failure is in the composition.
+
+This is not fixable by ordering — whichever stylesheet is last wins, so moving the shell
+first or last just moves the bug.
+
+**Fix: scope each remote's stylesheet to the region that remote renders.** A PostCSS step
+in `@mf-eval/rsbuild-preset` prefixes every rule in a remote's CSS with
+`[data-owner="<name>"]`, and the shell marks each rendered region with that attribute. The
+effect is symmetric:
+
+- a remote's utilities cannot match anything outside its own subtree;
+- inside that subtree they outrank the shell's by one attribute selector, which is the
+  behaviour you want.
+
+It also supplies the style isolation Module Federation deliberately does not provide (§5).
+`:root`, `html`, `body` and keyframes are left unscoped.
+
+**Generalises beyond Tailwind.** Any two independently built stylesheets that can emit the
+same selector have this problem — utility CSS just makes collisions certain rather than
+likely. If you compose CSS from independently deployed apps, scope it at the boundary.
+
+---
+
 ## Reference implementations worth reading
 
 | Path | Why |

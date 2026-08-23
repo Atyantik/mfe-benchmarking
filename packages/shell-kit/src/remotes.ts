@@ -71,6 +71,14 @@ export const SLOT_SOURCES: SlotSource[] = [
     placeholderExpose: './MiniCartPlaceholder',
   },
   {
+    slot: 'cart.page',
+    remote: 'cart',
+    module: 'cart/CartPage',
+    expose: './CartPage',
+    placeholderModule: 'cart/CartPagePlaceholder',
+    placeholderExpose: './CartPagePlaceholder',
+  },
+  {
     slot: 'cart.drawer',
     remote: 'cart',
     module: 'cart/CartDrawer',
@@ -107,7 +115,9 @@ export async function loadRemotes(
   const slots: Partial<Record<SlotName, ComponentType>> = {};
 
   const routeEntries = entries.filter((e) => e.kind === 'route');
-  const componentNames = new Set(entries.filter((e) => e.kind === 'component').map((e) => e.name));
+  // A remote can be BOTH a route owner and a component provider — the cart owns /cart and
+  // also supplies the header widget. So slot loading keys off SLOT_SOURCES, not `kind`.
+  const providerNames = new Set(entries.map((e) => e.name));
 
   await Promise.all([
     ...routeEntries.map(async (entry) => {
@@ -123,7 +133,7 @@ export async function loadRemotes(
     // offers, so a page with just a header cart also downloads the drawer it will never
     // show — component code AND its stylesheet.
     ...SLOT_SOURCES.filter(
-      (s) => componentNames.has(s.remote) && (!onlySlots || onlySlots.includes(s.slot)),
+      (s) => providerNames.has(s.remote) && (!onlySlots || onlySlots.includes(s.slot)),
     ).map(async (s) => {
       const id = variant === 'live' ? s.module : s.placeholderModule;
       try {

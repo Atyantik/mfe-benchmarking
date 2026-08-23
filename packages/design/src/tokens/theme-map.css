@@ -1,0 +1,62 @@
+/**
+ * Scale tokens — the single source of truth for every value that has a Tailwind utility.
+ *
+ * Tailwind emits each of these as a CSS custom property, so `bg-brand-700` and
+ * `var(--color-brand-700)` are the same value by construction and cannot drift.
+ *
+ * This file must contain ONLY @theme blocks: remotes import it with `theme(reference)` to
+ * generate utilities without re-emitting the declarations, and Tailwind rejects anything
+ * else in a referenced file.
+ *
+ * Palette is drawn from industrial control equipment — the deep green of switchgear
+ * livery, warning ambers, and the cool greys of enclosure metal.
+ */
+@theme {
+  --color-brand-900: #05372c;
+  --color-brand-800: #0a5140;
+  --color-brand-700: #0d6a53;
+  --color-brand-600: #108366;
+  --color-brand-500: #16a085;
+  --color-brand-100: #d6efe8;
+  --color-brand-50:  #eef8f5;
+
+  /* Neutrals, biased slightly green so they sit with the brand rather than fight it. */
+  --color-ink-900: #0e1512;
+  --color-ink-800: #1b2320;
+  --color-ink-700: #2f3a36;
+  --color-ink-600: #4a5651;
+  --color-ink-500: #6b7873;
+  --color-ink-400: #94a09b;
+  --color-ink-300: #c3ccc8;
+  --color-ink-200: #dfe5e2;
+  --color-ink-100: #eef2f0;
+  --color-ink-50:  #f7faf9;
+
+  /* Status — semantic, deliberately not the brand hue. */
+  --color-ok:        #1e7a45;
+  --color-ok-soft:   #dcf3e5;
+  --color-warn:      #a86a08;
+  --color-warn-soft: #fdf0d5;
+  --color-alert:     #b4231d;
+  --color-alert-soft:#fbe3e1;
+  --color-info:      #17557f;
+  --color-info-soft: #dff0fb;
+
+  /* Semantic surfaces. Redefined for dark mode in tokens.css. */
+  --color-page:        var(--color-ink-50);
+  --color-card:        #ffffff;
+  --color-sunken:      var(--color-ink-100);
+  --color-line:        var(--color-ink-200);
+  --color-line-strong: var(--color-ink-300);
+
+  --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+
+  --shadow-e1: 0 1px 2px rgb(14 21 18 / 0.06);
+  --shadow-e2: 0 1px 3px rgb(14 21 18 / 0.09), 0 6px 16px rgb(14 21 18 / 0.06);
+  --shadow-e3: 0 2px 6px rgb(14 21 18 / 0.10), 0 16px 40px rgb(14 21 18 / 0.10);
+}

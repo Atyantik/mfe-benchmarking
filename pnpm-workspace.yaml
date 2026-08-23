@@ -35,6 +35,10 @@ catalog:
   hono: 4.13.3
   '@hono/node-server': 2.1.1
 
+  # ---- Design system ----
+  tailwindcss: 4.3.3
+  '@rsbuild/plugin-tailwindcss': 2.0.3
+
   # ---- Tooling ----
   # typescript 5.9.3, not 7.0.2 latest: TS7 is the native rewrite, too new for the
   # plugin ecosystem we depend on. 5.9.3 is what MF's own examples use.

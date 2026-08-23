@@ -1,11 +1,14 @@
+// The remote's stylesheet belongs to this expose. Imported here rather than in the client
+// entry so it appears in ./routes' manifest assets — the shell injects a remote's CSS only
+// when that remote actually renders the page.
+import './styles.css';
+
 import type { RouteDescriptor } from '@mf-eval/contracts';
 
 /**
- * The FAQ team owns /faq/* entirely. The shell never learns these paths — it merges
- * whatever this array contains (docs/topology.md § Rule 1).
- *
- * `lazy` is mandatory here: this module is loaded before first render, so a static
- * import of the page would put its bytes in the critical path of every route.
+ * The support team owns /faq/* outright. The shell never learns these paths — it mounts
+ * whatever this array contains (docs/topology.md § Rule 1), so adding a page here is a
+ * support-team deploy and nothing else.
  */
 export const routes: RouteDescriptor[] = [
   {
@@ -13,18 +16,16 @@ export const routes: RouteDescriptor[] = [
     children: [
       {
         id: 'faq.index',
-        // Static content: under the MPA shell this page ships ZERO framework JS.
-        interactive: false,
         index: true,
-        lazy: () => import(/* webpackChunkName: "faq-index" */ './FaqRoute'),
+        // Pure content: server-rendered, never hydrated, ships no framework JS.
+        interactive: false,
+        lazy: () => import(/* webpackChunkName: "faq-index" */ './SupportCentre'),
       },
-      // Added by the FAQ team alone. No shell rebuild, no shell redeploy, no registry
-      // change — the shell never enumerates these paths.
       {
         id: 'faq.contact',
-        interactive: false,
         path: 'contact',
-        lazy: () => import(/* webpackChunkName: "faq-contact" */ './ContactRoute'),
+        interactive: false,
+        lazy: () => import(/* webpackChunkName: "faq-contact" */ './Contact'),
       },
     ],
   },

@@ -8,7 +8,7 @@
  *  - no remote imports another remote's internals
  */
 
-export type { Product, FaqEntry, HomeCard } from './fixtures/index.ts';
+export type { Product, CatalogCategory, ProductDocument, Availability, ProductFamily } from './fixtures/index.ts';
 
 // ---------------------------------------------------------------------------
 // Route descriptors

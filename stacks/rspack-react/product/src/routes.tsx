@@ -1,3 +1,8 @@
+// The remote's stylesheet belongs to this expose. Imported here rather than in the
+// client entry so it appears in ./routes' manifest assets — the shell injects a
+// remote's CSS only when that remote actually renders the page.
+import './styles.css';
+
 import type { RouteDescriptor } from '@mf-eval/contracts';
 
 /**

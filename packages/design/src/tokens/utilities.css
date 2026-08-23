@@ -1,0 +1,15 @@
+/**
+ * Stylesheet entry for REMOTES.
+ *
+ * The shell already ships preflight, the token declarations and the base layer once per
+ * site. A remote importing the full theme would ship all of that again, and per-route
+ * injection means the visitor would download it twice on the same page.
+ *
+ * `theme(reference)` makes the token values available to the compiler for generating
+ * utilities WITHOUT emitting the declarations, so a remote's stylesheet contains only the
+ * utilities that remote actually uses.
+ */
+@import "tailwindcss/theme.css" layer(theme) theme(reference);
+@import "./theme-map.css" theme(reference);
+@source "../";
+@import "tailwindcss/utilities.css" layer(utilities);

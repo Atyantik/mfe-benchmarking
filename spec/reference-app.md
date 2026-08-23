@@ -9,8 +9,15 @@ whole repo worthless. So this file is frozen: changing it invalidates every resu
 any change must bump `SPEC_VERSION` and force a full re-run.
 
 ```
-SPEC_VERSION = 1
+SPEC_VERSION = 2
 ```
+
+**v2 — 2026-08-23.** The synthetic lorem fixtures were replaced with a realistic industrial
+catalogue (60 products across 5 categories, with specs, documents and availability) and the
+pages rebuilt as a real site: faceted catalogue, product detail with specification and
+documents, a support centre, a contact form and a cart page. Generic fixtures were hiding
+the layout problems real catalogues have — long technical names that wrap, spec tables of
+uneven length, facet values that genuinely overlap. Every result produced under v1 is void.
 
 **Amendments** (pre-measurement only — once `results/` is non-empty these require a version bump):
 - *2026-08-21*: the product row's name cell is a link. Step 6 of the interaction script
@@ -60,6 +67,12 @@ Rendered by the shell itself, no federation. Exists so we can price federation b
 
 **Federation cost = (`/faq` bytes − `/` bytes)** with content held equivalent. That number is the
 entire reason this page exists.
+
+### `/cart` — cart remote (FULLY personalized)
+
+Owned by the cart team. Every part of it is per-user, so the server renders only a reserved
+skeleton and the client renders the whole page. Proves that even a personalized route stays
+shared-cacheable.
 
 ### `/faq` — faq remote (the JS FLOOR)
 

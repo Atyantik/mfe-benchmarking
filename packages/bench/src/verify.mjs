@@ -28,10 +28,11 @@ const browser = await chromium.launch();
 console.log('\n— SSR: everything that needs to be indexed —');
 for (const [path, needle] of [
   ['/', 'Reference Store'],
-  ['/faq', 'Frequently Asked Questions'],
-  ['/faq/contact', 'Contact the FAQ team'],
+  ['/faq', 'Support centre'],
+  ['/faq/contact', 'Talk to an engineer'],
   ['/product', 'add-p-0001'],
-  ['/product/p-0001', 'detail-description'],
+  ['/cart', 'cart-page-placeholder'],
+  ['/product/p-0001', 'Technical specification'],
 ]) {
   const html = await (await fetch(BASE + path)).text();
   record(`server HTML of ${path} contains indexable content`, html.includes(needle));

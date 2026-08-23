@@ -5,8 +5,11 @@
  * impossible to reintroduce across 4 apps. Read that doc before changing anything here —
  * four of the six fail with error messages that point nowhere near the cause.
  */
+import { createRequire } from 'node:module';
+import path from 'node:path';
 import type { RsbuildConfig, RsbuildPlugin } from '@rsbuild/core';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
+import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
 import type { moduleFederationPlugin } from '@module-federation/sdk';
 
 type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
@@ -99,6 +102,21 @@ export interface MfAppOptions {
 /** Where a remote's Node build is served, mirroring Modern.js's `ssrDir` convention. */
 export const SSR_PATH_SEGMENT = 'ssr';
 
+/**
+ * Workspace packages ship TypeScript/JSX SOURCE, not compiled output — that is what lets
+ * the design system tree-shake per app and share one token definition.
+ *
+ * Rsbuild excludes node_modules from transforms by default, and pnpm symlinks workspace
+ * packages into node_modules, so without this their JSX is passed through untransformed
+ * and the server dies with a bare `React is not defined`.
+ */
+const WORKSPACE_SRC = [
+  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/design/package.json'), '..', 'src'),
+  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/contracts/package.json'), '..', 'src'),
+  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/react-contracts/package.json'), '..', 'src'),
+  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/shell-kit/package.json'), '..', 'src'),
+];
+
 export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions } {
   // externalRuntime: remotes stop bundling their own runtime-core and read the host's
   // from a global. Pairs with provideExternalRuntime on the host — the flags are useless
@@ -139,16 +157,72 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
   return { web, node };
 }
 
+/**
+ * Scope a remote's stylesheet to the region that remote renders.
+ *
+ * Every app compiles its own Tailwind, so shared utilities are emitted more than once and
+ * the page ends up with several utility stylesheets. Those are ORDER-DEPENDENT: a plain
+ * `.hidden` from a remote loaded second silently defeats the shell's `.lg\:block`, because
+ * a media query adds no specificity. That is not a hypothetical — it hid the site header's
+ * search field and utility bar.
+ *
+ * Prefixing every rule with `[data-owner="<name>"]` fixes it in both directions: a
+ * remote's utilities cannot match anything outside its own subtree, and inside that
+ * subtree they outrank the shell's by one attribute selector, which is the behaviour you
+ * want. It also gives us the style isolation Module Federation deliberately does not
+ * provide (docs/constraints.md §5).
+ *
+ * Left alone: at-rules that are not style rules, and the document-level selectors a
+ * remote should never be emitting in the first place.
+ */
+function scopeRemoteCss(owner: string) {
+  const SKIP = /^(:root|html|body|\*|::?[a-z-]*(selection|backdrop|placeholder|marker))/i;
+  return {
+    postcssPlugin: `mf-scope-${owner}`,
+    Rule(rule: { selectors: string[]; parent?: { type?: string; name?: string } }) {
+      const parentName = rule.parent?.type === 'atrule' ? rule.parent.name : undefined;
+      if (parentName && /^(keyframes|font-face|property|counter-style)$/i.test(parentName)) return;
+      rule.selectors = rule.selectors.map((sel) =>
+        SKIP.test(sel.trim()) ? sel : `[data-owner="${owner}"] ${sel}`,
+      );
+    },
+  };
+}
+
 export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): RsbuildConfig {
   const { web: webMf, node: nodeMf } = mfConfigs(opts);
   const origin = `http://localhost:${opts.port}`;
 
   return {
     ...extra,
+    // Each app compiles Tailwind over its own source plus the design package's. Utilities
+    // shared between apps are emitted more than once — deliberately. The alternative is a
+    // central build that must see every consumer's source, which reintroduces exactly the
+    // deploy coupling this repo exists to remove. See docs/design-system.md.
+    plugins: [
+      ...(extra.plugins ?? []),
+      pluginTailwindcss(),
+    ],
+    // The automatic JSX runtime, stated explicitly rather than inherited.
+    //
+    // Workspace packages ship .tsx source and are pulled in via source.include; once that
+    // is set, the JSX runtime must be pinned or some modules compile against the CLASSIC
+    // runtime and die at render with a bare `React is not defined` — pointing at the
+    // output file, never at the config that caused it.
+    tools: {
+      ...extra.tools,
+      ...(opts.isRemote
+        ? { postcss: { postcssOptions: { plugins: [scopeRemoteCss(opts.name)] } } }
+        : {}),
+      swc: {
+        jsc: { transform: { react: { runtime: 'automatic' } } },
+      },
+    },
     server: { port: opts.port, ...extra.server },
     environments: {
       web: {
         source: {
+          include: WORKSPACE_SRC,
           entry: { index: opts.clientEntry },
           define: { ...(opts.define ?? {}), __MF_ESM__: JSON.stringify(ESM) },
         },
@@ -180,6 +254,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
       },
       node: {
         source: {
+          include: WORKSPACE_SRC,
           entry: { index: opts.serverEntry },
           // __MF_ESM__ is needed on BOTH sides: the server decides how to write the
           // script tag, the client is what the tag points at.

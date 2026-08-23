@@ -3,9 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "main": "./src/index.ts",
-  "exports": { ".": "./src/index.ts" },
-  "dependencies": { "@mf-eval/contracts": "workspace:*" },
-  "peerDependencies": { "@module-federation/enhanced": "*", "react": "*" },
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@mf-eval/contracts": "workspace:*"
+  },
+  "peerDependencies": {
+    "@module-federation/enhanced": "*",
+    "react": "*"
+  },
   "devDependencies": {
     "@module-federation/enhanced": "catalog:",
     "@types/react": "catalog:",

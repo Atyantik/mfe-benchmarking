@@ -1,0 +1,15 @@
+/**
+ * Stylesheet entry for the SHELL — the one full stylesheet on the site.
+ *
+ * Preflight, the scale tokens, the semantic tokens and the base layer are all emitted
+ * here, once, and cached immutably. Remotes import utilities.css instead.
+ */
+@import "tailwindcss";
+
+/* Tailwind only generates classes it can SEE. The design system lives outside every app's
+   source root, so without this its utilities — Container's padding, Button's colours, the
+   inverse band — are never emitted and components render as unstyled markup. */
+@source "../";
+
+@import "./theme-map.css";
+@import "./tokens.css";

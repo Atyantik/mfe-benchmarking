@@ -1,0 +1,22 @@
+{
+  "name": "@mf-eval/design",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens/tokens.css",
+    "./theme.css": "./src/tokens/theme.css",
+    "./utilities.css": "./src/tokens/utilities.css",
+    "./theme-map.css": "./src/tokens/theme-map.css",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:"
+  }
+}

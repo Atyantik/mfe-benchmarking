@@ -114,8 +114,13 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
         }
         throw err;
       }
-      // Rendered once, server-side, never hydrated.
-      pageNode = <Page data={data} params={match.params} />;
+      // Rendered once, server-side, never hydrated. `data-owner` is what the remote's
+      // scoped stylesheet hangs off — without it the remote's CSS matches nothing.
+      pageNode = (
+        <div data-owner={owner}>
+          <Page data={data} params={match.params} />
+        </div>
+      );
     }
   }
 

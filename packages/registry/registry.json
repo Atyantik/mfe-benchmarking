@@ -1,5 +1,5 @@
 {
-  "revision": "r2",
+  "revision": "r3",
   "remotes": [
     {
       "name": "faq",
@@ -17,7 +17,7 @@
     },
     {
       "name": "cart",
-      "kind": "component",
+      "kind": "route",
       "version": "1.0.0",
       "web": "http://localhost:3103/mf-manifest.json",
       "node": "http://localhost:3103/ssr/mf-manifest.json"

@@ -69,7 +69,7 @@ export function useCartActions(): { add: (item: CartItem) => void; clear: () => 
  * named slots. Product renders <Slot name="cart.drawer" /> and knows nothing about
  * which remote (or which version of it) supplies the component.
  */
-export type SlotName = 'cart.drawer' | 'cart.mini';
+export type SlotName = 'cart.drawer' | 'cart.mini' | 'cart.page';
 
 interface SlotRegistry {
   slots: Partial<Record<SlotName, ComponentType>>;
@@ -111,8 +111,10 @@ export function Slot({ name, fallback = null }: { name: SlotName; fallback?: Rea
   // The wrapper is the anchor the client mounts into. Marking it here rather than at each
   // call site means a personalized slot placed anywhere in any remote's tree is findable,
   // without the shell needing to know where it ended up.
+  // data-owner scopes the providing remote's stylesheet to this subtree; data-personalized
+  // is the anchor the client mounts into.
   return (
-    <div data-personalized={name}>
+    <div data-personalized={name} data-owner={name.split('.')[0]}>
       <Filled />
     </div>
   );
