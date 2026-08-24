@@ -170,6 +170,9 @@ export const ZONE_WALK = {
  * skeleton, which is why it is budgeted tightly rather than generously (decision D14).
  */
 export const VITALS_BUDGET = {
-  document: { LCP: 2500, CLS: 0.1, INP: 200, TTFB: 800, FCP: 1800 },
+  // TBT is measured at 4x CPU throttling. Google calls under 200 ms good in that simulated
+  // environment; it is the lab proxy for INP and the metric most sensitive to how much
+  // JavaScript a stack asks the main thread to run.
+  document: { LCP: 2500, CLS: 0.1, INP: 200, TBT: 300, TTFB: 800, FCP: 1800 },
   soft: { LCP: 1200, CLS: 0.02, INP: 200 },
 };

@@ -14,13 +14,14 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
+import { startMetrics } from '@mf-eval/host-metrics';
 
 const require = createRequire(import.meta.url);
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.MF_SHELL_PORT ?? 3100);
 const ORIGIN = process.env.MF_SHELL_ORIGIN ?? `http://localhost:${PORT}`;
 
-const { render } = require('./dist/node/index.js');
+const { render, loadStats } = require('./dist/node/index.js');
 if (typeof render !== 'function') {
   throw new Error('node build did not export render() — check the async boundary');
 }
@@ -51,7 +52,39 @@ function discoverAssets() {
 
 let assets = discoverAssets();
 
+/**
+ * Metrics start before the first request, so a measurement window can bracket exactly the
+ * work under test rather than everything since boot.
+ */
+const metrics = startMetrics();
+
 const app = new Hono();
+app.use('*', async (c, next) => {
+  await next();
+  metrics.countRequest();
+});
+
+/**
+ * Write a heap snapshot to disk. Opt-in via MF_HEAP_DUMP=1.
+ *
+ * A benchmark that can measure a leak but not locate one is only half a tool: "the heap grew
+ * 700 MB" is a finding nobody can act on without knowing what is in it.
+ */
+if (process.env.MF_HEAP_DUMP === '1') {
+  app.post('/__heap', async (c) => {
+    const { writeHeapSnapshot } = await import('node:v8');
+    const file = writeHeapSnapshot();
+    return c.json({ file });
+  });
+}
+
+/** What this host costs to run. Read as a delta; POST to /reset to start a fresh window. */
+app.get('/__metrics', (c) => c.json(metrics.snapshot()));
+app.get('/__loads', async (c) => c.json(await loadStats()));
+app.post('/__metrics/reset', (c) => {
+  metrics.reset();
+  return c.json({ ok: true });
+});
 // Nothing was compressed before this: every measurement was raw bytes on the wire.
 app.use('*', compress());
 /**
@@ -90,6 +123,11 @@ app.post('/__revalidate', async (c) => {
   try {
     const { revalidate } = await import('@module-federation/node/utils');
     const shouldReload = await revalidate();
+    // Our own resolved-module cache is keyed on the registry set, which a same-version
+    // redeploy does not change — so it has to be dropped explicitly or the server keeps
+    // serving the previous build's components while reporting a successful revalidate.
+    const { clearRemoteCache } = require('./dist/node/index.js');
+    if (typeof clearRemoteCache === 'function') clearRemoteCache();
     return c.json({
       ok: true,
       shouldReload,

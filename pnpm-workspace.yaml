@@ -20,6 +20,9 @@ catalog:
   # understands soft navigations (docs/constraints.md §14).
   web-vitals: 6.1.1
   axe-core: 4.10.3
+  # Pure Node, programmatic, low overhead — the right tool for comparing server configs
+  # rather than for scripting user journeys.
+  autocannon: 8.0.0
 
   # ---- Module Federation (pinned to 2.8.2 release train) ----
   '@module-federation/enhanced': 2.8.2

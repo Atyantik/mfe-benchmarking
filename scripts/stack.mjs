@@ -6,7 +6,7 @@
  * backgrounding trick: macOS has no setsid, and shell-backgrounded children get
  * reaped when the launching shell's process group is cleaned up.
  */
-import { spawn } from 'node:child_process';
+import { execSync, spawn } from 'node:child_process';
 import { existsSync, mkdirSync, openSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -45,7 +45,34 @@ async function waitFor(url, label, tries = 60) {
   return false;
 }
 
+/**
+ * Every port the stack binds. `stop` clears these as well as the recorded PIDs.
+ *
+ * Killing only what `pids.json` remembers is not enough: a server that crashed and was
+ * replaced, or one left behind by an interrupted run, keeps its port and goes on answering.
+ * The next `start` then fails with EADDRINUSE, the probe still succeeds because SOMETHING is
+ * listening, and the stack quietly serves code from a previous build — which is the worst
+ * possible failure for a benchmark, because everything looks fine and the numbers are wrong.
+ */
+const PORTS = [3100, 3101, 3102, 3103, 3104, 3105, 3110, 3120, 4000];
+
+function killPort(port) {
+  try {
+    const pids = execSync(`lsof -ti tcp:${port}`, { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString().trim().split('\n').filter(Boolean);
+    for (const pid of pids) {
+      try { process.kill(Number(pid), 'SIGKILL'); } catch { /* already gone */ }
+    }
+    return pids.length;
+  } catch {
+    return 0; // lsof exits non-zero when nothing is listening
+  }
+}
+
 function stop() {
+  let orphans = 0;
+  for (const port of PORTS) orphans += killPort(port);
+  if (orphans) console.log(`  cleared ${orphans} process(es) still holding stack ports`);
   if (!existsSync(PIDFILE)) return;
   const pids = JSON.parse(readFileSync(PIDFILE, 'utf8'));
   for (const { name, pid } of pids) {

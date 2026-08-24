@@ -31,6 +31,9 @@ const SUITES = [
   { id: 'behaviors', file: 'behaviors.mjs', needsStack: true, what: 'the client interactivity layer, end to end' },
   { id: 'vitals', file: 'vitals.mjs', needsStack: true, what: 'Core Web Vitals, documents and soft navigations' },
   { id: 'a11y', file: 'a11y.mjs', needsStack: true, what: 'axe-core, WCAG 2.1 A and AA, every route' },
+  // Last: it saturates the servers under load, so anything measured after it would be
+  // measuring a machine that has just been hammered.
+  { id: 'ssr', file: 'ssr.mjs', needsStack: true, what: 'server cost: CPU, memory, heap, event loop, latency' },
 ];
 
 const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
@@ -82,4 +85,4 @@ if (failed.length) {
 } else {
   console.log(`all ${results.length} suite(s) green`);
 }
-console.log('Reports in results/: vitals.json, hosts.json, media.json, auth.json, behaviors.site.json\n');
+console.log('Reports in results/: vitals, ssr, hosts, media, auth, widgets, leakage, a11y, contract, behaviors\n');

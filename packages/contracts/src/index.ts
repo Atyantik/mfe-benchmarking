@@ -186,13 +186,24 @@ export function deserializeCartState(raw: unknown): CartState {
 // ---------------------------------------------------------------------------
 
 /** A missing mark is a failed bench run, not a zero. Always use these helpers. */
+/**
+ * A browser-only timing mark.
+ *
+ * The guard is not defensive, it is a fix. These marks exist so the bench can read timings
+ * out of `performance.getEntriesByType` in a browser; on the server nobody ever reads them,
+ * and Node keeps every entry in a global timeline that is never cleared. Marking a handful of
+ * spans on every request therefore grows the heap forever — measured at roughly 22,000
+ * orphaned entries per five thousand renders, on a path where the whole point was to be
+ * cheap.
+ *
+ * `document` rather than `performance` is the test, because Node has `performance`.
+ */
 export function mark(name: string): void {
-  if (typeof performance !== 'undefined' && typeof performance.mark === 'function') {
-    try {
-      performance.mark(name);
-    } catch {
-      /* measurement must never break the app */
-    }
+  if (typeof document === 'undefined') return;
+  try {
+    performance.mark(name);
+  } catch {
+    /* measurement must never break the app */
   }
 }
 

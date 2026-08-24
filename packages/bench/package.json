@@ -19,11 +19,13 @@
     "auth": "node src/auth.mjs",
     "widgets": "node src/widgets.mjs",
     "contract": "node --experimental-strip-types src/contract.mjs",
-    "a11y": "node src/a11y.mjs"
+    "a11y": "node src/a11y.mjs",
+    "ssr": "node src/ssr.mjs"
   },
   "dependencies": {
     "playwright": "catalog:",
     "web-vitals": "catalog:",
-    "axe-core": "catalog:"
+    "axe-core": "catalog:",
+    "autocannon": "catalog:"
   }
 }

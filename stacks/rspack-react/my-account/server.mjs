@@ -18,6 +18,7 @@ import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
+import { startMetrics } from '@mf-eval/host-metrics';
 
 const require = createRequire(import.meta.url);
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -56,7 +57,24 @@ function discoverAssets() {
 
 const assets = discoverAssets();
 
+/**
+ * Metrics start before the first request, so a measurement window can bracket exactly the
+ * work under test rather than everything since boot.
+ */
+const metrics = startMetrics();
+
 const app = new Hono();
+app.use('*', async (c, next) => {
+  await next();
+  metrics.countRequest();
+});
+
+/** What this host costs to run. Read as a delta; POST to /reset to start a fresh window. */
+app.get('/__metrics', (c) => c.json(metrics.snapshot()));
+app.post('/__metrics/reset', (c) => {
+  metrics.reset();
+  return c.json({ ok: true });
+});
 app.use('*', compress());
 // The document is same-origin (served through the edge) but this host's assets are not,
 // exactly like every remote's. A module script is always fetched in CORS mode.

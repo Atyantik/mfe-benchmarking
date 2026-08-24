@@ -24,7 +24,8 @@
     "hono": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
-    "@mf-eval/media": "workspace:*"
+    "@mf-eval/media": "workspace:*",
+    "@mf-eval/host-metrics": "workspace:*"
   },
   "devDependencies": {
     "@mf-eval/rsbuild-preset": "workspace:*",

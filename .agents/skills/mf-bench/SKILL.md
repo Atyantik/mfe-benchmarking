@@ -60,12 +60,10 @@ a remote or a route is one edit.
 | Metric | Definition |
 |---|---|
 | `ttfb`, `fcp`, `lcp`, `cls` | Standard. LCP from the largest-contentful-paint observer. |
-| `tbt` | Total blocking time over the load window. The honest proxy for "does it feel janky". |
-| `inp` | Measured against the § Interaction script steps, not synthetic clicks. |
-| `hydrationMs` | From `mf:shell:hydrate:start` to `:end`. Per-remote where separable. |
-| `remoteLoadMs` | Per remote, from `mf:remote:<name>:load:start` to `:end`. |
-| `waterfall` | Full request list with start/end. This is how the Vite serial-request staircase (#1095) becomes a number rather than an anecdote. Report request **count** and **max chain depth**, not just total bytes. |
-| `jsExecMs` | Script evaluation time from CDP. Separates "we shipped less" from "we ship less work". |
+| `tbt` | Total Blocking Time: the blocking portion of every long task AFTER first contentful paint, Lighthouse's definition. Measured at **4x CPU throttling** — unthrottled, every stack reports zero and the comparison says nothing. |
+| `longestTask` | The longest single task. Reported next to TBT because a long task that completes before first paint contributes nothing to TBT, and the pair looks contradictory until that is said out loud. |
+| `jsExecMs` | `ScriptDuration` from CDP `Performance.getMetrics`, with layout and style recalculation alongside. Separates "we shipped fewer bytes" from "we ask the main thread to do less". |
+| `inp` | From `web-vitals`, against a real interaction. A run that reports INP 0 for a page nobody touched has not measured INP, and the suite fails on that rather than printing it. |
 
 ### Core Web Vitals (`vitals` suite)
 
@@ -116,13 +114,40 @@ the slow one. Full suite in `packages/bench/src/behaviors.mjs`.
 | `behavior.longTasks` | Long tasks overlapping the attach window, so jank is attributed rather than merely observed. |
 | `behavior.heap` | Retained heap after a forced GC, before and after teardown. |
 
-### Server
+### Server (`ssr` suite)
+
+Everything else measures the output; this measures the machine. Client bytes are paid once
+per visitor, server CPU is paid once per request forever — for a comparison between bundlers
+and frameworks, this is arguably the more expensive half.
+
+Read in-process from `/__metrics`, as a delta around the measured window, because CPU, heap
+and event-loop numbers do not exist outside the process that produced them.
 
 | Metric | Definition |
 |---|---|
-| `ssrMs.p50` / `.p95` | Per route, warmed. Discard the first N renders. |
-| `rssAfterNSwaps` | RSS across N remote hot-swaps — reproduces the leak behind PR #4824. Report the **slope**, not a single value; a leak is a trend. |
-| `revalidateMs` | Time from remote redeploy to the server serving new content. |
+| `latency.p50/p90/p99` | From `autocannon` at fixed concurrency. Never a mean — the tail is where GC and event-loop saturation live, which is exactly what differs between stacks. |
+| `rps` | Requests per second at that concurrency. Comparable only against another run on the same hardware. |
+| `cpu.perRequestMs` | CPU milliseconds to render one page. The number that sizes a fleet. |
+| `cpu.coresUsed` | Share of a core consumed. Above 1 means more than a core's worth of work. |
+| `memory` | rss, heapUsed, heapTotal, external, arrayBuffers. |
+| `heap.headroom` | Distance to the V8 limit. A stack at 0.2 headroom has a different risk profile to one at 0.8, and heapUsed alone does not show it. |
+| `eventLoop.utilization` | ELU. **Qualifies** the other numbers rather than passing or failing: near 1.0 the run is capacity-bound, well below it it is latency-bound. A load test is meant to saturate; failing on that would fail every correct run. |
+| `eventLoop.delay.p50/p90/p99` | How long a request waits behind a render. This is the one that fails. |
+| `gc` | Count, total pause and max pause by kind. Pauses are the latency tail and are invisible in a mean. |
+| `resolutions` | How many times each remote module was resolved. Must not scale with traffic — see below. |
+| `sustained` | Heap across repeated blocks, first discarded. A leak is a SLOPE; a single reading is not evidence of anything. |
+
+**Method.** Warm-up runs and is discarded before the window opens: V8's JIT optimises hot
+paths after a few thousand executions, so the first seconds of any load test measure a
+compiler warming up rather than a server serving.
+
+**Why `resolutions` exists.** The server re-resolved every route descriptor and every slot
+placeholder on every render — nine `loadRemote` calls per request on modules that never
+change. It cost 4.6 ms of CPU per page, retained ~160 kB of heap per render, and grew past
+three gigabytes under sustained load. Caching the resolved set cut CPU per render six-fold and
+raised throughput five-fold. **Every byte-level and latency assertion in this repo passed
+happily throughout.** Counting resolutions is the only check that notices, which is why it is
+now a check and not a diagnostic.
 
 ### Refresh and independence (assertions, not timings)
 

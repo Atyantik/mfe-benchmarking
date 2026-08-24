@@ -1,0 +1,8 @@
+{
+  "name": "@mf-eval/host-metrics",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./index.mjs",
+  "exports": { ".": "./index.mjs", "./package.json": "./package.json" }
+}

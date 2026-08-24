@@ -40,7 +40,11 @@ export function register(entries: RegistryEntry[]): void {
   registeredKey = key;
 }
 
+/** How many times each exposed module has actually been resolved. Diagnostic only. */
+export const loadCounts = new Map<string, number>();
+
 async function loadOne<T>(remote: string, id: string): Promise<T> {
+  loadCounts.set(id, (loadCounts.get(id) ?? 0) + 1);
   mark(MARKS.remoteLoadStart(remote));
   try {
     return (await loadRemote<T>(id)) as T;
@@ -152,11 +156,59 @@ export interface LoadOptions {
   routes?: boolean;
 }
 
+/**
+ * Resolved remotes, cached for the life of the process.
+ *
+ * Without this, every server render re-resolved every route descriptor and every placeholder
+ * — nine `loadRemote` calls per request, on modules that do not change between requests. The
+ * SSR bench measured the cost: roughly 160 kB of heap retained per render and a server that
+ * grew past three gigabytes under sustained load.
+ *
+ * The key includes the resolved remote SET, so a registry change or a canary flip produces a
+ * different key and a fresh resolution. A redeploy at the same version is handled by
+ * `clearRemoteCache()`, which the revalidate endpoint calls — that is the one case the key
+ * cannot see, because nothing about the request changed.
+ */
+const resolvedCache = new Map<string, Promise<LoadedRemotes>>();
+
+/** Drop every resolved module. Call after `revalidate()` picks up a redeploy. */
+export function clearRemoteCache(): void {
+  resolvedCache.clear();
+}
+
 export async function loadRemotes(
   entries: RegistryEntry[],
   options: LoadOptions = {},
 ): Promise<LoadedRemotes> {
   const { variant = 'live', onlySlots, routes: wantRoutes = false } = options;
+  const key = [
+    variant,
+    wantRoutes ? 'routes' : 'noroutes',
+    onlySlots ? [...onlySlots].sort().join('+') : 'allslots',
+    entries.map((e) => `${e.name}@${e.version}=${e.entry}`).sort().join('|'),
+  ].join('#');
+
+  const cached = resolvedCache.get(key);
+  if (cached) return cached;
+
+  const pending = resolveRemotes(entries, { variant, onlySlots, routes: wantRoutes });
+  // Cache the PROMISE, so concurrent requests during a cold start share one resolution
+  // rather than each doing the work and each keeping its own copy of the result.
+  resolvedCache.set(key, pending);
+  pending.catch(() => resolvedCache.delete(key));
+  return pending;
+}
+
+interface ResolveOptions {
+  variant: 'live' | 'placeholder';
+  onlySlots: readonly string[] | undefined;
+  routes: boolean;
+}
+
+async function resolveRemotes(
+  entries: RegistryEntry[],
+  { variant, onlySlots, routes: wantRoutes }: ResolveOptions,
+): Promise<LoadedRemotes> {
   register(entries);
 
   const failures: { name: string; error: string }[] = [];

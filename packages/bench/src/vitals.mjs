@@ -18,6 +18,12 @@
  *
  * `reportAllChanges: true` because this is a lab: CLS and INP would otherwise only report
  * when the page is hidden, and the last report is the final value either way.
+ *
+ * **CPU is throttled 4x by default.** Without it every stack reports TBT of zero on a
+ * developer machine, every long task disappears, and the comparison that matters most —
+ * which stack blocks the main thread — produces identical numbers for all of them.
+ * Lighthouse simulates a mid-range mobile for exactly this reason. Set MF_CPU_THROTTLE=1 to
+ * measure unthrottled desktop instead; the two are not comparable and are labelled as such.
  */
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -33,6 +39,8 @@ const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 const RUNS = Number(process.env.MF_RUNS ?? 3);
+/** 4x matches Lighthouse's mid-range mobile simulation. 1 = unthrottled desktop. */
+const CPU_THROTTLE = Number(process.env.MF_CPU_THROTTLE ?? 4);
 
 /**
  * The real library, inlined so the page needs no network to be measured.
@@ -73,6 +81,17 @@ const COLLECT = `
   webVitals.onINP(push, opts);
   webVitals.onFCP(push, opts);
   webVitals.onTTFB(push, opts);
+
+  // Long tasks, for Total Blocking Time. web-vitals does not compute TBT — it is a lab-only
+  // metric with no field equivalent — so it is collected here and summed below.
+  window.__longTasks = [];
+  try {
+    new PerformanceObserver((l) => {
+      for (const e of l.getEntries()) {
+        window.__longTasks.push({ start: e.startTime, duration: e.duration });
+      }
+    }).observe({ type: 'longtask', buffered: true });
+  } catch {}
 `;
 
 const checks = [];
@@ -83,7 +102,9 @@ function check(section, label, ok, detail = '') {
 function heading(text) {
   console.log(`\n--- ${text} ${'-'.repeat(Math.max(0, 72 - text.length))}`);
 }
-const fmt = (name, v) => (name === 'CLS' ? v.toFixed(4) : `${Math.round(v)} ms`);
+const note = (text) => console.log(`        ${text}`);
+const fmt = (name, v) =>
+  name === 'CLS' ? v.toFixed(4) : name === 'longTasks' ? String(v) : `${Math.round(v)} ms`;
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b);
   const mid = Math.floor(s.length / 2);
@@ -107,7 +128,39 @@ async function newPage(browser, { signedIn = false } = {}) {
   const ctx = signedIn ? await signedInContext(browser) : await browser.newContext();
   const page = await ctx.newPage();
   await page.addInitScript(`${WEB_VITALS_IIFE}\n${COLLECT}`);
-  return { ctx, page };
+
+  const cdp = await ctx.newCDPSession(page);
+  // Chrome's own performance counters: script evaluation, layout and style recalculation.
+  // `jsExecMs` is the number that separates "we shipped fewer bytes" from "we ship less work".
+  await cdp.send('Performance.enable');
+  if (CPU_THROTTLE > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_THROTTLE });
+  return { ctx, page, cdp };
+}
+
+/** Total Blocking Time: the blocking portion of every long task after FCP. */
+function totalBlockingTime(longTasks, fcp) {
+  return longTasks
+    .filter((t) => t.start + t.duration > fcp)
+    .reduce((sum, t) => {
+      // Only the part of the task that falls after FCP counts, and only the part beyond 50 ms
+      // blocks — that is Lighthouse's definition, and deviating from it makes the number
+      // incomparable to every tool anyone already uses.
+      const blockingStart = Math.max(t.start, fcp);
+      const effective = t.duration - (blockingStart - t.start);
+      return sum + Math.max(0, effective - 50);
+    }, 0);
+}
+
+/** Chrome's own counters, in milliseconds. */
+async function chromeMetrics(cdp) {
+  const { metrics } = await cdp.send('Performance.getMetrics');
+  const get = (name) => metrics.find((m) => m.name === name)?.value ?? 0;
+  return {
+    scriptMs: get('ScriptDuration') * 1000,
+    layoutMs: get('LayoutDuration') * 1000,
+    styleMs: get('RecalcStyleDuration') * 1000,
+    taskMs: get('TaskDuration') * 1000,
+  };
 }
 
 /**
@@ -117,7 +170,7 @@ async function newPage(browser, { signedIn = false } = {}) {
  * 0" for a page nobody clicked is reporting that it did not measure INP.
  */
 async function measureDocument(browser, route) {
-  const { ctx, page } = await newPage(browser);
+  const { ctx, page, cdp } = await newPage(browser);
   await page.goto(EDGE + route.path, { waitUntil: 'networkidle' });
 
   // A real interaction, because INP is undefined without one and a suite reporting "INP 0"
@@ -134,9 +187,22 @@ async function measureDocument(browser, route) {
   await page.waitForTimeout(600);
 
   const raw = await page.evaluate(() => window.__vitals);
+  const longTasks = await page.evaluate(() => window.__longTasks ?? []);
+  const chrome = await chromeMetrics(cdp);
   await ctx.close();
+
   const navs = finalise(raw);
-  return navs[0]?.metrics ?? {};
+  const metrics = navs[0]?.metrics ?? {};
+  const fcp = metrics.FCP?.value ?? 0;
+  return {
+    ...metrics,
+    TBT: { value: totalBlockingTime(longTasks, fcp) },
+    longTasks: { value: longTasks.length },
+    longestTask: { value: Math.max(0, ...longTasks.map((t) => t.duration)) },
+    scriptMs: { value: chrome.scriptMs },
+    layoutMs: { value: chrome.layoutMs },
+    styleMs: { value: chrome.styleMs },
+  };
 }
 
 /** One walk through the zone, returning one set of vitals per soft navigation. */
@@ -173,20 +239,21 @@ console.log(`\ncore web vitals - measured with web-vitals, ${RUNS} runs, median 
 const browser = await chromium.launch();
 
 heading('1. document navigations - the indexed half of the site');
-console.log('        route                    LCP        CLS       INP       FCP      TTFB');
+console.log(`        (CPU throttled ${CPU_THROTTLE}x — ${CPU_THROTTLE > 1 ? 'mid-range mobile, comparable to Lighthouse' : 'unthrottled desktop'})`);
+console.log('        route                    LCP        CLS       INP       TBT     script      FCP');
 const documentResults = {};
 for (const route of DOCUMENT_ROUTES) {
   const runs = [];
   for (let i = 0; i < RUNS; i += 1) runs.push(await measureDocument(browser, route));
   const merged = {};
-  for (const name of ['LCP', 'CLS', 'INP', 'FCP', 'TTFB']) {
+  for (const name of ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'scriptMs', 'layoutMs', 'styleMs', 'longTasks', 'longestTask']) {
     const values = runs.map((r) => r[name]?.value).filter((v) => typeof v === 'number');
     if (values.length) merged[name] = { value: median(values), samples: values.length };
   }
   documentResults[route.path] = merged;
   console.log(
     `        ${route.path.padEnd(22)} ` +
-      ['LCP', 'CLS', 'INP', 'FCP', 'TTFB']
+      ['LCP', 'CLS', 'INP', 'TBT', 'scriptMs', 'FCP']
         .map((n) => (merged[n] ? fmt(n, merged[n].value) : '-').padStart(9))
         .join(' '),
   );
@@ -204,6 +271,36 @@ for (const metric of ['LCP', 'CLS', 'INP', 'TTFB']) {
       ? over.map((r) => `${r.path} ${fmt(metric, documentResults[r.path][metric].value)}`).join(', ')
       : `worst ${fmt(metric, worst)}`,
   );
+}
+{
+  /**
+   * TBT is the lab proxy Google uses for INP, and the only metric here that reflects how much
+   * JavaScript a stack makes the main thread chew through. It is the number most likely to
+   * differ between bundlers and frameworks, which is why it is budgeted rather than merely
+   * printed.
+   */
+  const limit = VITALS_BUDGET.document.TBT;
+  const over = DOCUMENT_ROUTES.filter((r) => (documentResults[r.path].TBT?.value ?? 0) > limit);
+  check('document', `TBT stays under ${limit} ms at ${CPU_THROTTLE}x CPU throttling`, over.length === 0,
+    over.length
+      ? over.map((r) => `${r.path} ${Math.round(documentResults[r.path].TBT.value)} ms`).join(', ')
+      : `worst ${Math.round(Math.max(0, ...DOCUMENT_ROUTES.map((r) => documentResults[r.path].TBT?.value ?? 0)))} ms`);
+
+  /**
+   * A long task and a TBT of zero look contradictory and are not.
+   *
+   * TBT only counts blocking time AFTER first contentful paint, because before it the visitor
+   * is looking at nothing and has nothing to interact with. On these pages the one long task
+   * is the bundle evaluating, and it finishes before the first paint — so it blocks nothing a
+   * visitor could have done. Lighthouse draws the line in the same place; saying so here
+   * saves the next person concluding the measurement is broken.
+   */
+  const longest = Math.round(Math.max(0, ...DOCUMENT_ROUTES.map((r) => documentResults[r.path].longestTask?.value ?? 0)));
+  const worstScript = Math.round(Math.max(0, ...DOCUMENT_ROUTES.map((r) => documentResults[r.path].scriptMs?.value ?? 0)));
+  note(`longest single task: ${longest} ms — TBT is ${
+    longest > 50 ? 'still zero because it completes BEFORE first paint, which TBT excludes' : 'zero because nothing exceeded 50 ms'
+  }`);
+  note(`script evaluation, worst route: ${worstScript} ms of main-thread work`);
 }
 {
   const missing = DOCUMENT_ROUTES.filter((r) => documentResults[r.path].INP === undefined);
