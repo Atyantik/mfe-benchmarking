@@ -6,6 +6,7 @@
  * while checking nothing, because its element detection never matched in this workspace.
  * Every rule here is asserted to both fire and stay quiet, on realistic code.
  */
+import { fileURLToPath } from 'node:url';
 import { RuleTester } from 'eslint';
 import tsParser from '@typescript-eslint/parser';
 import { describe, it } from 'vitest';
@@ -159,7 +160,18 @@ describe('no-serialized-props', () => {
  * behavior-must-exist reads the filesystem, so it is tested against the REAL product app.
  * A fixture directory would let the rule pass while being wrong about the layout it checks.
  */
-const REAL_PAGE = '/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/product/src/List.tsx';
+/**
+ * Resolved from this file, never hardcoded.
+ *
+ * The first version baked an absolute path from the machine it was written on. `appRootOf`
+ * walks up looking for a package.json, found nothing on CI, and the rule quietly returned
+ * "not an app file" — so every INVALID case reported zero errors and the suite failed on the
+ * first checkout that was not that laptop. A test that only passes on one machine is worse
+ * than no test, because it is trusted everywhere else.
+ */
+const REAL_PAGE = fileURLToPath(
+  new URL('../../../stacks/rspack-react/product/src/List.tsx', import.meta.url),
+);
 
 describe('no-serialized-props — the host bootstrap exemption', () => {
   tester.run('no-serialized-props', rules['no-serialized-props'], {

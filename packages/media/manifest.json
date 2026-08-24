@@ -986,7 +986,7 @@
         {
           "path": "video/hero.mp4",
           "type": "video/mp4",
-          "bytes": 645394
+          "bytes": 643869
         },
         {
           "path": "video/hero.webm",
@@ -1007,5 +1007,5 @@
       }
     }
   },
-  "generatedAt": "2026-08-24T11:30:00.938Z"
+  "generatedAt": "2026-08-24T11:50:28.921Z"
 }

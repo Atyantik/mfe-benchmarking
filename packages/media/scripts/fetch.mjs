@@ -53,13 +53,37 @@ function looksLikeJpeg(buf) {
   return buf.length >= MIN_BYTES && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff;
 }
 
-async function download(url, attempt = 1) {
-  const res = await fetch(url, { headers: UA });
-  const buf = Buffer.from(await res.arrayBuffer());
-  if (looksLikeJpeg(buf)) return buf;
-  if (attempt > 4) return null;
-  await sleep(3_000 * attempt);
-  return download(url, attempt + 1);
+/**
+ * Try every URL we have for an image, patiently.
+ *
+ * Commons generates thumbnails on demand and rate-limits that generation, so a cold fetch of
+ * seventeen images reliably loses one or two — which failed CI on the first run with
+ * "could not get a usable image". The ORIGINAL file is a static object and needs no
+ * generation, so it is the fallback rather than a second guess at the same thing.
+ *
+ * Backoff is exponential and honours `Retry-After`, because hammering a service that just
+ * asked for a pause is how a flaky fetch becomes a blocked one.
+ */
+async function download(urls, attempt = 1) {
+  const candidates = urls.filter(Boolean);
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url, { headers: UA });
+      if (res.ok) {
+        const buf = Buffer.from(await res.arrayBuffer());
+        if (looksLikeJpeg(buf)) return buf;
+      }
+      const retryAfter = Number(res.headers.get('retry-after'));
+      if (retryAfter > 0) await sleep(Math.min(retryAfter, 60) * 1_000);
+    } catch {
+      /* transient; the backoff below covers it */
+    }
+  }
+  if (attempt >= 6) return null;
+  const wait = 2_000 * 2 ** attempt;
+  console.log(`  ...retrying in ${wait / 1000}s (attempt ${attempt + 1}/6)`);
+  await sleep(wait);
+  return download(urls, attempt + 1);
 }
 
 const { images } = JSON.parse(readFileSync(join(HERE, 'sources.json'), 'utf8'));
@@ -108,7 +132,8 @@ for (const entry of images) {
   if (already) {
     skipped += 1;
   } else {
-    const buf = (await download(info.thumburl ?? info.url)) ?? (await download(info.url));
+    // Thumbnail first because it is smaller; original second because it always exists.
+    const buf = await download([info.thumburl, info.url]);
     if (!buf) {
       failures.push(`${entry.id} (${entry.file})`);
       console.error(`  FAILED   ${entry.id.padEnd(8)} could not get a usable image`);
