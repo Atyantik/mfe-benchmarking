@@ -77,8 +77,27 @@ const OWNER_BY_PORT = new Map([
  * condition that made four stale maps invisible. Callers treat it as a failure.
  */
 export function ownerOf(url) {
-  const port = Number(new URL(url).port || (new URL(url).protocol === 'https:' ? 443 : 80));
-  return OWNER_BY_PORT.get(port) ?? `unknown:${port}`;
+  const parsed = new URL(url);
+  const port = Number(parsed.port || (parsed.protocol === 'https:' ? 443 : 80));
+  const owner = OWNER_BY_PORT.get(port);
+  if (owner === undefined) return `unknown:${port}`;
+  if (owner !== 'edge') return owner;
+
+  /**
+   * The edge is a router, not an owner.
+   *
+   * The storefront serves its own assets THROUGH the edge (its public origin is the edge, so
+   * that is what its HTML points at), which meant every storefront script and stylesheet was
+   * attributed to "edge" — and the waste audit then reported react-dom as FOREIGN on every
+   * page of the site. The bytes were right and the blame was wrong, which is worse than a
+   * missing number: it names the wrong team.
+   *
+   * Resolve by prefix, the same rule the edge itself routes on.
+   */
+  const zone = HOSTS.find(
+    (h) => h.prefix !== '/' && (parsed.pathname === h.prefix || parsed.pathname.startsWith(`${h.prefix}/`)),
+  );
+  return zone?.name ?? HOSTS.find((h) => h.prefix === '/')?.name ?? 'edge';
 }
 
 export const isUnknownOwner = (owner) => owner.startsWith('unknown:');

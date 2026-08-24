@@ -31,6 +31,10 @@ const SUITES = [
   { id: 'behaviors', file: 'behaviors.mjs', needsStack: true, what: 'the client interactivity layer, end to end' },
   { id: 'vitals', file: 'vitals.mjs', needsStack: true, what: 'Core Web Vitals, documents and soft navigations' },
   { id: 'a11y', file: 'a11y.mjs', needsStack: true, what: 'axe-core, WCAG 2.1 A and AA, every route' },
+  // Coverage, not just weight: bytes downloaded and never executed. This was outside the
+  // runner, which is how an owner-attribution bug survived — it reported react-dom as
+  // FOREIGN on every page of the site and nobody was running it.
+  { id: 'audit', file: 'audit.mjs', needsStack: true, what: 'dead, thin and foreign bytes by V8 coverage' },
   // Last: it saturates the servers under load, so anything measured after it would be
   // measuring a machine that has just been hammered.
   { id: 'ssr', file: 'ssr.mjs', needsStack: true, what: 'server cost: CPU, memory, heap, event loop, latency' },
