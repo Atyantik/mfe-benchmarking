@@ -79,9 +79,13 @@ async function download(urls, attempt = 1) {
       /* transient; the backoff below covers it */
     }
   }
-  if (attempt >= 6) return null;
-  const wait = 2_000 * 2 ** attempt;
-  console.log(`  ...retrying in ${wait / 1000}s (attempt ${attempt + 1}/6)`);
+  // Bounded on purpose. The first version backed off exponentially to six attempts, which
+  // is patient enough to keep a CI job busy for twenty minutes on a bad afternoon and then
+  // still fail. Roughly thirty seconds per image is long enough to ride out a rate limit and
+  // short enough that a genuine outage is reported rather than waited out.
+  if (attempt >= 4) return null;
+  const wait = Math.min(2_000 * 2 ** attempt, 8_000);
+  console.log(`  ...retrying in ${wait / 1000}s (attempt ${attempt + 1}/4)`);
   await sleep(wait);
   return download(urls, attempt + 1);
 }

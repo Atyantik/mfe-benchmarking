@@ -48,7 +48,11 @@ jobs:
             packages/media/credits.json
           key: media-${{ hashFiles('packages/media/sources.json', 'packages/media/scripts/*.mjs') }}
 
+      # Bounded: a cold cache fetches 17 images from a third-party service, and a benchmark
+      # must not sit waiting on someone else's rate limiter. A miss here fails the run with a
+      # clear reason rather than burning the job's timeout.
       - run: pnpm media
+        timeout-minutes: 8
       - run: pnpm build
       - run: pnpm dev
       - run: pnpm bench
