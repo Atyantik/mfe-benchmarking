@@ -6,7 +6,8 @@ import {
   SectionHeader,
   Badge,
 } from '@mf-eval/design';
-import { ProductCard, ProductThumb } from '@mf-eval/design';
+import { HeroVideo, MediaCredit, Picture, ProductCard } from '@mf-eval/design';
+import { MEDIA, imageForProduct, imagesFor } from '@mf-eval/media';
 import {
   CATEGORIES,
   HERO,
@@ -46,7 +47,13 @@ export function Component() {
               const count = PRODUCTS.filter((p) => p.categoryId === c.id).length;
               return (
                 <Card as="li" key={c.id} className="group relative flex gap-4 p-4 transition-shadow hover:shadow-e2">
-                  <ProductThumb family={c.family} id={c.id} className="w-28 shrink-0" />
+                  <Picture
+                    image={imagesFor(c.family)[0] ?? imageForProduct(c.id, c.family)}
+                    alt=""
+                    sizes="7rem"
+                    className="w-28 shrink-0 rounded-md"
+                    data-testid={`category-image-${c.id}`}
+                  />
                   <div className="flex flex-col">
                     <h3 className="text-[length:var(--fs-md)]">
                       <a href={`/product?category=${c.id}`} className="after:absolute after:inset-0 group-hover:text-brand-700">
@@ -54,7 +61,7 @@ export function Component() {
                       </a>
                     </h3>
                     <p className="mt-1 text-[length:var(--fs-sm)] text-ink-500">{c.blurb}</p>
-                    <p className="mt-auto pt-2 text-[length:var(--fs-xs)] tabular-nums text-ink-400">
+                    <p className="mt-auto pt-2 text-[length:var(--fs-xs)] tabular-nums text-ink-500">
                       {count} products
                     </p>
                   </div>
@@ -161,17 +168,40 @@ function Hero() {
             ))}
           </dl>
         </div>
-        {first ? (
-          <Card className="relative overflow-hidden p-5">
-            <Badge tone="brand">Featured range</Badge>
-            <ProductThumb family={first.family} id={first.id} className="my-4" label={first.name} />
-            <h2 className="text-[length:var(--fs-lg)] leading-snug">
-              <a href={`/product/${first.id}`} className="hover:text-brand-700">{first.name}</a>
-            </h2>
-            <p className="mt-1 font-mono text-[length:var(--fs-xs)] text-ink-500">{first.sku}</p>
-            <p className="mt-2 text-[length:var(--fs-sm)] text-ink-600">{first.summary}</p>
-          </Card>
-        ) : null}
+        <div>
+          {/* The largest element on the page, and deliberately a video — the reference
+              profile's hero is one too, and a benchmark whose heaviest element is a paragraph
+              is not measuring a real page. The poster carries the paint; the video follows. */}
+          {MEDIA.video.hero ? (
+            <>
+              <HeroVideo
+                video={MEDIA.video.hero}
+                label="Assembly line at an industrial automation facility"
+                className="rounded-lg shadow-e2"
+                data-testid="hero-video"
+              />
+              <MediaCredit image={MEDIA.video.hero} />
+            </>
+          ) : null}
+          {first ? (
+            <Card className="mt-5 flex gap-4 overflow-hidden p-4">
+              <Picture
+                image={imageForProduct(first.id, first.family)}
+                alt=""
+                sizes="8rem"
+                className="w-32 shrink-0 rounded-md"
+                data-testid="hero-featured-image"
+              />
+              <div className="min-w-0">
+                <Badge tone="brand">Featured range</Badge>
+                <h2 className="mt-2 text-[length:var(--fs-md)] leading-snug">
+                  <a href={`/product/${first.id}`} className="hover:text-brand-700">{first.name}</a>
+                </h2>
+                <p className="mt-1 font-mono text-[length:var(--fs-xs)] text-ink-500">{first.sku}</p>
+              </div>
+            </Card>
+          ) : null}
+        </div>
       </Container>
     </div>
   );

@@ -1,0 +1,24 @@
+/**
+ * Progressive-enhancement fallbacks. Imported by the shell's stylesheet and by every
+ * remote's, because a fallback control can belong to any app.
+ *
+ * A control marked `data-fallback-only` exists so the page works without JavaScript — the
+ * Apply button under a filter panel that a behaviour otherwise submits on change. Once the
+ * enhancement is available it is redundant, but it must NOT be hidden by the behaviour
+ * itself: removing a laid-out element after paint shifts everything below it, and CLS is one
+ * of the numbers this whole architecture exists to protect.
+ *
+ * So the decision is made in CSS, before the first paint, with no JavaScript involved:
+ *   - scripting disabled -> the fallback is the only way through, and it is shown.
+ *   - scripting enabled  -> hidden from the first paint, so nothing ever moves.
+ *   - behaviour FAILED   -> the selector stops matching and the fallback comes back, which
+ *                           is the same state as having no JavaScript at all.
+ *
+ * A fallback control must therefore sit inside the `[data-behavior]` element that replaces
+ * it. That is also the only way to know which enhancement it belongs to.
+ */
+@media (scripting: enabled) {
+  [data-behavior]:not([data-behavior-state="failed"]) [data-fallback-only] {
+    display: none;
+  }
+}

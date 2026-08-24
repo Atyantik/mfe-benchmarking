@@ -1,0 +1,5 @@
+{
+  "extends": "@mf-eval/tsconfig/base.json",
+  "compilerOptions": { "types": ["node"], "resolveJsonModule": true },
+  "include": ["src", "*.ts"]
+}

@@ -12,6 +12,8 @@ import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { HOSTS, REMOTES } from './lib/topology.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 
 /** Every file under `dir`, recursively. */
@@ -54,6 +56,8 @@ const gz = (file) => gzipSync(readFileSync(file), { level: 9 }).length;
  */
 const NAMED_CHUNK = /\/(?!index\.)[a-z][a-z0-9-]*\.[a-f0-9]{6,}\.js$/i;
 const EXPOSE_CHUNK = /__federation_expose_/;
+/** `__federation_expose_behaviors__gallery.<hash>.js` — one file per behaviour. */
+const BEHAVIOUR_CHUNK = /__federation_expose_behaviors__([a-z0-9-]+)\.[a-f0-9]+\.js$/;
 
 function classify(rel) {
   if (rel === 'remoteEntry.js') return 'container';
@@ -86,24 +90,34 @@ function measure(appDir, { isHost }) {
 
   const ownFiles = js.filter((f) => isHost || classify(f.slice(web.length + 1)) === 'own');
 
+  // Behaviours are budgeted individually, not as a total. They load per page and on demand,
+  // so ten cheap ones across the app cost a visitor nothing while one expensive one costs
+  // every visitor to that page — a sum would hide exactly the case that matters.
+  const behaviors = {};
+  for (const f of js) {
+    const match = BEHAVIOUR_CHUNK.exec(f);
+    if (match) behaviors[match[1]] = gz(f);
+  }
+
   return {
     ownJsGzip: own,
     containerJsGzip: container,
     cssGzip: css.reduce((n, f) => n + gz(f), 0),
     largestJsGzip: ownFiles.length ? Math.max(...ownFiles.map(gz)) : 0,
+    behaviors,
     byFile,
   };
 }
 
 const fmt = (n) => `${(n / 1024).toFixed(1)} kB`;
 
-export function checkApp(appDir, name) {
+export function checkApp(appDir, name, isHost = name === 'shell') {
   const budgetFile = join(appDir, 'budget.json');
   if (!existsSync(budgetFile)) {
     return { name, skipped: 'no budget.json' };
   }
   const budget = JSON.parse(readFileSync(budgetFile, 'utf8'));
-  const actual = measure(appDir, { isHost: name === 'shell' });
+  const actual = measure(appDir, { isHost });
   if (!actual) return { name, skipped: 'not built' };
 
   const checks = [];
@@ -113,9 +127,18 @@ export function checkApp(appDir, name) {
   };
 
   add('own js', actual.ownJsGzip, budget.ownJsGzip);
-  add('mf container', actual.containerJsGzip, budget.containerJsGzip);
+  // A host produces no remoteEntry — nothing federates into it — so the container budget
+  // is not "met", it is not applicable. Printing 0.0 kB against a limit invites someone to
+  // read it as a win.
+  if (!isHost) add('mf container', actual.containerJsGzip, budget.containerJsGzip);
   add('css', actual.cssGzip, budget.cssGzip);
   add('largest own chunk', actual.largestJsGzip, budget.largestJsGzip);
+
+  // Every behaviour is checked, including ones added after the budget was written — the
+  // point is that a new behaviour cannot arrive unmeasured.
+  for (const [name, size] of Object.entries(actual.behaviors)) {
+    add(`behavior ${name}`, size, budget.behaviorJsGzip);
+  }
 
   for (const [pattern, limit] of Object.entries(budget.files ?? {})) {
     const match = Object.entries(actual.byFile).find(([f]) => f.includes(pattern));
@@ -125,11 +148,16 @@ export function checkApp(appDir, name) {
   return { name, checks, actual };
 }
 
+/**
+ * Every app, from the topology — hosts and remotes alike.
+ *
+ * Hardcoding the list here is how chrome and my-account went unbudgeted for their first
+ * day of existence: `pnpm budget` reported "all budgets met" while two applications were
+ * not being measured at all.
+ */
 const APPS = [
-  ['shell', 'stacks/rspack-react/shell'],
-  ['faq', 'stacks/rspack-react/faq'],
-  ['product', 'stacks/rspack-react/product'],
-  ['cart', 'stacks/rspack-react/cart'],
+  ...HOSTS.map((h) => [h.budgetKey, h.dir, { isHost: true }]),
+  ...REMOTES.map((r) => [r.name, r.dir, { isHost: false }]),
 ];
 
 if (import.meta.url === `file://${process.argv[1]}`) {
@@ -137,15 +165,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   let failed = 0;
   let skipped = 0;
 
-  for (const [name, rel] of APPS) {
-    const result = checkApp(join(ROOT, rel), name);
+  for (const [name, rel, meta] of APPS) {
+    const result = checkApp(join(ROOT, rel), name, meta.isHost);
     if (result.skipped) {
-      console.log(`  ${name.padEnd(9)} skipped — ${result.skipped}`);
+      console.log(`  ${name.padEnd(11)} skipped — ${result.skipped}`);
       skipped += 1;
       continue;
     }
     for (const c of result.checks) {
-      const head = `${c.ok ? '  ok  ' : '  OVER'}  ${name.padEnd(9)}`;
+      const head = `${c.ok ? '  ok  ' : '  OVER'}  ${name.padEnd(11)}`;
       const headroom = c.ok ? `${fmt(c.limit - c.value)} spare` : `${fmt(c.value - c.limit)} over`;
       console.log(`${head}${c.label.padEnd(26)} ${fmt(c.value).padStart(9)} / ${fmt(c.limit).padStart(9)}   ${headroom}`);
       if (!c.ok) failed += 1;

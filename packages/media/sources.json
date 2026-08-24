@@ -1,0 +1,91 @@
+{
+  "_comment": "Curated, reproducible source list. Every entry is a real photograph from Wikimedia Commons under a licence that permits reuse with attribution. Pinned by exact file title so a re-fetch produces the same bytes. Originals and derivatives are gitignored; this file plus ATTRIBUTION.md is what makes the set reproducible.",
+  "images": [
+    {
+      "id": "cp-01",
+      "category": "circuit-protection",
+      "file": "Electric circuit breaker fuse box in private home.jpg"
+    },
+    {
+      "id": "cp-02",
+      "category": "circuit-protection",
+      "file": "Circuit breaker IMG 8455.JPG"
+    },
+    {
+      "id": "cp-03",
+      "category": "circuit-protection",
+      "file": "Substation Circuit Breaker 1.jpg"
+    },
+    {
+      "id": "cp-04",
+      "category": "circuit-protection",
+      "file": "4-pole GE residual current device 30mA 400V.JPG"
+    },
+    {
+      "id": "ia-01",
+      "category": "industrial-automation",
+      "file": "PLC Panasonic FP-XH C30T.jpg"
+    },
+    {
+      "id": "ia-02",
+      "category": "industrial-automation",
+      "file": "GSK980TA control system 20260331123956.jpg"
+    },
+    {
+      "id": "ia-03",
+      "category": "industrial-automation",
+      "file": "Variable Frequency Drive (VFD) - 1.jpeg"
+    },
+    {
+      "id": "ia-04",
+      "category": "industrial-automation",
+      "file": "Variable Frequency Drive (VFD) - 2.jpeg"
+    },
+    {
+      "id": "pc-01",
+      "category": "power-continuity",
+      "file": "UPS - uninterruptible power supply.JPG"
+    },
+    {
+      "id": "pc-02",
+      "category": "power-continuity",
+      "file": "MGE Uninterruptible Power Supply at NERSC.jpg"
+    },
+    {
+      "id": "pc-03",
+      "category": "power-continuity",
+      "file": "Camlock 120v AC Power Distribution Unit.jpg"
+    },
+    {
+      "id": "pc-04",
+      "category": "power-continuity",
+      "file": "Busbars for earthing.JPG"
+    },
+    {
+      "id": "em-01",
+      "category": "energy-monitoring",
+      "file": "Vorarlberger Kraftwerke-Energy meter (electro)-01ASD.jpg"
+    },
+    {
+      "id": "em-02",
+      "category": "energy-monitoring",
+      "file": "Kos-Kos city-Electricity meter-01ASD.jpg"
+    },
+    {
+      "id": "sm-01",
+      "category": "sensing-measurement",
+      "file": "Анемометрия силой Лоренца (прототип).jpg"
+    },
+    {
+      "id": "hero-01",
+      "category": "hero",
+      "file": "Substation, Northways car park 001.jpg"
+    },
+    {
+      "id": "hero-02",
+      "category": "hero",
+      "file": "Factory Automation Robotics Palettizing Bread.jpg"
+    }
+  ],
+  "_why_these": "The benchmark needs realistic photographic weight, dimensions and formats — the subject matter is incidental. These are built to the media profile in docs/media.md, which was measured from a real large storefront. Nobody's copyrighted product photography is redistributed here."
+}

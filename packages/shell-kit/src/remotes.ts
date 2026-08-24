@@ -86,6 +86,36 @@ export const SLOT_SOURCES: SlotSource[] = [
     placeholderModule: 'cart/CartDrawerPlaceholder',
     placeholderExpose: './CartDrawerPlaceholder',
   },
+  // --- the account overview, composed from three different teams -------------
+  //
+  // The account host renders three regions and owns none of them. Each is a widget from the
+  // team that owns that domain, with a placeholder from the same team reserving the exact
+  // box. Nothing here is loaded on any page that does not render the slot — which is the
+  // property worth proving, and the one `pnpm --filter @mf-eval/bench widgets` measures.
+  {
+    slot: 'account.cart',
+    remote: 'cart',
+    module: 'cart/AccountCart',
+    expose: './AccountCart',
+    placeholderModule: 'cart/AccountCartPlaceholder',
+    placeholderExpose: './AccountCartPlaceholder',
+  },
+  {
+    slot: 'account.recommended',
+    remote: 'product',
+    module: 'product/AccountRecommended',
+    expose: './AccountRecommended',
+    placeholderModule: 'product/AccountRecommendedPlaceholder',
+    placeholderExpose: './AccountRecommendedPlaceholder',
+  },
+  {
+    slot: 'account.support',
+    remote: 'faq',
+    module: 'faq/AccountSupport',
+    expose: './AccountSupport',
+    placeholderModule: 'faq/AccountSupportPlaceholder',
+    placeholderExpose: './AccountSupportPlaceholder',
+  },
 ];
 
 /**
@@ -96,25 +126,44 @@ export const SLOT_SOURCES: SlotSource[] = [
  */
 export const routeOwner = new WeakMap<object, string>();
 
-/**
- * `variant` decides which half of a personalized slot is loaded.
- *
- * The server takes 'placeholder' — it must not render per-user content, or every
- * response becomes user-specific and unshareable by a CDN, and a crawler gets data it
- * has no use for. The client takes 'live'.
- */
+export interface LoadOptions {
+  /**
+   * Which half of a personalized slot to load.
+   *
+   * The server takes 'placeholder' — it must not render per-user content, or every
+   * response becomes user-specific and unshareable by a CDN, and a crawler gets data it
+   * has no use for. The client takes 'live'.
+   */
+  variant?: 'live' | 'placeholder';
+  /**
+   * Restrict to the slots this page actually rendered. Without it the client pulls every
+   * slot a component remote offers, so a page showing only the header cart also downloads
+   * the drawer it will never open — component code AND its stylesheet.
+   */
+  onlySlots?: readonly string[];
+  /**
+   * Whether to load route descriptors. TRUE only on the server.
+   *
+   * There is no client router, so a descriptor in the browser is a module that is fetched,
+   * parsed and then never read. It is easy to miss because it is small and because the cart
+   * is registered as a route remote (it owns /cart) while being loaded on every page for
+   * its header widget — so the client was pulling /cart's descriptor on every page view.
+   */
+  routes?: boolean;
+}
+
 export async function loadRemotes(
   entries: RegistryEntry[],
-  variant: 'live' | 'placeholder' = 'live',
-  onlySlots?: readonly string[],
+  options: LoadOptions = {},
 ): Promise<LoadedRemotes> {
+  const { variant = 'live', onlySlots, routes: wantRoutes = false } = options;
   register(entries);
 
   const failures: { name: string; error: string }[] = [];
   const routes: RouteDescriptor[] = [];
   const slots: Partial<Record<SlotName, ComponentType>> = {};
 
-  const routeEntries = entries.filter((e) => e.kind === 'route');
+  const routeEntries = wantRoutes ? entries.filter((e) => e.kind === 'route') : [];
   // A remote can be BOTH a route owner and a component provider — the cart owns /cart and
   // also supplies the header widget. So slot loading keys off SLOT_SOURCES, not `kind`.
   const providerNames = new Set(entries.map((e) => e.name));
@@ -129,9 +178,6 @@ export async function loadRemotes(
         failures.push({ name: entry.name, error: String(err) });
       }
     }),
-    // `onlySlots` matters: without it the client pulls every slot a component remote
-    // offers, so a page with just a header cart also downloads the drawer it will never
-    // show — component code AND its stylesheet.
     ...SLOT_SOURCES.filter(
       (s) => providerNames.has(s.remote) && (!onlySlots || onlySlots.includes(s.slot)),
     ).map(async (s) => {

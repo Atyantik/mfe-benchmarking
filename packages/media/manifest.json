@@ -1,0 +1,1011 @@
+{
+  "images": {
+    "cp-01": {
+      "id": "cp-01",
+      "width": 1920,
+      "height": 1282,
+      "aspectRatio": 1.4977,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 5837,
+          "webp": 3434,
+          "avif": 2620
+        },
+        "640": {
+          "jpeg": 13577,
+          "webp": 7750,
+          "avif": 4928
+        },
+        "960": {
+          "jpeg": 23656,
+          "webp": 12740,
+          "avif": 7546
+        },
+        "1280": {
+          "jpeg": 36080,
+          "webp": 18592,
+          "avif": 10416
+        },
+        "1920": {
+          "jpeg": 121262,
+          "webp": 79038,
+          "avif": 21917
+        }
+      },
+      "credit": {
+        "id": "cp-01",
+        "category": "circuit-protection",
+        "title": "Electric circuit breaker fuse box in private home.jpg",
+        "author": "Shixart1985",
+        "licence": "CC BY 2.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by/2.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Electric%20circuit%20breaker%20fuse%20box%20in%20private%20home.jpg",
+        "originalWidth": 5322,
+        "originalHeight": 3553
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4gIcSUNDX1BST0ZJTEUAAQEAAAIMbGNtcwIQAABtbnRyUkdCIFhZWiAH3AABABkAAwApADlhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApkZXNjAAAA/AAAAF5jcHJ0AAABXAAAAAt3dHB0AAABaAAAABRia3B0AAABfAAAABRyWFlaAAABkAAAABRnWFlaAAABpAAAABRiWFlaAAABuAAAABRyVFJDAAABzAAAAEBnVFJDAAABzAAAAEBiVFJDAAABzAAAAEBkZXNjAAAAAAAAAANjMgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0ZXh0AAAAAEZCAABYWVogAAAAAAAA9tYAAQAAAADTLVhZWiAAAAAAAAADFgAAAzMAAAKkWFlaIAAAAAAAAG+iAAA49QAAA5BYWVogAAAAAAAAYpkAALeFAAAY2lhZWiAAAAAAAAAkoAAAD4QAALbPY3VydgAAAAAAAAAaAAAAywHJA2MFkghrC/YQPxVRGzQh8SmQMhg7kkYFUXdd7WtwegWJsZp8rGm/fdPD6TD////+ABBMYXZjNjIuMjguMTAyAP/bAEMACBgYHBgcISEhISEhJyQnKCgoJycnJygoKCsrKzMzMysrKygoKyswMDMzNzk3NDQzNDk5PDw8SEhFRVRUV2dnfP/EAF0AAAMBAAAAAAAAAAAAAAAAAAAEBgcBAQEAAAAAAAAAAAAAAAAAAAECEAABAwMDBQEAAAAAAAAAAAABEQIhAAQDIpESEwUUgWFBEQEAAAAAAAAAAAAAAAAAAAAA/8AAEQgACgAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8APPzP4DE5qpqUCD6FOW11cuuOnldpSECBdqnO3NbJQbfa1Z44sKRH5Qh//9k="
+    },
+    "cp-02": {
+      "id": "cp-02",
+      "width": 1920,
+      "height": 1440,
+      "aspectRatio": 1.3333,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 15365,
+          "webp": 12242,
+          "avif": 6026
+        },
+        "640": {
+          "jpeg": 51449,
+          "webp": 39438,
+          "avif": 17868
+        },
+        "960": {
+          "jpeg": 96627,
+          "webp": 72072,
+          "avif": 33698
+        },
+        "1280": {
+          "jpeg": 150984,
+          "webp": 108638,
+          "avif": 51627
+        },
+        "1920": {
+          "jpeg": 291765,
+          "webp": 203004,
+          "avif": 96173
+        }
+      },
+      "credit": {
+        "id": "cp-02",
+        "category": "circuit-protection",
+        "title": "Circuit breaker IMG 8455.JPG",
+        "author": "01x07x2022000",
+        "licence": "CC0",
+        "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:Circuit%20breaker%20IMG%208455.JPG",
+        "originalWidth": 4032,
+        "originalHeight": 3024
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4gIoSUNDX1BST0ZJTEUAAQEAAAIYYXBwbAQAAABtbnRyUkdCIFhZWiAH5gABAAEAAAAAAABhY3NwQVBQTAAAAABBUFBMAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWFwcGzs/aOOOIVHw220vU962hgvAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApkZXNjAAAA/AAAADBjcHJ0AAABLAAAAFB3dHB0AAABfAAAABRyWFlaAAABkAAAABRnWFlaAAABpAAAABRiWFlaAAABuAAAABRyVFJDAAABzAAAACBjaGFkAAAB7AAAACxiVFJDAAABzAAAACBnVFJDAAABzAAAACBtbHVjAAAAAAAAAAEAAAAMZW5VUwAAABQAAAAcAEQAaQBzAHAAbABhAHkAIABQADNtbHVjAAAAAAAAAAEAAAAMZW5VUwAAADQAAAAcAEMAbwBwAHkAcgBpAGcAaAB0ACAAQQBwAHAAbABlACAASQBuAGMALgAsACAAMgAwADIAMlhZWiAAAAAAAAD21QABAAAAANMsWFlaIAAAAAAAAIPfAAA9v////7tYWVogAAAAAAAASr8AALE3AAAKuVhZWiAAAAAAAAAoOAAAEQsAAMi5cGFyYQAAAAAAAwAAAAJmZgAA8qcAAA1ZAAAT0AAACltzZjMyAAAAAAABDEIAAAXe///zJgAAB5MAAP2Q///7ov///aMAAAPcAADAbv/+ABBMYXZjNjIuMjguMTAyAP/bAEMACBgYHBgcISEhISEhJyQnKCgoJycnJygoKCsrKzMzMysrKygoKyswMDMzNzk3NDQzNDk5PDw8SEhFRVRUV2dnfP/EAFUAAQEAAAAAAAAAAAAAAAAAAAUGAQEAAAAAAAAAAAAAAAAAAAAEEAEAAgMBAQAAAAAAAAAAAAABAgAhEUEScREBAQEBAAAAAAAAAAAAAAAAEQEAMf/AABEIAAwAEAMBIgACEQADEQD/2gAMAwEAAhEDEQA/AKnxLPdc+lEnJgiOqrOctObMKrmjYcyCu//Z"
+    },
+    "cp-03": {
+      "id": "cp-03",
+      "width": 1920,
+      "height": 1440,
+      "aspectRatio": 1.3333,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 21162,
+          "webp": 16606,
+          "avif": 7276
+        },
+        "640": {
+          "jpeg": 73708,
+          "webp": 58352,
+          "avif": 24772
+        },
+        "960": {
+          "jpeg": 154129,
+          "webp": 122746,
+          "avif": 50631
+        },
+        "1280": {
+          "jpeg": 261257,
+          "webp": 205462,
+          "avif": 85553
+        },
+        "1920": {
+          "jpeg": 553361,
+          "webp": 435738,
+          "avif": 182034
+        }
+      },
+      "credit": {
+        "id": "cp-03",
+        "category": "circuit-protection",
+        "title": "Substation Circuit Breaker 1.jpg",
+        "author": "Yoshieslunchbox",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Substation%20Circuit%20Breaker%201.jpg",
+        "originalWidth": 4896,
+        "originalHeight": 3672
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABfAAEBAQAAAAAAAAAAAAAAAAAFAwQBAQAAAAAAAAAAAAAAAAAAAAQQAAIBAwIHAQAAAAAAAAAAAAECEQMAIYESEyLBYbFCMTIRAQADAQAAAAAAAAAAAAAAAAABAhMS/8AAEQgADAAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8AxPRX4D6s2iizGanT/ROgJ6W46zWPM0QcTcOIRuUYCjvPm1aWG4h//9k="
+    },
+    "cp-04": {
+      "id": "cp-04",
+      "width": 1920,
+      "height": 2560,
+      "aspectRatio": 0.75,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 14538,
+          "webp": 7376,
+          "avif": 4882
+        },
+        "640": {
+          "jpeg": 39692,
+          "webp": 18016,
+          "avif": 12169
+        },
+        "960": {
+          "jpeg": 78849,
+          "webp": 35924,
+          "avif": 22703
+        },
+        "1280": {
+          "jpeg": 136762,
+          "webp": 66710,
+          "avif": 39187
+        },
+        "1920": {
+          "jpeg": 316465,
+          "webp": 164084,
+          "avif": 96664
+        }
+      },
+      "credit": {
+        "id": "cp-04",
+        "category": "circuit-protection",
+        "title": "4-pole GE residual current device 30mA 400V.JPG",
+        "author": "Dmitry G",
+        "licence": "CC BY-SA 3.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:4-pole%20GE%20residual%20current%20device%2030mA%20400V.JPG",
+        "originalWidth": 2736,
+        "originalHeight": 3648
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAAIQAgAAD//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABiAAEBAQAAAAAAAAAAAAAAAAAEAwUBAAMBAAAAAAAAAAAAAAAAAAACAwEQAAEDBAMBAQAAAAAAAAAAAAEAEQIDEiFhoUHRUTERAQEBAAMBAQAAAAAAAAAAAAABERIhoUEx/8AAEQgAFgAQAwESAAISAAMSAP/aAAwDAQACEQMRAD8AkZEEjaRUa+TfT03HScpDsmVQxH7xvxHrXW4IYAvtYnd69Ei845d/fjfa7KoFViIBlTcZKZJAaH//2Q=="
+    },
+    "em-01": {
+      "id": "em-01",
+      "width": 1920,
+      "height": 2550,
+      "aspectRatio": 0.7529,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 19929,
+          "webp": 12780,
+          "avif": 7070
+        },
+        "640": {
+          "jpeg": 63141,
+          "webp": 39136,
+          "avif": 22379
+        },
+        "960": {
+          "jpeg": 116446,
+          "webp": 67944,
+          "avif": 41187
+        },
+        "1280": {
+          "jpeg": 176061,
+          "webp": 97716,
+          "avif": 60485
+        },
+        "1920": {
+          "jpeg": 322533,
+          "webp": 170298,
+          "avif": 102859
+        }
+      },
+      "credit": {
+        "id": "em-01",
+        "category": "energy-monitoring",
+        "title": "Vorarlberger Kraftwerke-Energy meter (electro)-01ASD.jpg",
+        "author": "Asurnipal",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Vorarlberger%20Kraftwerke-Energy%20meter%20(electro)-01ASD.jpg",
+        "originalWidth": 3361,
+        "originalHeight": 4465
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABdAAEBAQAAAAAAAAAAAAAAAAAEBQcBAQEBAAAAAAAAAAAAAAAAAAEAAhAAAgICAQMFAQAAAAAAAAAAAQIRAAMEITHRQTKBknETUREBAAAAAAAAAAAAAAAAAAAAAP/AABEIABYAEAMBEgACEgADEgD/2gAMAwEAAhEDEQA/AGpqY2RWLESAT0gTUgK2JAY9I688x90JCNm1kx4i4YyI4Mf2KvaAXXaAAOI+QuSQz398iCAxA9+9nNQFEHK7iCfM+e9GKgF//9k="
+    },
+    "em-02": {
+      "id": "em-02",
+      "width": 1920,
+      "height": 1278,
+      "aspectRatio": 1.5023,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 7107,
+          "webp": 4648,
+          "avif": 2809
+        },
+        "640": {
+          "jpeg": 20844,
+          "webp": 12550,
+          "avif": 7659
+        },
+        "960": {
+          "jpeg": 39771,
+          "webp": 22404,
+          "avif": 13837
+        },
+        "1280": {
+          "jpeg": 63434,
+          "webp": 36984,
+          "avif": 22082
+        },
+        "1920": {
+          "jpeg": 123370,
+          "webp": 67238,
+          "avif": 42870
+        }
+      },
+      "credit": {
+        "id": "em-02",
+        "category": "energy-monitoring",
+        "title": "Kos-Kos city-Electricity meter-01ASD.jpg",
+        "author": "Asurnipal",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Kos-Kos%20city-Electricity%20meter-01ASD.jpg",
+        "originalWidth": 4592,
+        "originalHeight": 3056
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABXAAADAQAAAAAAAAAAAAAAAAACAwQFAQEAAAAAAAAAAAAAAAAAAAADEAACAgIDAQEAAAAAAAAAAAABAgADESES8LFhUREBAAAAAAAAAAAAAAAAAAAAAP/AABEIAAoAEAMBIgACEQADEQD/2gAMAwEAAhEDEQA/ANY28SAMdMldher1nX0exogPpDj8hlf/2Q=="
+    },
+    "hero-01": {
+      "id": "hero-01",
+      "width": 1920,
+      "height": 1286,
+      "aspectRatio": 1.493,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 11962,
+          "webp": 8878,
+          "avif": 4494
+        },
+        "640": {
+          "jpeg": 38929,
+          "webp": 28262,
+          "avif": 13905
+        },
+        "960": {
+          "jpeg": 77780,
+          "webp": 55460,
+          "avif": 27640
+        },
+        "1280": {
+          "jpeg": 124387,
+          "webp": 88292,
+          "avif": 43673
+        },
+        "1920": {
+          "jpeg": 234693,
+          "webp": 163716,
+          "avif": 84741
+        }
+      },
+      "credit": {
+        "id": "hero-01",
+        "category": "hero",
+        "title": "Substation, Northways car park 001.jpg",
+        "author": "Mtaylor848",
+        "licence": "CC BY-SA 3.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Substation%2C%20Northways%20car%20park%20001.jpg",
+        "originalWidth": 3872,
+        "originalHeight": 2592
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABcAAADAQAAAAAAAAAAAAAAAAADBAUGAQEAAAAAAAAAAAAAAAAAAAABEAABAgYDAQEBAAAAAAAAAAABAgMAEQQSISIxcVGBQQURAQEAAAAAAAAAAAAAAAAAAAAx/8AAEQgACgAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8Aarf6SS2g06rSqYVcNk9Tx9zEhmrWwd3Cpv8AbtlDpXPPsxGDABaz6YK4YIa//9k="
+    },
+    "hero-02": {
+      "id": "hero-02",
+      "width": 1920,
+      "height": 1440,
+      "aspectRatio": 1.3333,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 29634,
+          "webp": 24530,
+          "avif": 9984
+        },
+        "640": {
+          "jpeg": 108114,
+          "webp": 89916,
+          "avif": 35814
+        },
+        "960": {
+          "jpeg": 231795,
+          "webp": 195354,
+          "avif": 76800
+        },
+        "1280": {
+          "jpeg": 394052,
+          "webp": 326310,
+          "avif": 131600
+        },
+        "1920": {
+          "jpeg": 803122,
+          "webp": 670656,
+          "avif": 271947
+        }
+      },
+      "credit": {
+        "id": "hero-02",
+        "category": "hero",
+        "title": "Factory Automation Robotics Palettizing Bread.jpg",
+        "author": "KUKA Roboter GmbH, Bachmann",
+        "licence": "Public domain",
+        "licenceUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Factory%20Automation%20Robotics%20Palettizing%20Bread.jpg",
+        "originalWidth": 3417,
+        "originalHeight": 2563
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAgAoCygMAAD//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABfAAEBAAAAAAAAAAAAAAAAAAAEBQEBAQAAAAAAAAAAAAAAAAAABAUQAAIBAwUBAQEAAAAAAAAAAAIBEQBBEgMiIfBRcWExEQEAAgMBAAAAAAAAAAAAAAABAgAS0SJh/8AAEQgADAAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8AOQaWKZCuIniIqMQYSwOCG7/jnxJOnZbPft+/lD01tLt4qdIxdVh1F8v/2Q=="
+    },
+    "ia-01": {
+      "id": "ia-01",
+      "width": 1920,
+      "height": 1080,
+      "aspectRatio": 1.7778,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 11363,
+          "webp": 8148,
+          "avif": 4098
+        },
+        "640": {
+          "jpeg": 29132,
+          "webp": 19616,
+          "avif": 10377
+        },
+        "960": {
+          "jpeg": 49368,
+          "webp": 31558,
+          "avif": 17254
+        },
+        "1280": {
+          "jpeg": 72121,
+          "webp": 44554,
+          "avif": 24962
+        },
+        "1920": {
+          "jpeg": 137903,
+          "webp": 80558,
+          "avif": 45244
+        }
+      },
+      "credit": {
+        "id": "ia-01",
+        "category": "industrial-automation",
+        "title": "PLC Panasonic FP-XH C30T.jpg",
+        "author": "Angga Panca Alam Anugrah",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:PLC%20Panasonic%20FP-XH%20C30T.jpg",
+        "originalWidth": 4032,
+        "originalHeight": 2268
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABdAAEBAQAAAAAAAAAAAAAAAAAGBQcBAQEAAAAAAAAAAAAAAAAAAAIDEAACAQQBBQEAAAAAAAAAAAABAgARAyEEExLwwaEzYREBAQEBAAAAAAAAAAAAAAAAAQARQf/AABEIAAoAEAMBIgACEQADEQD/2gAMAwEAAhEDEQA/ACGsLZW6xHWUUFQcD1HGwV4moamgmbDFlqY7ErP9G/B5EK6vKl//2Q=="
+    },
+    "ia-02": {
+      "id": "ia-02",
+      "width": 1920,
+      "height": 1280,
+      "aspectRatio": 1.5,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 14244,
+          "webp": 9192,
+          "avif": 5013
+        },
+        "640": {
+          "jpeg": 40283,
+          "webp": 24458,
+          "avif": 13236
+        },
+        "960": {
+          "jpeg": 78480,
+          "webp": 47120,
+          "avif": 23954
+        },
+        "1280": {
+          "jpeg": 126534,
+          "webp": 78538,
+          "avif": 40050
+        },
+        "1920": {
+          "jpeg": 283809,
+          "webp": 186860,
+          "avif": 81172
+        }
+      },
+      "credit": {
+        "id": "ia-02",
+        "category": "industrial-automation",
+        "title": "GSK980TA control system 20260331123956.jpg",
+        "author": "TurnOnTheNight",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:GSK980TA%20control%20system%2020260331123956.jpg",
+        "originalWidth": 6000,
+        "originalHeight": 4000
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4gIcSUNDX1BST0ZJTEUAAQEAAAIMbGNtcwIQAABtbnRyUkdCIFhZWiAH3AABABkAAwApADlhY3NwQVBQTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWxjbXMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApkZXNjAAAA/AAAAF5jcHJ0AAABXAAAAAt3dHB0AAABaAAAABRia3B0AAABfAAAABRyWFlaAAABkAAAABRnWFlaAAABpAAAABRiWFlaAAABuAAAABRyVFJDAAABzAAAAEBnVFJDAAABzAAAAEBiVFJDAAABzAAAAEBkZXNjAAAAAAAAAANjMgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB0ZXh0AAAAAEZCAABYWVogAAAAAAAA9tYAAQAAAADTLVhZWiAAAAAAAAADFgAAAzMAAAKkWFlaIAAAAAAAAG+iAAA49QAAA5BYWVogAAAAAAAAYpkAALeFAAAY2lhZWiAAAAAAAAAkoAAAD4QAALbPY3VydgAAAAAAAAAaAAAAywHJA2MFkghrC/YQPxVRGzQh8SmQMhg7kkYFUXdd7WtwegWJsZp8rGm/fdPD6TD////+ABBMYXZjNjIuMjguMTAyAP/bAEMACBgYHBgcISEhISEhJyQnKCgoJycnJygoKCsrKzMzMysrKygoKyswMDMzNzk3NDQzNDk5PDw8SEhFRVRUV2dnfP/EAFsAAQEAAAAAAAAAAAAAAAAAAAYEAQEAAAAAAAAAAAAAAAAAAAACEAACAQMDBQEAAAAAAAAAAAABAhIDABEEITHRkYFSUUIRAQEBAAAAAAAAAAAAAAAAAAARIf/AABEIAAoAEAMBIgACEQADEQD/2gAMAwEAAhEDEQA/AAwdnaU4g4MZFfnGLuq1ouppMRz+y3cE4tXq6NIBiEQb+o6WI06KX3UHwLFOa//Z"
+    },
+    "ia-03": {
+      "id": "ia-03",
+      "width": 1920,
+      "height": 1080,
+      "aspectRatio": 1.7778,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 6921,
+          "webp": 4650,
+          "avif": 2813
+        },
+        "640": {
+          "jpeg": 19648,
+          "webp": 12062,
+          "avif": 7175
+        },
+        "960": {
+          "jpeg": 36897,
+          "webp": 21538,
+          "avif": 13479
+        },
+        "1280": {
+          "jpeg": 57271,
+          "webp": 32362,
+          "avif": 21311
+        },
+        "1920": {
+          "jpeg": 108444,
+          "webp": 59676,
+          "avif": 39534
+        }
+      },
+      "credit": {
+        "id": "ia-03",
+        "category": "industrial-automation",
+        "title": "Variable Frequency Drive (VFD) - 1.jpeg",
+        "author": "Suyash.dwivedi",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Variable%20Frequency%20Drive%20(VFD)%20-%201.jpeg",
+        "originalWidth": 2560,
+        "originalHeight": 1440
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABXAAEBAQAAAAAAAAAAAAAAAAAEBQYBAQEAAAAAAAAAAAAAAAAAAAACEAABBAMBAQAAAAAAAAAAAAABABECAyExElEiEQEBAAAAAAAAAAAAAAAAAAAAAf/AABEIAAoAEAMBIgACEgADEgD/2gAMAwEAAhEDEQA/AN7dmueW+UOmR4AJdvFSlsow2ppSEf/Z"
+    },
+    "ia-04": {
+      "id": "ia-04",
+      "width": 1920,
+      "height": 1080,
+      "aspectRatio": 1.7778,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 8428,
+          "webp": 5210,
+          "avif": 3150
+        },
+        "640": {
+          "jpeg": 23596,
+          "webp": 14214,
+          "avif": 8340
+        },
+        "960": {
+          "jpeg": 42541,
+          "webp": 24902,
+          "avif": 15150
+        },
+        "1280": {
+          "jpeg": 63804,
+          "webp": 36418,
+          "avif": 22141
+        },
+        "1920": {
+          "jpeg": 114684,
+          "webp": 63164,
+          "avif": 39101
+        }
+      },
+      "credit": {
+        "id": "ia-04",
+        "category": "industrial-automation",
+        "title": "Variable Frequency Drive (VFD) - 2.jpeg",
+        "author": "Suyash.dwivedi",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Variable%20Frequency%20Drive%20(VFD)%20-%202.jpeg",
+        "originalWidth": 2560,
+        "originalHeight": 1440
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABbAAEBAQAAAAAAAAAAAAAAAAAGAwQBAQEBAAAAAAAAAAAAAAAAAAMCBBABAAICAwEBAQAAAAAAAAAAAQIRIQASAwRRMcERAQEBAQAAAAAAAAAAAAAAAAABMSH/wAARCAAKABADASIAAhIAAxIA/9oADAMBAAIRAxEAPwBf7yL1QZcbOzDIsLi/dj4eJCdcVZfsShx/M6m7IkhJAmMJZuYCNAAfDWt4K6zqmP/Z"
+    },
+    "pc-01": {
+      "id": "pc-01",
+      "width": 1920,
+      "height": 1280,
+      "aspectRatio": 1.5,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 13386,
+          "webp": 9502,
+          "avif": 4635
+        },
+        "640": {
+          "jpeg": 37061,
+          "webp": 24700,
+          "avif": 13281
+        },
+        "960": {
+          "jpeg": 68018,
+          "webp": 44110,
+          "avif": 23154
+        },
+        "1280": {
+          "jpeg": 105128,
+          "webp": 65792,
+          "avif": 36203
+        },
+        "1920": {
+          "jpeg": 191076,
+          "webp": 117250,
+          "avif": 65802
+        }
+      },
+      "credit": {
+        "id": "pc-01",
+        "category": "power-continuity",
+        "title": "UPS - uninterruptible power supply.JPG",
+        "author": "Work With Sounds",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:UPS%20-%20uninterruptible%20power%20supply.JPG",
+        "originalWidth": 5184,
+        "originalHeight": 3456
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABZAAADAQAAAAAAAAAAAAAAAAADBAUGAQEAAAAAAAAAAAAAAAAAAAAEEAACAgICAwEAAAAAAAAAAAABAgMRMQASYUEiIQQRAQEAAAAAAAAAAAAAAAAAAAAR/8AAEQgACgAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8AEVid5JYy6EBOJX1tvORrf4pY4ubPXq5UEm8ee85raUQ+ncmQBQAAtmvv7oKW/9k="
+    },
+    "pc-02": {
+      "id": "pc-02",
+      "width": 1920,
+      "height": 1280,
+      "aspectRatio": 1.5,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 13117,
+          "webp": 7312,
+          "avif": 6555
+        },
+        "640": {
+          "jpeg": 37534,
+          "webp": 24936,
+          "avif": 13716
+        },
+        "960": {
+          "jpeg": 66911,
+          "webp": 41052,
+          "avif": 21423
+        },
+        "1280": {
+          "jpeg": 100019,
+          "webp": 55686,
+          "avif": 30830
+        },
+        "1920": {
+          "jpeg": 173359,
+          "webp": 87136,
+          "avif": 51484
+        }
+      },
+      "credit": {
+        "id": "pc-02",
+        "category": "power-continuity",
+        "title": "MGE Uninterruptible Power Supply at NERSC.jpg",
+        "author": "Derrick Coetzee from Berkeley, CA, USA",
+        "licence": "CC0",
+        "licenceUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+        "source": "https://commons.wikimedia.org/wiki/File:MGE%20Uninterruptible%20Power%20Supply%20at%20NERSC.jpg",
+        "originalWidth": 3361,
+        "originalHeight": 2240
+      },
+      "lqip": "data:image/jpeg;base64,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"
+    },
+    "pc-03": {
+      "id": "pc-03",
+      "width": 1920,
+      "height": 2560,
+      "aspectRatio": 0.75,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 36121,
+          "webp": 30678,
+          "avif": 12957
+        },
+        "640": {
+          "jpeg": 147635,
+          "webp": 127860,
+          "avif": 54123
+        },
+        "960": {
+          "jpeg": 331454,
+          "webp": 285744,
+          "avif": 119059
+        },
+        "1280": {
+          "jpeg": 596988,
+          "webp": 516608,
+          "avif": 207396
+        },
+        "1920": {
+          "jpeg": 1370591,
+          "webp": 1221980,
+          "avif": 462990
+        }
+      },
+      "credit": {
+        "id": "pc-03",
+        "category": "power-continuity",
+        "title": "Camlock 120v AC Power Distribution Unit.jpg",
+        "author": "Robert.Harker",
+        "licence": "CC BY-SA 4.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Camlock%20120v%20AC%20Power%20Distribution%20Unit.jpg",
+        "originalWidth": 3120,
+        "originalHeight": 4160
+      },
+      "lqip": "data:image/jpeg;base64,/9j//gAQTGF2YzYyLjI4LjEwMgD/2wBDAAgYGBwYHCEhISEhISckJygoKCcnJycoKCgrKyszMzMrKysoKCsrMDAzMzc5NzQ0MzQ5OTw8PEhIRUVUVFdnZ3z/xABjAAEBAQEAAAAAAAAAAAAAAAAEAwUGAQEBAAAAAAAAAAAAAAAAAAACAxAAAQMCBAcBAQAAAAAAAAAAAQIAESESQVExsdHhA0LBBPFxExEBAQEBAAAAAAAAAAAAAAAAAAEREv/AABEIABYAEAMBIgACEQADEQD/2gAMAwEAAhEDEQA/AMFKllQMBR7QfDqsFBEgifp3b/6WdW2ElQmuVKiMnm+yoqtrnh+N5OQ29OZvUTOJnF1CiNa8ywjVoVw3YUf/2Q=="
+    },
+    "pc-04": {
+      "id": "pc-04",
+      "width": 1920,
+      "height": 1440,
+      "aspectRatio": 1.3333,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 20769,
+          "webp": 8962,
+          "avif": 8307
+        },
+        "640": {
+          "jpeg": 61953,
+          "webp": 27676,
+          "avif": 16892
+        },
+        "960": {
+          "jpeg": 123080,
+          "webp": 55408,
+          "avif": 28875
+        },
+        "1280": {
+          "jpeg": 202924,
+          "webp": 93804,
+          "avif": 45119
+        },
+        "1920": {
+          "jpeg": 416365,
+          "webp": 193906,
+          "avif": 86684
+        }
+      },
+      "credit": {
+        "id": "pc-04",
+        "category": "power-continuity",
+        "title": "Busbars for earthing.JPG",
+        "author": "Dmitry G",
+        "licence": "CC BY-SA 3.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:Busbars%20for%20earthing.JPG",
+        "originalWidth": 3539,
+        "originalHeight": 2654
+      },
+      "lqip": "data:image/jpeg;base64,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"
+    },
+    "sm-01": {
+      "id": "sm-01",
+      "width": 1920,
+      "height": 1440,
+      "aspectRatio": 1.3333,
+      "widths": [
+        320,
+        640,
+        960,
+        1280,
+        1920
+      ],
+      "formats": {
+        "avif": "image/avif",
+        "webp": "image/webp",
+        "jpeg": "image/jpeg"
+      },
+      "bytes": {
+        "320": {
+          "jpeg": 8241,
+          "webp": 4350,
+          "avif": 3455
+        },
+        "640": {
+          "jpeg": 26078,
+          "webp": 15746,
+          "avif": 9295
+        },
+        "960": {
+          "jpeg": 52628,
+          "webp": 31732,
+          "avif": 18236
+        },
+        "1280": {
+          "jpeg": 84853,
+          "webp": 49966,
+          "avif": 27601
+        },
+        "1920": {
+          "jpeg": 162065,
+          "webp": 92608,
+          "avif": 48839
+        }
+      },
+      "credit": {
+        "id": "sm-01",
+        "category": "sensing-measurement",
+        "title": "Анемометрия силой Лоренца (прототип).jpg",
+        "author": "SokolovIlmenau",
+        "licence": "CC BY-SA 3.0",
+        "licenceUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+        "source": "https://commons.wikimedia.org/wiki/File:%D0%90%D0%BD%D0%B5%D0%BC%D0%BE%D0%BC%D0%B5%D1%82%D1%80%D0%B8%D1%8F%20%D1%81%D0%B8%D0%BB%D0%BE%D0%B9%20%D0%9B%D0%BE%D1%80%D0%B5%D0%BD%D1%86%D0%B0%20(%D0%BF%D1%80%D0%BE%D1%82%D0%BE%D1%82%D0%B8%D0%BF).jpg",
+        "originalWidth": 4000,
+        "originalHeight": 3000
+      },
+      "lqip": "data:image/jpeg;base64,/9j/4gJASUNDX1BST0ZJTEUAAQEAAAIwQURCRQIQAABtbnRyUkdCIFhZWiAHzwAGAAMAAAAAAABhY3NwQVBQTAAAAABub25lAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLUFEQkUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApjcHJ0AAAA/AAAADJkZXNjAAABMAAAAGt3dHB0AAABnAAAABRia3B0AAABsAAAABRyVFJDAAABxAAAAA5nVFJDAAAB1AAAAA5iVFJDAAAB5AAAAA5yWFlaAAAB9AAAABRnWFlaAAACCAAAABRiWFlaAAACHAAAABR0ZXh0AAAAAENvcHlyaWdodCAxOTk5IEFkb2JlIFN5c3RlbXMgSW5jb3Jwb3JhdGVkAAAAZGVzYwAAAAAAAAARQWRvYmUgUkdCICgxOTk4KQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWFlaIAAAAAAAAPNRAAEAAAABFsxYWVogAAAAAAAAAAAAAAAAAAAAAGN1cnYAAAAAAAAAAQIzAABjdXJ2AAAAAAAAAAECMwAAY3VydgAAAAAAAAABAjMAAFhZWiAAAAAAAACcGAAAT6UAAAT8WFlaIAAAAAAAADSNAACgLAAAD5VYWVogAAAAAAAAJjEAABAvAAC+nP/+ABBMYXZjNjIuMjguMTAyAP/bAEMACBgYHBgcISEhISEhJyQnKCgoJycnJygoKCsrKzMzMysrKygoKyswMDMzNzk3NDQzNDk5PDw8SEhFRVRUV2dnfP/EAGAAAQEAAAAAAAAAAAAAAAAAAAUGAQEBAAAAAAAAAAAAAAAAAAABAhAAAgEFAQEBAAAAAAAAAAAAARECAwBBMSESUQQRAAECBwEAAAAAAAAAAAAAAAEAEgIRIdExcVFB/8AAEQgADAAQAwEiAAIRAAMRAP/aAAwDAQACEQMRAD8ASrfo8VBHBXRhnduiJQaL0Ro3HypRnJl3d0OKOPmLSTBXwZFlcnb6v//Z"
+    }
+  },
+  "video": {
+    "hero": {
+      "id": "hero",
+      "width": 1280,
+      "height": 720,
+      "aspectRatio": 1.7778,
+      "poster": {
+        "path": "video/hero-poster.jpg",
+        "width": 1280,
+        "height": 960,
+        "bytes": 180671
+      },
+      "sources": [
+        {
+          "path": "video/hero.mp4",
+          "type": "video/mp4",
+          "bytes": 645394
+        },
+        {
+          "path": "video/hero.webm",
+          "type": "video/webm",
+          "bytes": 1236041
+        }
+      ],
+      "credit": {
+        "id": "hero-02",
+        "category": "hero",
+        "title": "Factory Automation Robotics Palettizing Bread.jpg",
+        "author": "KUKA Roboter GmbH, Bachmann",
+        "licence": "Public domain",
+        "licenceUrl": "",
+        "source": "https://commons.wikimedia.org/wiki/File:Factory%20Automation%20Robotics%20Palettizing%20Bread.jpg",
+        "originalWidth": 3417,
+        "originalHeight": 2563
+      }
+    }
+  },
+  "generatedAt": "2026-08-24T11:30:00.938Z"
+}

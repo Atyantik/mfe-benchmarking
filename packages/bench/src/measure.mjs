@@ -15,13 +15,17 @@ import { chromium } from 'playwright';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 
+import { EDGE, ROUTES as TOPOLOGY_ROUTES, ownerOf } from './lib/topology.mjs';
+
 export const VARIANTS = [
-  { id: 'site', label: 'server-rendered pages, client-only personalization', base: 'http://localhost:3100' },
+  {
+    id: 'site',
+    label: 'two hosts behind one edge; documents server-rendered, personalization client-only',
+    base: EDGE,
+  },
 ];
 
-export const ROUTES = ['/', '/faq', '/faq/contact', '/product', '/product/p-0001'];
-
-const REMOTE_PORTS = { 3100: 'host', 3101: 'faq', 3102: 'product', 3103: 'cart' };
+export const ROUTES = TOPOLOGY_ROUTES.map((r) => r.path);
 
 /** Attribute a response to a cost centre. "The bundle is big" is not an actionable finding. */
 function classify(url, body) {
@@ -33,11 +37,6 @@ function classify(url, body) {
   if (/remoteEntry\.js/.test(url)) return 'mf-runtime';
   if (text.includes('__webpack_require__.federation') || text.includes('initializeSharing')) return 'mf-runtime';
   return 'app';
-}
-
-function ownerOf(url) {
-  const port = new URL(url).port;
-  return REMOTE_PORTS[port] ?? 'other';
 }
 
 async function measureRoute(browser, variant, route) {

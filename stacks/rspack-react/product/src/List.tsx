@@ -164,11 +164,16 @@ export function Component({ data }: PageProps<ListData>) {
             />
           ) : (
             <ul className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {data.products.map((p) => (
+              {data.products.map((p, i) => (
                 <ProductCard
                   key={p.id}
                   product={p}
                   href={`/product/${p.id}`}
+                  // One LCP candidate, three above-the-fold images. Marking all three
+                  // priority made them race each other; marking none eager deferred them
+                  // behind a scroll that had already happened.
+                  priority={i === 0}
+                  eager={i < 3}
                   action={
                     <Button
                       type="button"
@@ -206,7 +211,13 @@ export function Component({ data }: PageProps<ListData>) {
 function Filters({ data }: { data: ListData }) {
   return (
     <Card as="div" className="h-fit p-4 lg:sticky lg:top-4">
-      <form method="get" action="/product">
+      <form
+        method="get"
+        action="/product"
+        data-behavior="product.autosubmit"
+        data-behavior-when="immediate"
+        data-testid="filter-form"
+      >
         {data.query ? <input type="hidden" name="q" value={data.query} /> : null}
         {data.sort !== 'relevance' ? <input type="hidden" name="sort" value={data.sort} /> : null}
 
@@ -243,7 +254,9 @@ function Filters({ data }: { data: ListData }) {
           ))}
         </FacetGroup>
 
-        <FacetGroup title="Range">
+        {/* Ranges are the longest facet by far; scrolling it keeps the panel a sane height
+            and keeps the controls below it reachable. */}
+        <FacetGroup title="Range" scroll>
           {RANGE_NAMES.map((r) => (
             <FacetOption
               key={r}
@@ -256,7 +269,11 @@ function Filters({ data }: { data: ListData }) {
           ))}
         </FacetGroup>
 
-        <Button type="submit" className="mt-4 w-full">Apply filters</Button>
+        {/* The no-JS path. CSS hides it when scripting is available, so the enhanced page
+            never has to move it. */}
+        <Button type="submit" data-fallback-only data-testid="apply-filters" className="mt-4 w-full">
+          Apply filters
+        </Button>
       </form>
     </Card>
   );
@@ -267,6 +284,9 @@ function SortBar({ data }: { data: ListData }) {
     <form
       method="get"
       action="/product"
+      data-behavior="product.autosubmit"
+      data-behavior-when="immediate"
+      data-testid="sort-form"
       className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-line bg-card px-3 py-2"
     >
       {data.query ? <input type="hidden" name="q" value={data.query} /> : null}
@@ -287,7 +307,9 @@ function SortBar({ data }: { data: ListData }) {
           className="w-auto"
           options={(Object.keys(SORTS) as SortKey[]).map((k) => ({ value: k, label: SORTS[k].label }))}
         />
-        <Button type="submit" tone="secondary" size="sm">Apply</Button>
+        <Button type="submit" tone="secondary" size="sm" data-fallback-only data-testid="apply-sort">
+          Apply
+        </Button>
       </div>
     </form>
   );

@@ -24,6 +24,7 @@
     "@mf-eval/design": "workspace:*",
     "@mf-eval/contracts": "workspace:*",
     "@mf-eval/react-contracts": "workspace:*",
-    "@mf-eval/shell-kit": "workspace:*"
+    "@mf-eval/shell-kit": "workspace:*",
+    "@mf-eval/media": "workspace:*"
   }
 }

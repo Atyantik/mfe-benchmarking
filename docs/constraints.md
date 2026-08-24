@@ -494,6 +494,132 @@ likely. If you compose CSS from independently deployed apps, scope it at the bou
 
 ---
 
+## 13. The federation runtime, not the behaviour, dominates client interactivity
+
+Measured by `pnpm bench` (`packages/bench/src/behaviors.mjs`), on `/product`, with the chunk
+already warmed by a `modulepreload` in the head:
+
+| | |
+|---|---:|
+| behaviour chunk, gzip | **520 B** |
+| chunk download (preload cache hit) | **0.0 ms** |
+| `attach()` — the author's own code | **0.1 ms** |
+| manifest + remoteEntry network | 2.8 ms |
+| **federation runtime: container init + share-scope setup** | **22.1 ms** |
+
+So 99% of the wall-clock cost of the first behaviour on a page is Module Federation
+initialising the container it lives in — not the behaviour, not its download, not its setup.
+
+Three consequences worth designing around:
+
+1. **The cost is per remote per page, not per behaviour.** A second behaviour from the same
+   remote costs its own download and its own `attach()` — roughly nothing. The bench asserts
+   this: a container is initialised once per page no matter how many behaviours use it.
+2. **It is off the critical path, and must stay there.** All of it happens after FCP, which is
+   the only reason 22 ms is acceptable. The bench fails if any behaviour attaches before first
+   contentful paint.
+3. **It sets a floor on `interaction`-strategy behaviours.** Deferring until first click means
+   paying the 22 ms at the moment the visitor is waiting, rather than during idle time. For a
+   remote whose container is not already initialised for some other reason, `idle` on a
+   preloaded chunk is the better trade — which is why `idle` is the default and why
+   `interaction` holds and replays the triggering event instead of dropping it.
+
+The number to watch is not the behaviour budget. It is whether a page has to initialise a
+container it would not otherwise have needed.
+
+## 14. SPA zones became measurable in July 2026, which is what makes them arguable
+
+Verified 2026-08-24 against Chrome for Developers and the `web-vitals` changelog.
+
+Chrome **151** (stable 28 July 2026) shipped the **Soft Navigations API unflagged**, adding two
+entry types to the Performance Timeline:
+
+- `soft-navigation` — emitted when a same-document route change is detected
+- `interaction-contentful-paint` — the LCP equivalent for a soft navigation
+
+`web-vitals` **v6** (21 July 2026) consumes them. A single document can now produce several metric
+lifecycles: LCP from `interaction-contentful-paint`, CLS and INP reset and re-sliced at each
+`soft-navigation` boundary.
+
+Why this matters here: **before this, a client-routed section was a Core Web Vitals blind spot.**
+Route changes produced no metrics, so a slow SPA area reported the initial load and nothing else,
+and looked good precisely because it was unmeasured. That was the strongest argument against
+allowing client routing anywhere in this architecture. It no longer holds.
+
+What still holds, and must be designed around:
+
+1. **A soft navigation must earn the name.** All three of: a user action initiates it, the URL
+   visibly changes, and the interaction produces a paint. A `pushState` with no paint is not a soft
+   navigation and produces no metrics — so a client-routed area that updates in place is still
+   unmeasured. Routing has to be honest to be counted.
+2. **CrUX reporting is still to be determined**, per Chrome's own documentation. Measurable in RUM
+   and in the lab today; whether it reaches the field dataset that ranking uses is unsettled. Do
+   not promise a client-routed area the same field coverage as a document navigation.
+3. **TTFB is reported as 0** for a soft navigation, and unchanged content between routes can report
+   different LCP values. The numbers are comparable within a route, not across the boundary.
+4. **Chromium only.** Safari and Firefox report nothing, so any zone-level metric is a partial
+   sample by construction.
+5. **Double counting.** A RUM tool already synthesising virtual pageviews will now collide with
+   native soft navigations. Run both in parallel before switching.
+
+## 15. Third-party remotes need no shared contract package — four primitives replace it
+
+Verified 2026-08-24 against the Module Federation docs and the manifest specification.
+
+The instinct at scale is a `@company/mfe-contract` package every vendor must depend on. That
+couples your release train to theirs and is exactly the coupling federation exists to remove. Four
+primitives make it unnecessary.
+
+**1. The remote describes itself.** `manifest.additionalData` mutates the generated manifest at
+build time, and the `Manifest<T>` type is generic over `metaData`:
+
+```ts
+additionalData: ({ stats }) => {
+  stats.metaData.deployEnv = process.env.NODE_ENV;
+  stats.custom = { buildId: process.env.BUILD_ID, capabilities: ['cart.widget'] };
+}
+```
+
+So capabilities, contract version and requirements travel **inside the vendor's own artifact**.
+
+**2. Its types travel with it.** The DTS plugin publishes generated declarations and records them
+in `metaData.types` (`path`, `name`, `api`, `zip`). The consumer's types come from the producer's
+build, not from a package both sides must agree to upgrade.
+
+**3. The host adapts at load time, not at author time.** Runtime plugin hooks, in increasing order
+of power: `beforeRequest` (rewrite the lookup), `afterResolve` (rewrite the resolved entry URL),
+`fetch` (manifest request: credentials, headers, retries), `loadEntry` (**complete** custom loading
+— custom remote types, JSON, delegation), `getModuleFactory` (custom factory resolution), `onLoad`
+(**rewrite the exposed exports**), `errorLoadRemote` (return a fallback module). A shape mismatch is
+normalised by a host-side adapter plugin rather than by asking the vendor to conform.
+
+**4. Isolation is configurable, and it is two separate mechanisms.**
+
+| Mechanism | What it isolates |
+|---|---|
+| `createInstance()` | A whole federation instance, isolated from the default. Still findable via `getInstance`. |
+| Share scopes | Named dependency pools. A remote in `shareScope: 'vendor'` cannot resolve or replace the host's `default` React singleton. |
+| `createScript` / `createLink` | Per-script `integrity`, `nonce`, `crossorigin` and a load `timeout` (default 20 s). |
+
+Both sides must list a scope for sharing to happen; a scope the consumer lists and the producer
+does not is filled in as `{}` rather than crashing.
+
+**Three limits to state before anyone builds on this.**
+
+- **A share scope is a dependency boundary, not a security boundary.** Third-party code still runs
+  on your main thread with full DOM, cookie and network access. For genuinely untrusted code the
+  boundary is an iframe or a worker, and federation does not provide one.
+- **Third-party app-level remotes still cannot server-render.** Bridge SSR is PR #4869
+  (`feat(bridge): add application-level SSR for React and Vue`), still **open** as of 2026-08-24,
+  and its V1 scope explicitly excludes streaming, React data routers and the Modern.js/Nuxt
+  adapters. Anything from a vendor is client-side — which means below the fold, or inside a zone,
+  never in the LCP element.
+- **`version-first` (the default share strategy) has a live singleton-duplication bug** (issue
+  #3209): a singleton can be fetched and executed twice, giving two Reacts and
+  `Cannot read properties of null (reading 'useEffect')`. `loaded-first` defers loading until use.
+  With untrusted or slow vendors, `loaded-first` also means their failure happens at use rather
+  than at startup.
+
 ## Reference implementations worth reading
 
 | Path | Why |

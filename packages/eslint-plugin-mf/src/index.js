@@ -11,6 +11,7 @@ import noRawColor from './rules/no-raw-color.js';
 import mfSharedRequiresVersion from './rules/mf-shared-requires-version.js';
 import noSerializedProps from './rules/no-serialized-props.js';
 import designSystemOnly from './rules/design-system-only.js';
+import behaviorMustExist from './rules/behavior-must-exist.js';
 
 const rules = {
   'no-client-api-in-page': noClientApiInPage,
@@ -19,6 +20,7 @@ const rules = {
   'mf-shared-requires-version': mfSharedRequiresVersion,
   'no-serialized-props': noSerializedProps,
   'design-system-only': designSystemOnly,
+  'behavior-must-exist': behaviorMustExist,
 };
 
 const plugin = { meta: { name: '@mf-eval/eslint-plugin-mf', version: '0.0.0' }, rules };

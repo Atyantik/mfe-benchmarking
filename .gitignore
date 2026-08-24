@@ -6,6 +6,8 @@ dist-ssr/
 *.tsbuildinfo
 results/**/*.json
 !results/.gitkeep
+# Runtime logs from scripts/stack.mjs — megabytes of server output, regenerated every run.
+.logs/
 .mf/
 *.heapsnapshot
 test-results/

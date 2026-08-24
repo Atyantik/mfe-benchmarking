@@ -9,7 +9,7 @@ whole repo worthless. So this file is frozen: changing it invalidates every resu
 any change must bump `SPEC_VERSION` and force a full re-run.
 
 ```
-SPEC_VERSION = 2
+SPEC_VERSION = 3
 ```
 
 **v2 — 2026-08-23.** The synthetic lorem fixtures were replaced with a realistic industrial

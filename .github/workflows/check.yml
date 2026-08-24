@@ -1,0 +1,34 @@
+# The gate. `pnpm check` is the same command a developer runs locally, deliberately — a CI
+# that runs something different is a CI that fails for reasons nobody can reproduce.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      # Lint, typecheck, unit tests, build, budgets. No browser and no media fixtures
+      # needed — this is the fast gate, and it is the one that must never be flaky.
+      - run: pnpm check

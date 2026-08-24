@@ -1,0 +1,3 @@
+/* Remotes import utilities only — the shell ships preflight, tokens and base once per
+   site. See docs/design-system.md. */
+@import "@mf-eval/design/utilities.css";

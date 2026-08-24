@@ -10,7 +10,7 @@
  */
 import { chromium } from 'playwright';
 
-const BASE = process.env.MF_BASE ?? 'http://localhost:3100';
+import { EDGE as BASE } from './lib/topology.mjs';
 const JOURNEY = ['/', '/faq', '/product', '/product/p-0001', '/faq/contact'];
 
 const browser = await chromium.launch();

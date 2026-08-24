@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@mf-eval/contracts": "workspace:*",
-    "@mf-eval/react-contracts": "workspace:*"
+    "@mf-eval/react-contracts": "workspace:*",
+    "react": "catalog:"
   },
   "peerDependencies": {
     "@module-federation/enhanced": "*",

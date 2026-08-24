@@ -1,0 +1,19 @@
+{
+  "name": "@mf-eval/behaviors",
+  "private": true,
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./runtime": "./src/runtime.ts",
+    "./package.json": "./package.json"
+  },
+  "scripts": { "test": "vitest run", "typecheck": "tsc --noEmit", "lint": "eslint src" },
+  "devDependencies": {
+    "@mf-eval/tsconfig": "workspace:*",
+    "@mf-eval/vitest-config": "workspace:*",
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

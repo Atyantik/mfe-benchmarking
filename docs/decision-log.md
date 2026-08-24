@@ -172,3 +172,125 @@ Consequences, measured:
 **Open cost:** the cart sits in the header, so it sets the JS floor for EVERY page —
 currently ~131 kB gzip, of which react-dom is 56 kB at 22.5% executed, to render a badge
 whose own code is 1.3 kB. See docs/constraints.md §9.
+
+### D13 — Interactivity is a behaviour attached to server markup, not hydration of it.
+
+Triggered by a real report: ticking a filter did nothing. The panel had 24 facets and an
+Apply button below all of them, so applying a filter meant scrolling past everything you
+had just clicked.
+
+The obvious fix — hydrate the filter panel — would have pulled React onto a page that ships
+4.5 kB of JavaScript, to make a `<form>` submit itself. So the enhancement layer was built
+instead: `defineBehavior` in `@mf-eval/behaviors`, a module bound to a server-rendered
+subtree, no props, nothing serialized into the HTML. The filter enhancement costs **0.5 kB
+gzip** and is downloaded only on pages whose markup asks for it.
+
+Four things this decision fixes or forces:
+
+1. **`interaction` must hold the event that triggered it.** The first version loaded on
+   first interaction and lost that interaction — the click that woke the behaviour was
+   consumed by the waking. The strategy now prevents and buffers the event during the
+   download and replays it after attach, including when the module fails to load, in which
+   case it replays into plain server markup that still works.
+2. **The behaviour must never hide its own fallback control.** Doing so collapsed the Apply
+   button after paint and CLS went from 0 to 0.023 — measured, caught by the acceptance
+   suite. `data-fallback-only` + `@media (scripting: enabled)` makes the decision in CSS,
+   before the first paint, with the failed state bringing the control back.
+3. **Client-script attribution had to become per-expose, not per-remote.** On /product the
+   product remote is simultaneously a page that is never hydrated and the owner of a
+   behaviour that certainly runs. A per-remote flag could not express that and silently
+   dropped whichever need was recorded second.
+4. **The name is the address.** `product.gallery` → `product/behaviors/gallery`, exposed by
+   a build-time scan of `src/behaviors/`. No registry, no manifest, nothing to keep in sync
+   — and therefore nothing to forget. A typo is caught by `mf/behavior-must-exist` rather
+   than by a console message on a page that looks finished.
+
+Islands remain for genuinely personalized state — the cart, and only the cart. That is a
+reviewed decision each time, not a default (`docs/interactivity.md`).
+
+### D14 — MPA by default, with named SPA zones. Allowed because they became measurable.
+
+`/my-account/*` is an application: authenticated, stateful, several routes per session. Forcing it
+into document navigation would rebuild expensive state on every click. Forcing the catalogue into
+its model would cost every visitor a router they never use.
+
+So: **the site is MPA, and a zone is one URL prefix owned by a SEPARATE HOST APPLICATION, inside
+which navigation is client-side.** Crossing the boundary is a document load. Nothing from a zone is
+loaded on any page outside it.
+
+A host, not a prefix inside the shell. That was the first draft and it was wrong: it would have tied
+the account team's release to the storefront's, which is the coupling this architecture exists to
+remove. `/my-account` is its own application, with its own server, its own API, its own bundle and
+its own deploy, reached through an edge that routes by prefix. One origin, so one cookie — a cart
+filled on a product page is still there in the account area, verified rather than assumed.
+
+The immediate consequence: **the header could no longer belong to either host.** It became its own
+remote consumed by both, and because it is server-rendered and never hydrated, the second consumer
+costs the browser nothing but a stylesheet. One header, one deploy, no drift — asserted by the bench,
+which requires both hosts to resolve the same chrome build and render the same links in the same
+order.
+
+The reason this is allowed now and was not before is `docs/constraints.md` §14. Chrome 151
+(28 July 2026) shipped the Soft Navigations API unflagged, so each route change inside a zone
+produces its own LCP, CLS and INP. Client routing used to be a Core Web Vitals blind spot — a slow
+zone reported its initial load and nothing else, and looked good because nothing was watching. A
+zone is now a budgeted, measured choice.
+
+Four things this forces:
+
+1. **A zone is SSR chrome plus CSR content**, not a server-rendered dashboard. An account area is
+   per-user, so server-rendering its content breaks D12 exactly the way the cart did: every response
+   becomes user-specific and unshareable. The server renders the zone's chrome and correctly-sized
+   skeletons; the client fills them.
+2. **The edge knows only the prefix.** Nothing outside the account host enumerates its routes, so
+   the team adds `/my-account/invoices` with no edge change and no storefront deploy. The trade is
+   that the zone owns its own code splitting and its own budget, because nobody else can attribute
+   assets they cannot see. Measured cost today: 108 kB gzip of its own JavaScript, against 3–5 kB
+   for a storefront page, paid only by people who enter the account area.
+3. **A route change must paint** to be measured. A `pushState` with no contentful paint produces no
+   entry. If a zone route has nothing to paint, it should not be a route.
+4. **Core Web Vitals in a zone are a user budget, not an SEO budget** — Google does not rank an
+   authenticated page. That changes what to optimise: INP and time-to-useful-content, not LCP, whose
+   element is a skeleton and whose number is therefore close to meaningless. Stated explicitly so
+   nobody spends a sprint on LCP theatre.
+
+Zones are rationed: one per genuine application, never one per team. "It feels faster" and "the team
+prefers React Router" are not justifications — this repo measured the MPA route as cheaper on every
+metric than the SPA equivalent it replaced.
+
+### D15 — Third parties integrate from their own artifact. No shared contract package.
+
+The instinct at this scale is `@company/mfe-contract`, which every integrator depends on. It is a
+synchronous dependency between organisations that do not share a release train, it versions badly
+across a share scope, it describes shape but never fitness, and it does not survive a vendor who
+declines to adopt it.
+
+Rejected in favour of four primitives, all verified in `docs/constraints.md` §15:
+
+1. **The remote describes itself.** `manifest.additionalData` puts capabilities, contract version
+   and requirements inside the vendor's own `mf-manifest.json` — read and checked before any vendor
+   code executes.
+2. **Types travel with it.** The DTS plugin publishes declarations in `metaData.types`, generated
+   from the vendor's source, so they cannot drift from the implementation.
+3. **The host adapts at load time.** `onLoad` rewrites a mismatched export shape and `loadEntry`
+   replaces loading entirely. The adapter lives in our repo, is reviewed by us, and is deleted when
+   the vendor catches up. The vendor conforms to nothing.
+4. **Isolation is two mechanisms.** `createInstance()` for an isolated federation instance, share
+   scopes for an isolated dependency pool, plus `createScript` for `integrity` / `nonce` / timeout.
+
+Formalised as three trust tiers (`docs/third-party-remotes.md`): internal shares the default scope;
+partner shares it under review; vendor gets its own instance, its own scope, its own React copy,
+`loaded-first`, a timeout, a fallback, and a placement below the fold. Tier 3 costs a duplicate
+React on purpose — it buys a vendor who cannot break your render.
+
+Three limits recorded so nobody mistakes this for more than it is:
+
+- **A share scope is a dependency boundary, not a security boundary.** Vendor code still has full
+  DOM, cookie and network access. Untrusted code needs an iframe or a worker; federation offers
+  neither.
+- **Vendor remotes cannot server-render.** Bridge SSR is PR #4869, still open on 2026-08-24. So
+  vendor content is client-side, which means it is never the LCP element and always gets a
+  correctly-sized server-rendered placeholder.
+- **Every vendor is a Core Web Vitals liability on someone else's release schedule.** The controls
+  that hold are the mechanical ones: a budget enforced against their manifest in CI, a load timeout,
+  a fallback module, and a registry entry that can be rolled back without a rebuild.

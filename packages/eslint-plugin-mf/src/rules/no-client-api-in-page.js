@@ -30,11 +30,16 @@ export default {
   },
   create(context) {
     const filename = context.filename ?? context.getFilename();
-    // Behaviours, islands and client entries are exactly where this code belongs.
-    // Only app page code. Behaviours, islands and client entries are precisely where
-    // browser APIs belong, and tooling packages are not pages at all.
+    // Only app source. Tooling packages are not pages at all.
     if (!/stacks[/\\][^/\\]+[/\\][^/\\]+[/\\]src[/\\]/.test(filename)) return {};
-    if (/[/\\](behaviors|islands)[/\\]|\.client\.|entry\.client|personalized|behaviors\.ts/.test(filename)) return {};
+    // Behaviours, islands and client entries are precisely where browser APIs belong.
+    //
+    // `src/app/` is the fourth: inside a ZONE host the premise of this rule is false by
+    // design. A zone is a client-routed application (docs/navigation-zones.md), so its
+    // pages really do run in the browser and really do hold state. The exemption is that
+    // one directory and no wider — a zone host's `ssr.tsx`, frame and skeletons ARE
+    // server-rendered and never hydrated, and the rule still guards them.
+    if (/[/\\](behaviors|islands|app)[/\\]|\.client\.|entry\.client|personalized|behaviors\.ts/.test(filename)) return {};
 
     return {
       Identifier(node) {

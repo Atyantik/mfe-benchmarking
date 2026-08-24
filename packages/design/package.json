@@ -17,6 +17,15 @@
   "devDependencies": {
     "@types/react": "catalog:",
     "react": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@mf-eval/vitest-config": "workspace:*",
+    "vitest": "catalog:"
+  },
+  "dependencies": {
+    "@mf-eval/media": "workspace:*",
+    "@mf-eval/contracts": "workspace:*"
+  },
+  "scripts": {
+    "test": "vitest run"
   }
 }

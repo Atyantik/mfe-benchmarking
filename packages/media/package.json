@@ -1,0 +1,26 @@
+{
+  "name": "@mf-eval/media",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./manifest.json": "./manifest.json",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "fetch": "node scripts/fetch.mjs",
+    "derive": "node scripts/derive.mjs",
+    "build": "node scripts/fetch.mjs && node scripts/derive.mjs",
+    "serve": "node serve.mjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "hono": "catalog:"
+  },
+  "devDependencies": {
+    "@mf-eval/tsconfig": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

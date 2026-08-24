@@ -20,8 +20,13 @@ export default {
   },
   create(context) {
     const filename = context.filename ?? context.getFilename();
-    // The shell's SSR bootstrap is the one sanctioned place, and it carries no user data.
-    if (/shell[/\\]src[/\\]ssr\.tsx$/.test(filename)) return {};
+    // A HOST's server render is the one sanctioned place, and what it writes carries no
+    // user data — the registry it resolved and which regions to mount, nothing more.
+    //
+    // This named the shell specifically until there were two hosts, at which point the
+    // second one was reported for doing the identical, correct thing. `src/ssr.tsx` is the
+    // host server-render entry by convention; a remote has no such file.
+    if (/[/\\]src[/\\]ssr\.tsx$/.test(filename)) return {};
     if (!/stacks[/\\]/.test(filename)) return {};
 
     return {
@@ -31,6 +36,11 @@ export default {
         }
       },
       CallExpression(node) {
+        // Only in files that can contain markup. `JSON.stringify` in a `.ts` module is
+        // serializing to a cookie, a header or an API response — which is exactly where the
+        // rule's own message says per-user state belongs. Flagging it there told authors to
+        // stop doing the correct thing.
+        if (!/\.tsx$/.test(filename)) return;
         const callee = node.callee;
         if (
           callee.type === 'MemberExpression' &&

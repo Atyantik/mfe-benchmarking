@@ -100,15 +100,15 @@ export function Component(_props: PageProps<null>) {
               <h3 className="text-[length:var(--fs-md)]">{c.name}</h3>
               <p className="mt-1 text-[length:var(--fs-sm)] text-ink-500">{c.detail}</p>
               <p className="mt-2 font-mono text-[length:var(--fs-sm)] text-brand-700">{c.value}</p>
-              <p className="mt-1 text-[length:var(--fs-xs)] text-ink-400">{c.hours}</p>
+              <p className="mt-1 text-[length:var(--fs-xs)] text-ink-500">{c.hours}</p>
             </Card>
           ))}
           <Card className="bg-sunken p-4">
             <h3 className="text-[length:var(--fs-md)]">Before you write</h3>
             <ul className="mt-2 flex list-disc flex-col gap-1.5 pl-4 text-[length:var(--fs-sm)] text-ink-600">
               <li>Datasheets and CAD are on every product page under Documents.</li>
-              <li>Lead times and stock rules are in <a href="/faq#delivery" className="text-brand-700 hover:underline">Delivery</a>.</li>
-              <li>Returns and RMA are in <a href="/faq#warranty" className="text-brand-700 hover:underline">Warranty</a>.</li>
+              <li>Lead times and stock rules are in <a href="/faq#delivery" className="text-brand-700 underline">Delivery</a>.</li>
+              <li>Returns and RMA are in <a href="/faq#warranty" className="text-brand-700 underline">Warranty</a>.</li>
             </ul>
           </Card>
         </aside>

@@ -19,10 +19,16 @@ mkdirSync(LOG, { recursive: true });
 
 const SERVICES = [
   { name: 'registry', cwd: join(ROOT, 'packages/registry'), args: ['src/server.ts'], probe: 'http://localhost:4000/health' },
+  { name: 'media',    cwd: join(ROOT, 'packages/media'), args: ['serve.mjs'], probe: 'http://localhost:3105/__health' },
+  { name: 'chrome',   cwd: join(S, 'chrome'),  args: ['serve.mjs'],  probe: 'http://localhost:3104/mf-manifest.json' },
   { name: 'faq',      cwd: join(S, 'faq'),     args: ['serve.mjs'],  probe: 'http://localhost:3101/mf-manifest.json' },
   { name: 'product',  cwd: join(S, 'product'), args: ['serve.mjs'],  probe: 'http://localhost:3102/mf-manifest.json' },
   { name: 'cart',     cwd: join(S, 'cart'),    args: ['serve.mjs'],  probe: 'http://localhost:3103/mf-manifest.json' },
-  { name: 'shell',    cwd: join(S, 'shell'),   args: ['server.mjs'], probe: 'http://localhost:3100/__health' },
+  { name: 'shell',    cwd: join(S, 'shell'),   args: ['server.mjs'], probe: 'http://localhost:3110/__health',
+    env: { MF_SHELL_PORT: '3110', MF_SHELL_ORIGIN: 'http://localhost:3100' } },
+  { name: 'my-account', cwd: join(S, 'my-account'), args: ['server.mjs'], probe: 'http://localhost:3120/__health' },
+  // Last: the edge is the public origin, and it is only healthy once both hosts are.
+  { name: 'edge',     cwd: ROOT,               args: ['scripts/edge.mjs'], probe: 'http://localhost:3100/__edge' },
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -60,6 +66,9 @@ async function start() {
       cwd: svc.cwd,
       detached: true,
       stdio: ['ignore', out, out],
+      // The storefront moved to :3110 when the edge took over the public origin, but it
+      // still renders absolute URLs against :3100 — the browser only ever sees the edge.
+      env: { ...process.env, ...(svc.env ?? {}) },
     });
     child.unref();
     pids.push({ name: svc.name, pid: child.pid });

@@ -1,6 +1,13 @@
 {
-  "revision": "r3",
+  "revision": "r4",
   "remotes": [
+    {
+      "name": "chrome",
+      "kind": "component",
+      "version": "1.0.0",
+      "web": "http://localhost:3104/mf-manifest.json",
+      "node": "http://localhost:3104/ssr/mf-manifest.json"
+    },
     {
       "name": "faq",
       "kind": "route",

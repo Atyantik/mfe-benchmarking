@@ -2,10 +2,9 @@
  * Infrastructure shared by every shell variant: registry resolution, runtime remote
  * loading, per-route asset injection, cart cookie transport.
  *
- * This package exists so the SPA and MPA shells run IDENTICAL infrastructure. If each
- * shell had its own copy, any comparison between them would be measuring the drift
- * between two implementations rather than the navigation model — which is the only
- * variable the comparison is allowed to have.
+ * It lives outside the shell so that a second shell — another framework, another
+ * renderer — runs IDENTICAL infrastructure rather than a re-implementation of it. Any
+ * measurement comparing the two would otherwise be reading the drift between two copies.
  *
  * Build-time code, bundled into each shell. NOT a shared runtime singleton.
  */
@@ -13,3 +12,4 @@ export * from './registry-client.ts';
 export * from './remotes.ts';
 export * from './assets.ts';
 export * from './cart-cookie.ts';
+export * from './chrome.ts';

@@ -13,6 +13,7 @@
 import type {
   AnchorHTMLAttributes,
   ButtonHTMLAttributes,
+  HTMLAttributes,
   InputHTMLAttributes,
   ReactNode,
   SelectHTMLAttributes,
@@ -119,21 +120,63 @@ export function ButtonLink({
   );
 }
 
+/**
+ * A control whose label is an image: a gallery thumbnail, a colour swatch, a variant picker.
+ *
+ * It exists because the alternative was a bare `<button>` in the product app, and the lint
+ * rule that caught it is right — a control reimplemented once is reimplemented five times,
+ * and then nobody owns the focus ring. `Button` is the wrong base here: its padding, height
+ * and typography all assume text.
+ *
+ * The pressed state is `aria-pressed`, so it is announced as well as drawn.
+ */
+export function ImageButton({
+  children,
+  className,
+  ...rest
+}: ButtonHTMLAttributes<HTMLButtonElement> & { children: ReactNode; className?: string }) {
+  return (
+    <button
+      type="button"
+      className={cx(
+        'block w-full overflow-hidden rounded-md border border-line p-0 transition-colors',
+        'hover:border-line-strong focus-visible:outline-2 focus-visible:outline-offset-2',
+        'focus-visible:outline-brand-600 aria-pressed:border-brand-700',
+        className,
+      )}
+      {...rest}
+    >
+      {children}
+    </button>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Surfaces
 // ---------------------------------------------------------------------------
 
+/**
+ * `...rest` is load-bearing, not tidiness.
+ *
+ * Without it Card silently swallowed every attribute it was given — `data-testid` most of
+ * all. Three federated widgets rendered perfectly and every test that looked for them
+ * reported "widget missing", because the id never reached the DOM. A primitive that drops
+ * the props it is handed fails in exactly this way: invisibly, and somewhere else.
+ */
 export function Card({
   children,
   className,
   as: As = 'div',
-}: {
+  ...rest
+}: HTMLAttributes<HTMLElement> & {
   children: ReactNode;
   className?: string;
   as?: 'div' | 'article' | 'li';
 }) {
   return (
-    <As className={cx('rounded-lg border border-line bg-card shadow-e1', className)}>{children}</As>
+    <As className={cx('rounded-lg border border-line bg-card shadow-e1', className)} {...rest}>
+      {children}
+    </As>
   );
 }
 
@@ -210,7 +253,7 @@ export function Pagination({
       </a>
       {pages.map((p, i) => (
         <span key={p} className="flex items-center gap-1">
-          {i > 0 && p - (pages.at(i - 1) ?? p) > 1 ? <span className="px-1 text-ink-400">…</span> : null}
+          {i > 0 && p - (pages.at(i - 1) ?? p) > 1 ? <span className="px-1 text-ink-500">…</span> : null}
           <a
             href={hrefFor(p)}
             aria-current={p === page ? 'page' : undefined}
@@ -276,7 +319,7 @@ export function Disclosure({
         <span>{question}</span>
         <span
           aria-hidden="true"
-          className="shrink-0 text-ink-400 transition-transform group-open:rotate-45"
+          className="shrink-0 text-ink-500 transition-transform group-open:rotate-45"
         >
           +
         </span>
@@ -332,7 +375,7 @@ export function Checkbox({
       />
       <span>
         {label}
-        {hint ? <span className="mt-0.5 block text-[length:var(--fs-xs)] text-ink-400">{hint}</span> : null}
+        {hint ? <span className="mt-0.5 block text-[length:var(--fs-xs)] text-ink-500">{hint}</span> : null}
       </span>
     </label>
   );
@@ -359,6 +402,6 @@ export function Select({
 
 export const inputClass =
   'w-full rounded-md border border-line-strong bg-card px-3 py-2 text-[length:var(--fs-md)] ' +
-  'text-ink-800 placeholder:text-ink-400 focus:border-brand-600 focus:outline-none';
+  'text-ink-800 placeholder:text-ink-500 focus:border-brand-600 focus:outline-none';
 
 export { cx };

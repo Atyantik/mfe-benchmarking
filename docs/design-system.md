@@ -54,10 +54,20 @@ If two teams need the same feature component, that is a signal — either it bel
 design system (promote it, with review), or the duplication is genuinely cheaper than the
 coupling. Both answers are legitimate; deciding by accident is not.
 
-### 4. Personalized and interactive — federated remotes
+### 4. Behaviours — inside the owning remote, `src/behaviors/`
 
-The cart. Per-user, deployed on its own schedule, and the only thing on the page that runs
-JavaScript in the browser. This is what Module Federation is actually for.
+The client-side half of a feature component: the gallery's thumbnail switching, the filter
+panel's submit-on-change. A few hundred bytes of plain TypeScript attached to markup the
+server already rendered — no framework, no props, nothing serialized into the HTML.
+
+A behaviour belongs to whoever owns the markup it enhances, and is never imported across a
+boundary. If two apps need the same one it is promoted to `@mf-eval/design/behaviors`, on
+the same terms as a component. See `docs/interactivity.md`.
+
+### 5. Personalized and interactive — federated remotes
+
+The cart. Per-user, deployed on its own schedule, and the only thing on the page that mounts
+a React tree in the browser. This is what Module Federation is actually for.
 
 ## Why each app runs its own Tailwind build
 
@@ -80,3 +90,5 @@ route. The benefit is that a team can style anything without asking anyone. Meas
 - The design system never imports from an app. Dependencies point one way.
 - Anything with per-user state is client-rendered and never appears in server HTML
   (`docs/decision-log.md` D12).
+- Interactivity is a behaviour unless it is genuinely personalized state, in which case it is
+  an island — and that is a reviewed decision (`docs/interactivity.md`).

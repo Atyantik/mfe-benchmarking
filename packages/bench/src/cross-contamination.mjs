@@ -10,23 +10,19 @@
  */
 import { chromium } from 'playwright';
 
-const VARIANTS = [{ id: 'site', base: 'http://localhost:3100' }];
+import { EDGE, ROUTES, isUnknownOwner, ownerOf } from './lib/topology.mjs';
+import { signedInContext } from './lib/signin.mjs';
 
-const PORT_OWNER = { 3100: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart', 4000: 'registry' };
+const VARIANTS = [{ id: 'site', base: EDGE }];
 
 /**
- * Who is allowed to appear on each route.
+ * Who is allowed to appear on each route, read from the topology rather than restated here.
  *
- * `cart` is on every page by design — the shell's header mounts its MiniCart, so it is a
- * participant everywhere, not contamination.
+ * This list used to live in this file, alongside its own port map. Both went stale the day
+ * the site grew a second host and a chrome remote, and neither failed: an undeclared origin
+ * fell through to 'other' and was simply not compared against anything.
  */
-const ALLOWED = {
-  '/': ['shell', 'cart'],
-  '/faq': ['shell', 'cart', 'faq'],
-  '/faq/contact': ['shell', 'cart', 'faq'],
-  '/product': ['shell', 'cart', 'product'],
-  '/product/p-0001': ['shell', 'cart', 'product'],
-};
+const ALLOWED = Object.fromEntries(ROUTES.map((r) => [r.path, r.owners]));
 
 const results = [];
 const record = (name, pass, detail = '') => {
@@ -40,13 +36,16 @@ for (const variant of VARIANTS) {
   console.log(`\n${'─'.repeat(76)}\n${variant.id.toUpperCase()}  ${variant.base}\n${'─'.repeat(76)}`);
 
   for (const [route, allowed] of Object.entries(ALLOWED)) {
-    const ctx = await browser.newContext();
+    // The account routes are gated; arriving anonymously would measure the login page.
+    const ctx = route.startsWith('/my-account')
+      ? await signedInContext(browser)
+      : await browser.newContext();
     const page = await ctx.newPage();
 
     // Every request, regardless of whether it ends up executing.
     const requests = [];
     page.on('request', (r) => {
-      const owner = PORT_OWNER[new URL(r.url()).port] ?? 'other';
+      const owner = ownerOf(r.url());
       requests.push({ url: r.url(), owner, type: r.resourceType() });
     });
 
@@ -55,8 +54,12 @@ for (const variant of VARIANTS) {
     await ctx.close();
 
     // The document itself is served by the shell; registry calls are server-side only.
-    const assets = requests.filter((r) => r.type !== 'document' && r.owner !== 'registry');
-    const intruders = assets.filter((r) => !allowed.includes(r.owner));
+    const assets = requests.filter(
+      (r) => r.type !== 'document' && r.owner !== 'registry' && r.owner !== 'edge',
+    );
+    // An origin the topology does not name counts as an intruder, not as 'other'. That is
+    // the difference between a check that notices a new host and one that ignores it.
+    const intruders = assets.filter((r) => isUnknownOwner(r.owner) || !allowed.includes(r.owner));
 
     const byOwner = {};
     for (const a of assets) byOwner[a.owner] = (byOwner[a.owner] ?? 0) + 1;
@@ -85,11 +88,14 @@ for (const variant of VARIANTS) {
     ['/product', 'faq'],
     ['/product/p-0001', 'faq'],
   ]) {
-    const ctx = await browser.newContext();
+    // The account routes are gated; arriving anonymously would measure the login page.
+    const ctx = route.startsWith('/my-account')
+      ? await signedInContext(browser)
+      : await browser.newContext();
     const page = await ctx.newPage();
     const hits = [];
     page.on('request', (r) => {
-      if ((PORT_OWNER[new URL(r.url()).port] ?? '') === forbidden) hits.push(r.url());
+      if (ownerOf(r.url()) === forbidden) hits.push(r.url());
     });
     await page.goto(variant.base + route, { waitUntil: 'networkidle' });
     await page.waitForTimeout(300);

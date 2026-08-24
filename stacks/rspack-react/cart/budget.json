@@ -3,5 +3,6 @@
   "ownJsGzip": 12000,
   "containerJsGzip": 17000,
   "cssGzip": 6000,
-  "largestJsGzip": 4000
+  "largestJsGzip": 4000,
+  "behaviorJsGzip": 3000
 }

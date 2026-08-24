@@ -6,6 +6,7 @@
  * four of the six fail with error messages that point nowhere near the cause.
  */
 import { createRequire } from 'node:module';
+import { existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import type { RsbuildConfig, RsbuildPlugin, Rspack } from '@rsbuild/core';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
@@ -22,6 +23,14 @@ type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
  * and nothing errors. Constraining the type here makes that unrepresentable.
  */
 type SharedMap = Exclude<NonNullable<MFOptions['shared']>, readonly unknown[]>;
+/**
+ * The object form of `exposes`.
+ *
+ * MF accepts an array too, and spreading an array into an object silently produces
+ * `{0: ..., 1: ...}` — a config that builds and exposes nothing. Excluding the array form
+ * at the type level makes the mistake unrepresentable rather than merely unlikely.
+ */
+type ExposesMap = Exclude<NonNullable<MFOptions['exposes']>, readonly unknown[]>;
 
 /**
  * Pinned in pnpm-workspace.yaml. MUST be repeated literally in every `shared` entry:
@@ -38,6 +47,20 @@ export const SHARED_REACT: SharedMap = {
   // copies means `useCart` throws, and product can no longer update cart.
   '@mf-eval/contracts': { singleton: true, requiredVersion: false },
   '@mf-eval/react-contracts': { singleton: true, requiredVersion: false },
+  /**
+   * The asset manifest, shared for SIZE rather than for identity.
+   *
+   * `@mf-eval/design` re-exports `Picture`, which statically imports this — so every app that
+   * touches the design system bundled the entire manifest, including apps that render no
+   * images at all. Measured on the account overview: 9.0 kB gzip duplicated across three
+   * remotes, of which 5.2 kB is seventeen base64 placeholders that the cart's basket widget
+   * has no use for.
+   *
+   * Sharing it makes that one copy. It is data, not a context object, so a second instance
+   * would have been a size problem rather than a correctness one — which is exactly why it
+   * went unnoticed until a page composed three remotes at once.
+   */
+  '@mf-eval/media': { singleton: true, requiredVersion: false },
 };
 
 export interface AppPorts {
@@ -76,8 +99,10 @@ export interface MfAppOptions {
   clientEntry: string;
   /** Node entry. For a pure remote this can be a stub — the container is what matters. */
   serverEntry: string;
-  /** `exposes` for a remote; omit for the host. */
-  exposes?: MFOptions['exposes'];
+  /** `exposes` for a remote; omit for the host. Behaviours are added automatically. */
+  exposes?: ExposesMap;
+  /** Absolute path to the app root, used to discover src/behaviors/*. */
+  appRoot?: string;
   /**
    * Per-environment `exposes` overrides.
    *
@@ -86,8 +111,8 @@ export interface MfAppOptions {
    * build exposes an inert route with no path to the page component, so the component
    * and its CSS never enter the client bundle.
    */
-  exposesWeb?: MFOptions['exposes'];
-  exposesNode?: MFOptions['exposes'];
+  exposesWeb?: ExposesMap;
+  exposesNode?: ExposesMap;
   /**
    * Only the HOST leaves this undefined and resolves remotes at runtime from the
    * registry. A build-time `remotes` block would recreate the coupling this repo
@@ -124,7 +149,30 @@ const WORKSPACE_SRC = [
   path.resolve(createRequire(import.meta.url).resolve('@mf-eval/contracts/package.json'), '..', 'src'),
   path.resolve(createRequire(import.meta.url).resolve('@mf-eval/react-contracts/package.json'), '..', 'src'),
   path.resolve(createRequire(import.meta.url).resolve('@mf-eval/shell-kit/package.json'), '..', 'src'),
+  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/media/package.json'), '..', 'src'),
 ];
+
+/**
+ * Every `src/behaviors/*.ts` becomes an exposed module, automatically.
+ *
+ * Convention over registration: an app author adds a file and marks an element with
+ * `data-behavior="<app>.<file>"`. Nothing else to wire, and no central list to forget to
+ * update — which is exactly the kind of step a new team member misses.
+ *
+ * The chunk is named after the behaviour so the shell can attribute it per route, the same
+ * mechanism that keeps one route's CSS off another's page (docs/constraints.md §5b).
+ */
+export function behaviorExposes(appRoot: string): Record<string, string> {
+  const dir = path.join(appRoot, 'src/behaviors');
+  if (!existsSync(dir)) return {};
+  const out: Record<string, string> = {};
+  for (const file of readdirSync(dir)) {
+    const match = /^([a-z0-9-]+)\.tsx?$/.exec(file);
+    if (!match) continue;
+    out[`./behaviors/${match[1]}`] = `./src/behaviors/${file}`;
+  }
+  return out;
+}
 
 export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions } {
   // externalRuntime: remotes stop bundling their own runtime-core and read the host's
@@ -144,7 +192,11 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
     filename: 'remoteEntry.js',
     manifest: true,
     ...(experiments ? { experiments } : {}),
-    ...(opts.exposes ? { exposes: opts.exposes } : {}),
+    ...(() => {
+      const behaviors = opts.appRoot ? behaviorExposes(opts.appRoot) : {};
+      const exposes = { ...opts.exposes, ...behaviors };
+      return Object.keys(exposes).length > 0 ? { exposes } : {};
+    })(),
     ...(opts.remotes ? { remotes: opts.remotes } : {}),
     shared: { ...SHARED_REACT, ...opts.extraShared },
   };
@@ -160,8 +212,20 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
     ? { ...base, library: { type: 'module' }, remoteType: 'module' }
     : { ...base };
   const node: MFOptions = { ...base };
-  if (opts.exposesWeb) web.exposes = opts.exposesWeb;
-  if (opts.exposesNode) node.exposes = opts.exposesNode;
+  /**
+   * Per-environment exposes MERGE with the shared ones, key by key.
+   *
+   * They used to replace them wholesale, which is a silent trap: an app that sets
+   * `exposesWeb` to vary one entry loses every other expose it declared, the build succeeds,
+   * and the missing module only surfaces as a runtime failure on whichever page needed it.
+   * Overriding one key should override one key.
+   */
+  const mergeExposes = (base: MFOptions['exposes'], extra: ExposesMap): ExposesMap => ({
+    ...(Array.isArray(base) ? {} : base),
+    ...extra,
+  });
+  if (opts.exposesWeb) web.exposes = mergeExposes(web.exposes, opts.exposesWeb);
+  if (opts.exposesNode) node.exposes = mergeExposes(node.exposes, opts.exposesNode);
   return { web, node };
 }
 

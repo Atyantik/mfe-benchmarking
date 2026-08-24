@@ -33,6 +33,12 @@ describe('no-client-api-in-page', () => {
     valid: [
       // Behaviours are precisely where browser APIs belong.
       { code: 'const el = document.querySelector("x");', filename: BEHAVIOUR },
+      // So is a zone host's client-routed application code.
+      {
+        code: 'import { useState } from "react"; const [a, b] = useState(0);',
+        filename: '/repo/stacks/rspack-react/my-account/src/app/Orders.tsx',
+      },
+      // But NOT the same host's server-rendered frame.
       // A local binding that merely shares the name is not the global.
       { code: 'function f(document: string) { return document; }', filename: PAGE },
       // Outside an app entirely.
@@ -43,6 +49,11 @@ describe('no-client-api-in-page', () => {
     invalid: [
       { code: 'const w = window.innerWidth;', filename: PAGE, errors: [{ messageId: 'global' }] },
       { code: 'const el = document.body;', filename: PAGE, errors: [{ messageId: 'global' }] },
+      {
+        code: 'import { useState } from "react"; const [a, b] = useState(0);',
+        filename: '/repo/stacks/rspack-react/my-account/src/Frame.tsx',
+        errors: [{ messageId: 'hook' }],
+      },
       { code: 'const [n, setN] = useState(0);', filename: PAGE, errors: [{ messageId: 'hook' }] },
       { code: 'useEffect(() => {}, []);', filename: PAGE, errors: [{ messageId: 'hook' }] },
     ],
@@ -139,6 +150,81 @@ describe('no-serialized-props', () => {
         code: '<div dangerouslySetInnerHTML={{ __html: x }} />',
         filename: PAGE,
         errors: [{ messageId: 'serialize' }],
+      },
+    ],
+  });
+});
+
+/**
+ * behavior-must-exist reads the filesystem, so it is tested against the REAL product app.
+ * A fixture directory would let the rule pass while being wrong about the layout it checks.
+ */
+const REAL_PAGE = '/Users/tirthbodawala/workspace/module-federation/stacks/rspack-react/product/src/List.tsx';
+
+describe('no-serialized-props — the host bootstrap exemption', () => {
+  tester.run('no-serialized-props', rules['no-serialized-props'], {
+    valid: [
+      // Every host's server render, not just the first one that existed.
+      {
+        code: 'const s = JSON.stringify({ a: 1 });',
+        filename: '/repo/stacks/rspack-react/shell/src/ssr.tsx',
+      },
+      {
+        code: 'const s = JSON.stringify({ a: 1 });',
+        filename: '/repo/stacks/rspack-react/my-account/src/ssr.tsx',
+      },
+      // A cookie or an API payload is exactly where per-user state belongs — which is what
+      // this rule's own message tells authors to do.
+      {
+        code: 'const s = JSON.stringify({ name: "x" });',
+        filename: '/repo/stacks/rspack-react/my-account/src/session.ts',
+      },
+    ],
+    invalid: [
+      {
+        code: 'const s = JSON.stringify({ a: 1 });',
+        filename: '/repo/stacks/rspack-react/product/src/List.tsx',
+        errors: [{ messageId: 'serialize' }],
+      },
+    ],
+  });
+});
+
+describe('behavior-must-exist', () => {
+  tester.run('behavior-must-exist', rules['behavior-must-exist'], {
+    valid: [
+      // The behaviour this app really ships.
+      { code: '<form data-behavior="product.autosubmit" />', filename: REAL_PAGE },
+      { code: '<form data-behavior="product.autosubmit" data-behavior-when="immediate" />', filename: REAL_PAGE },
+      { code: '<div data-behavior-when="media:(min-width: 64rem)" data-behavior="product.autosubmit" />', filename: REAL_PAGE },
+      // A computed name is out of scope here rather than a false positive.
+      { code: 'const n = "x"; <div data-behavior={n} />;', filename: REAL_PAGE },
+      // Unrelated attributes.
+      { code: '<div data-owner="product" />', filename: REAL_PAGE },
+      // Outside an app, there is no behaviours directory to check against.
+      { code: '<div data-behavior="product.nope" />', filename: '/nowhere/x.tsx' },
+    ],
+    invalid: [
+      {
+        code: '<form data-behavior="product.galery" />',
+        filename: REAL_PAGE,
+        errors: [{ messageId: 'missing' }],
+      },
+      {
+        // Reaching into another team's remote.
+        code: '<form data-behavior="faq.scrollspy" />',
+        filename: REAL_PAGE,
+        errors: [{ messageId: 'foreign' }],
+      },
+      {
+        code: '<form data-behavior="autosubmit" />',
+        filename: REAL_PAGE,
+        errors: [{ messageId: 'malformed' }],
+      },
+      {
+        code: '<form data-behavior="product.autosubmit" data-behavior-when="onload" />',
+        filename: REAL_PAGE,
+        errors: [{ messageId: 'strategy' }],
       },
     ],
   });

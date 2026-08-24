@@ -75,13 +75,69 @@ export function Component({ data }: PageProps<CompareData>) {
 You do not register the route anywhere else. The shell mounts whatever your `routes.tsx`
 exports — that is why you can add a page without anyone redeploying the shell.
 
+## Adding client interactivity
+
+Your page is server-rendered and never hydrated, so a `useEffect` in it will never run. To
+make something interactive you attach a **behaviour** to the markup the server already
+produced.
+
+1. Write `src/behaviors/<name>.ts`:
+
+```ts
+import { defineBehavior } from '@mf-eval/behaviors';
+
+export default defineBehavior('product.compare-bar', (root, ctx) => {
+  const bar = root.querySelector('[data-compare-bar]');
+  ctx.on(root, 'change', () => {
+    bar?.toggleAttribute('data-empty', root.querySelectorAll(':checked').length === 0);
+  });
+});
+```
+
+2. Point at it from the markup:
+
+```tsx
+<div data-behavior="product.compare-bar" data-behavior-when="idle" data-testid="compare">
+```
+
+That is the whole wiring. There is no config to edit and nothing to register: the build
+exposes every file in `src/behaviors/`, and the name *is* the address — `product.compare-bar`
+resolves to `product/behaviors/compare-bar`. The shell reads the rendered HTML, so the module
+is downloaded on the pages that use it and on no others.
+
+Three things to get right, all of which the linter or a budget will tell you about:
+
+- **It must work without it.** Disable JavaScript and use the page. A behaviour improves a
+  capability that already exists; it never provides one. If the enhanced version makes a
+  control redundant, mark that control `data-fallback-only` and CSS will hide it — do not
+  hide it from the behaviour, because moving something after the page has painted is a
+  layout shift.
+- **No props and no serialized data.** Read the DOM, a cookie, or the URL.
+- **3 kB gzip.** Over that, it probably wanted to be an island — ask first.
+
+Use `ctx.on` / `ctx.observe` / `ctx.cleanup` rather than raw `addEventListener`: they unwind
+on teardown automatically, which is the part everyone forgets — and `pnpm bench` fails the run
+if you register a listener that cannot be torn down.
+
+`pnpm bench` also reports what your behaviour cost: its size, how long setup took, how much of
+its code actually executed, and whether it moved anything on the page. You do not have to add
+it to anything; it is measured because it exists.
+
+Full reference, including when to load and when to reach for an island instead:
+`docs/interactivity.md`.
+
 ## Rules the linter will enforce, and why
 
 These are not style preferences. Each one is a bug we shipped.
 
 **No `useState`, `useEffect`, `window` or `document` in a page component.** Pages are
 rendered once on the server and never hydrated, so that code never runs. You get a
-component that silently does nothing. Interactivity goes in a behaviour (below).
+component that silently does nothing. Interactivity goes in a behaviour —
+`docs/interactivity.md`.
+
+**`data-behavior` must name a behaviour you actually ship.** `<your-app>.<file>`, with
+`src/behaviors/<file>.ts` next to it. A typo fails only in the console, on a page that
+otherwise looks finished — which is why the linter checks it instead of you.
 
 **No importing another app.** The moment `product` imports from `faq`, the two can no longer
 deploy independently. Share through `@mf-eval/contracts` (types, state) or
@@ -113,4 +169,5 @@ not have.
 | A page | `src/<Page>.tsx` + an entry in `src/routes.tsx` |
 | Something only your app uses | `src/` — never exported |
 | Something two apps need | propose it for `@mf-eval/design` |
+| Client interactivity | `src/behaviors/<name>.ts` — see `docs/interactivity.md` |
 | Per-user state | it is client-only; talk to the platform team first |

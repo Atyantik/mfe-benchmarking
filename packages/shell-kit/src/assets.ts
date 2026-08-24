@@ -65,14 +65,21 @@ export interface RemoteNeed {
    */
   routeChunks: string[];
   /**
-   * Whether this remote's SCRIPTS are needed at all.
+   * The subset of `exposes` whose JS will actually EXECUTE in the browser.
    *
-   * False for route remotes under the MPA shell: their pages are server-rendered and
-   * never hydrated, so the component code will never execute in the browser. Preloading
-   * it would download a file that cannot run — the exact waste this whole exercise is
-   * about. Their CSS is still required, because the server-rendered markup uses it.
+   * This is per-expose, not per-remote, because one remote is routinely both at once. On
+   * /product the product remote supplies the page — server-rendered, never hydrated, so
+   * its component JS can never run and preloading it downloads a file that cannot execute
+   * — and also supplies that page's behaviours, which certainly do run. A per-remote flag
+   * cannot express that, and the one we had before resolved it by dropping whichever need
+   * was recorded second.
+   *
+   * CSS is unconditional: the server-rendered markup uses it either way.
+   *
+   * Empty (the default) means nothing from this remote runs client-side, so not even its
+   * remoteEntry is worth warming.
    */
-  scriptsNeeded?: boolean;
+  clientExposes?: string[];
 }
 
 export type UsedExposes = Record<string, RemoteNeed>;
@@ -132,8 +139,9 @@ export async function buildPreloadPlan(
       const js = isModule ? modules : scripts;
       const publicPath = manifest.metaData.publicPath ?? new URL('.', entry.entry).href;
 
-      const wantScripts = need.scriptsNeeded !== false;
-      if (wantScripts) {
+      const runs = new Set(need.clientExposes ?? []);
+      // The container itself is only worth warming if something inside it will run.
+      if (runs.size > 0) {
         const re = manifest.metaData.remoteEntry;
         js.push(join(publicPath, re.path ? `${re.path.replace(/\/$/, '')}/${re.name}` : re.name));
       }
@@ -144,9 +152,10 @@ export async function buildPreloadPlan(
       for (const expose of manifest.exposes ?? []) {
         if (!wanted.has(expose.path)) continue;
         const a = expose.assets;
+        const wantScripts = runs.has(expose.path);
 
-        // sync = the exposed module itself. Always needed — for a route remote this is
-        // the descriptor, which the shell merges into the router on every page.
+        // sync = the exposed module itself. For a behaviour that is the whole thing; for
+        // a route remote it is the descriptor, which only the server ever reads.
         if (wantScripts) for (const f of a?.js?.sync ?? []) js.push(join(publicPath, f));
         for (const f of a?.css?.sync ?? []) styles.push(join(publicPath, f));
 

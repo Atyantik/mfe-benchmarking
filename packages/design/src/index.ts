@@ -9,3 +9,4 @@
  */
 export * from './primitives/index.tsx';
 export * from './patterns/index.tsx';
+export * from './media/index.tsx';

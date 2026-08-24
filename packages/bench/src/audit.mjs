@@ -19,75 +19,21 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
+import { usedCssBytes, usedJsBytes } from './lib/coverage.mjs';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 
-const VARIANTS = [{ id: 'site', base: 'http://localhost:3100' }];
-const ROUTES = ['/', '/faq', '/faq/contact', '/product', '/product/p-0001'];
-const PORT_OWNER = { 3100: 'shell', 3101: 'faq', 3102: 'product', 3103: 'cart' };
+import { EDGE, ROUTES as TOPOLOGY_ROUTES, ownerOf } from './lib/topology.mjs';
+
+const VARIANTS = [{ id: 'site', base: EDGE }];
+const ROUTES = TOPOLOGY_ROUTES.map((r) => r.path);
 
 /** Which remotes legitimately contribute to each route. Anything else is foreign. */
-const EXPECTED_OWNERS = {
-  '/': new Set(['shell', 'cart']),
-  '/faq': new Set(['shell', 'cart', 'faq']),
-  '/faq/contact': new Set(['shell', 'cart', 'faq']),
-  '/product': new Set(['shell', 'cart', 'product']),
-  '/product/p-0001': new Set(['shell', 'cart', 'product']),
-};
-
-const ownerOf = (url) => PORT_OWNER[new URL(url).port] ?? 'other';
+const EXPECTED_OWNERS = Object.fromEntries(
+  TOPOLOGY_ROUTES.map((r) => [r.path, new Set(r.owners)]),
+);
 const shortName = (url) => url.split('/').slice(-1)[0].slice(0, 44);
-
-/** CSS coverage: flat used ranges. */
-function usedCssBytes(ranges) {
-  return (ranges ?? []).reduce((sum, r) => sum + (r.end - r.start), 0);
-}
-
-function mergeRanges(list) {
-  if (list.length === 0) return [];
-  const sorted = [...list].sort((a, b) => a[0] - b[0]);
-  const out = [sorted[0].slice()];
-  for (const [s, e] of sorted.slice(1)) {
-    const last = out[out.length - 1];
-    if (s <= last[1]) last[1] = Math.max(last[1], e);
-    else out.push([s, e]);
-  }
-  return out;
-}
-
-/**
- * JS coverage, computed with V8's actual semantics.
- *
- * V8 ranges are NESTED, and a child range with count 0 carves a hole out of its parent.
- * Summing only the count>0 ranges therefore reports ~100% for every file that merely
- * got evaluated — the outermost function range spans the whole script. The real figure
- * is: union(count > 0) MINUS union(count === 0).
- *
- * This distinction is the whole point of the audit. Without it a 60 kB library that ran
- * three functions looks fully used.
- */
-function usedJsBytes(entry) {
-  const hit = [];
-  const miss = [];
-  for (const fn of entry.functions ?? []) {
-    for (const r of fn.ranges ?? []) {
-      (r.count > 0 ? hit : miss).push([r.startOffset, r.endOffset]);
-    }
-  }
-  const covered = mergeRanges(hit);
-  const holes = mergeRanges(miss);
-  let total = 0;
-  for (const [cs, ce] of covered) {
-    let cursor = cs;
-    for (const [hs, he] of holes) {
-      if (he <= cursor || hs >= ce) continue;
-      if (hs > cursor) total += Math.min(hs, ce) - cursor;
-      cursor = Math.max(cursor, Math.min(he, ce));
-    }
-    if (cursor < ce) total += ce - cursor;
-  }
-  return total;
-}
 
 async function auditRoute(browser, variant, route) {
   const ctx = await browser.newContext();

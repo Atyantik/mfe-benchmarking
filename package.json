@@ -17,7 +17,11 @@
     "verify": "pnpm --filter @mf-eval/bench run all",
     "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm budget",
     "clean": "rm -rf stacks/*/*/dist packages/*/dist",
-    "prepare": "git config core.hooksPath .githooks"
+    "prepare": "git config core.hooksPath .githooks",
+    "bench": "pnpm --filter @mf-eval/bench run all",
+    "measure": "pnpm --filter @mf-eval/bench run measure && pnpm --filter @mf-eval/bench run audit && pnpm --filter @mf-eval/bench run warm",
+    "edge": "node scripts/edge.mjs",
+    "media": "pnpm --filter @mf-eval/media run build"
   },
   "devDependencies": {
     "typescript": "catalog:",
@@ -27,12 +31,14 @@
     "@mf-eval/eslint-config": "workspace:*",
     "vitest": "catalog:",
     "@mf-eval/vitest-config": "workspace:*",
-    "lint-staged": "catalog:"
+    "lint-staged": "catalog:",
+    "hono": "catalog:",
+    "@hono/node-server": "catalog:"
   },
   "lint-staged": {
     "*.{ts,tsx,js,mjs}": [
-      "eslint --fix",
-      "eslint --max-warnings 0"
+      "eslint --fix --no-warn-ignored",
+      "eslint --max-warnings 0 --no-warn-ignored"
     ],
     "*.json": []
   }

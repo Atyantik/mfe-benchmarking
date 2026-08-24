@@ -7,7 +7,10 @@
  * with a single consumer belongs in that consumer's repo — see docs/design-system.md.
  */
 import type { ReactNode } from 'react';
+import { CATALOGUE } from '@mf-eval/contracts/testids';
+import { imageForProduct } from '@mf-eval/media';
 import { Badge, Card, cx } from '../primitives/index.tsx';
+import { Picture } from '../media/index.tsx';
 
 // ---------------------------------------------------------------------------
 // Product imagery
@@ -187,11 +190,18 @@ export function ProductCard({
   product,
   href,
   action,
+  priority = false,
+  eager = false,
 }: {
   product: ProductCardData;
   href: string;
   action?: ReactNode;
+  /** The single LCP candidate on this page. At most one card in a grid. */
+  priority?: boolean;
+  /** Above the fold, but not the LCP element — eager, without claiming high priority. */
+  eager?: boolean;
 }) {
+  const image = imageForProduct(product.id, product.family);
   return (
     // `relative` is load-bearing: the title uses a stretched-link overlay
     // (after:absolute inset-0) to make the whole card clickable. Without a positioned
@@ -199,7 +209,17 @@ export function ProductCard({
     // swallowing every click on the page including other cards' buttons.
     <Card as="li" className="group relative flex flex-col overflow-hidden transition-shadow hover:shadow-e2">
       <a href={href} className="block p-3 pb-0" tabIndex={-1} aria-hidden="true">
-        <ProductThumb family={product.family} id={product.id} />
+        <Picture
+          image={image}
+          alt=""
+          // Three columns at desktop, two at tablet, one on a phone — so the browser can
+          // pick a 320px file for a phone instead of the 1280px one it would take by default.
+          sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 92vw"
+          priority={priority}
+          eager={eager}
+          className="rounded-md"
+          data-testid={CATALOGUE.productImage(product.id)}
+        />
       </a>
       <div className="flex flex-1 flex-col gap-2 p-4">
         <p className="text-[length:var(--fs-2xs)] font-semibold uppercase tracking-[0.12em] text-brand-700">
@@ -208,7 +228,7 @@ export function ProductCard({
         <h3 className="text-[length:var(--fs-md)] leading-snug">
           <a
             href={href}
-            data-testid={`link-${product.id}`}
+            data-testid={CATALOGUE.productLink(product.id)}
             className="after:absolute after:inset-0 group-hover:text-brand-700"
           >
             {product.name}
@@ -229,11 +249,22 @@ export function ProductCard({
 // Faceted filtering — server-rendered, driven by links and a form
 // ---------------------------------------------------------------------------
 
-export function FacetGroup({ title, children }: { title: string; children: ReactNode }) {
+export function FacetGroup({
+  title,
+  children,
+  scroll = false,
+}: {
+  title: string;
+  children: ReactNode;
+  /** For long facets. Keeps the panel a sane height so controls below stay reachable. */
+  scroll?: boolean;
+}) {
   return (
     <fieldset className="border-b border-line py-4 last:border-0">
       <legend className="mb-2 text-[length:var(--fs-sm)] font-semibold text-ink-800">{title}</legend>
-      <div className="flex flex-col gap-1.5">{children}</div>
+      <div className={cx('flex flex-col gap-1.5', scroll && 'max-h-56 overflow-y-auto pr-1')}>
+        {children}
+      </div>
     </fieldset>
   );
 }
@@ -258,11 +289,11 @@ export function FacetOption({
         name={name}
         value={value}
         defaultChecked={checked}
-        data-testid={`facet-${name}-${value}`}
+        data-testid={CATALOGUE.facet(name, value)}
         className="size-4 accent-[var(--color-brand-700)]"
       />
       <span className="flex-1">{label}</span>
-      <span className="tabular-nums text-[length:var(--fs-xs)] text-ink-400">{count}</span>
+      <span className="tabular-nums text-[length:var(--fs-xs)] text-ink-500">{count}</span>
     </label>
   );
 }

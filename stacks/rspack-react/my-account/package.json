@@ -1,0 +1,48 @@
+{
+  "name": "@mf-eval/rspack-react-my-account",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rsbuild build",
+    "serve": "node server.mjs",
+    "lint": "eslint src *.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "check": "pnpm lint && pnpm typecheck && pnpm test && pnpm build"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "@mf-eval/behaviors": "workspace:*",
+    "@mf-eval/contracts": "workspace:*",
+    "@mf-eval/design": "workspace:*",
+    "@mf-eval/react-contracts": "workspace:*",
+    "@mf-eval/shell-kit": "workspace:*",
+    "@mf-eval/zone-router": "workspace:*",
+    "@module-federation/enhanced": "catalog:",
+    "@module-federation/node": "catalog:",
+    "hono": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "@mf-eval/media": "workspace:*"
+  },
+  "devDependencies": {
+    "@mf-eval/rsbuild-preset": "workspace:*",
+    "@mf-eval/tsconfig": "workspace:*",
+    "@mf-eval/vitest-config": "workspace:*",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-react": "catalog:",
+    "@rsbuild/plugin-tailwindcss": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}

@@ -1,6 +1,7 @@
 import { Slot } from '@mf-eval/react-contracts';
 import type { PageProps, RouteLoaderArgs } from '@mf-eval/contracts';
 import { PRODUCTS, categoryById, productById, type Product } from '@mf-eval/contracts/fixtures';
+import { galleryFor, imageForProduct } from '@mf-eval/media';
 import {
   Badge,
   Breadcrumbs,
@@ -9,7 +10,9 @@ import {
   Container,
   Price,
   ProductCard,
-  ProductThumb,
+  ImageButton,
+  MediaCredit,
+  Picture,
   SectionHeader,
   SpecTable,
   StockStatus,
@@ -29,6 +32,7 @@ export function loader({ params }: RouteLoaderArgs): DetailData {
 
 export function Component({ data }: PageProps<DetailData>) {
   const { product, related } = data;
+  const gallery = galleryFor(product.id, product.family);
   const category = categoryById(product.categoryId);
 
   return (
@@ -45,9 +49,44 @@ export function Component({ data }: PageProps<DetailData>) {
       <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_22rem]">
         <div>
           <div className="grid gap-6 sm:grid-cols-[18rem_1fr]">
-            <Card className="p-3">
-              <ProductThumb family={product.family} id={product.id} label={product.name} />
-            </Card>
+            {/* A real gallery: the main image is this page's LCP element, so it is the one
+                image marked priority. The thumbnails are lazy, and the whole thing works
+                without JavaScript — the behaviour only swaps which one is large. */}
+            <div
+              data-behavior="product.gallery"
+              data-behavior-when="visible"
+              data-testid="gallery"
+              className="flex flex-col gap-3"
+            >
+              <Card className="p-3">
+                <Picture
+                  image={gallery[0] ?? imageForProduct(product.id, product.family)}
+                  alt={product.name}
+                  sizes="(min-width: 40rem) 18rem, 92vw"
+                  priority
+                  className="rounded-md"
+                  data-testid="gallery-main"
+                />
+              </Card>
+              {gallery.length > 1 ? (
+                <ul className="grid grid-cols-4 gap-2" data-testid="gallery-thumbs">
+                  {gallery.slice(0, 4).map((img, i) => (
+                    <li key={img.id}>
+                      <ImageButton
+                        data-gallery-thumb
+                        data-gallery-id={img.id}
+                        data-testid={`gallery-thumb-${i}`}
+                        aria-label={`View image ${i + 1} of ${Math.min(gallery.length, 4)}`}
+                        aria-pressed={i === 0}
+                      >
+                        <Picture image={img} alt="" sizes="5rem" />
+                      </ImageButton>
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+              <MediaCredit image={gallery[0] ?? imageForProduct(product.id, product.family)} />
+            </div>
             <div>
               <p className="text-[length:var(--fs-2xs)] font-semibold uppercase tracking-[0.14em] text-brand-700">
                 {product.range}

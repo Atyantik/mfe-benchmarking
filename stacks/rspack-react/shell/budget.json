@@ -1,6 +1,7 @@
 {
-  "_comment": "The shell is loaded on every page, so its budget is the site's floor. `own` here counts everything it builds, because unlike a remote the host really is loaded standalone. The bulk is react-dom (~56 kB), present solely to mount the personalized cart — see docs/constraints.md §9. If that ever moves off React, cut this hard.",
+  "_comment": "The shell is loaded on every page, so its budget is the site's floor. `own` here counts everything it builds, because unlike a remote the host really is loaded standalone. The bulk is react-dom (~56 kB), present solely to mount the personalized cart \u2014 see docs/constraints.md \u00a79. If that ever moves off React, cut this hard.",
   "ownJsGzip": 105000,
   "cssGzip": 8000,
-  "largestJsGzip": 60000
+  "largestJsGzip": 60000,
+  "behaviorJsGzip": 3000
 }

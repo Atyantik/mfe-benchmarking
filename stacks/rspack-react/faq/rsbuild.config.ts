@@ -12,9 +12,12 @@ if (!VALID.includes(HYDRATION)) {
   throw new Error(`MF_HYDRATION must be one of ${VALID.join(' | ')}, got "${HYDRATION}"`);
 }
 
+const appRoot = import.meta.dirname;
+
 export default defineConfig({
   plugins: [pluginReact()],
   ...defineMfApp({
+    appRoot,
     name: 'faq',
     port: 3101,
     isRemote: true,
@@ -22,6 +25,11 @@ export default defineConfig({
     serverEntry: './src/entry.server.tsx',
     define: { __MF_HYDRATION__: JSON.stringify(HYDRATION) },
     // The server ALWAYS renders real content — that is the whole point of SSR.
+    // Contributed into the ACCOUNT host's overview — a third team on the same page.
+    exposes: {
+      './AccountSupport': './src/AccountSupport.tsx',
+      './AccountSupportPlaceholder': './src/AccountSupportPlaceholder.tsx',
+    },
     exposesNode: { './routes': './src/routes.tsx' },
     // In `off` the browser gets a route module with no path to the page component,
     // so its code and CSS are absent from the client bundle rather than merely unused.

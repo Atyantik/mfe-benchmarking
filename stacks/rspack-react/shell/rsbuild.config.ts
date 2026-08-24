@@ -14,9 +14,12 @@ const REGISTRY_URL = process.env.MF_REGISTRY_URL ?? 'http://localhost:4000';
  * Remotes are resolved at request time from the registry, never from a build-time
  * `remotes` block, so adding a page repo needs no shell rebuild.
  */
+const appRoot = import.meta.dirname;
+
 export default defineConfig({
   plugins: [pluginReact()],
   ...defineMfApp({
+    appRoot,
     name: 'shell',
     port: 3100,
     isRemote: false,

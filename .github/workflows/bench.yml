@@ -1,0 +1,63 @@
+# The measurement gate. Slower than `check` and needs a browser, the media fixtures and the
+# whole stack running, so it is separate — but it is not optional: every architectural claim
+# in this repo is asserted by one of these suites.
+name: bench
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: bench-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      # The media pipeline shells out to these; there is no node image library to install.
+      - name: Install media tooling
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg webp libavif-bin
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # Fetches real photographs from Wikimedia Commons and derives the responsive set.
+      # Cached on `sources.json`, which pins every file by exact title.
+      - name: Cache media fixtures
+        uses: actions/cache@v4
+        with:
+          path: |
+            packages/media/originals
+            packages/media/dist
+            packages/media/manifest.json
+            packages/media/credits.json
+          key: media-${{ hashFiles('packages/media/sources.json', 'packages/media/scripts/*.mjs') }}
+
+      - run: pnpm media
+      - run: pnpm build
+      - run: pnpm dev
+      - run: pnpm bench
+
+      - if: always()
+        run: node scripts/stack.mjs stop
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bench-results
+          path: results/

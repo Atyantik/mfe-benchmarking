@@ -70,7 +70,17 @@ export function useCartActions(): { add: (item: CartItem) => void; clear: () => 
  * named slots. Product renders <Slot name="cart.drawer" /> and knows nothing about
  * which remote (or which version of it) supplies the component.
  */
-export type SlotName = 'cart.drawer' | 'cart.mini' | 'cart.page';
+export type SlotName =
+  | 'cart.drawer'
+  | 'cart.mini'
+  | 'cart.page'
+  // Account-area widgets, each contributed by a DIFFERENT app into a region of the account
+  // overview. This is the composition the whole architecture is for: three teams contribute
+  // to one page, the page depends on none of them, and a visitor who never opens the account
+  // area downloads none of it.
+  | 'account.cart'
+  | 'account.recommended'
+  | 'account.support';
 
 interface SlotRegistry {
   slots: Partial<Record<SlotName, ComponentType>>;

@@ -4,15 +4,26 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "all": "node src/all.mjs",
+    "budget": "node src/budget.mjs",
+    "hosts": "node src/hosts.mjs",
     "verify": "node src/verify.mjs",
     "independence": "node src/independence.mjs",
     "contamination": "node src/cross-contamination.mjs",
+    "behaviors": "node src/behaviors.mjs",
+    "vitals": "node src/vitals.mjs",
     "measure": "node src/measure.mjs",
     "audit": "node src/audit.mjs",
-    "all": "node src/verify.mjs && node src/independence.mjs && node src/cross-contamination.mjs",
-    "warm": "node src/warm.mjs"
+    "warm": "node src/warm.mjs",
+    "media": "node src/media.mjs",
+    "auth": "node src/auth.mjs",
+    "widgets": "node src/widgets.mjs",
+    "contract": "node --experimental-strip-types src/contract.mjs",
+    "a11y": "node src/a11y.mjs"
   },
   "dependencies": {
-    "playwright": "catalog:"
+    "playwright": "catalog:",
+    "web-vitals": "catalog:",
+    "axe-core": "catalog:"
   }
 }

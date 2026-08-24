@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const REGISTRY_FILE = join(ROOT, 'packages/registry/registry.json');
 const SHELL_BUNDLE = join(ROOT, 'stacks/rspack-react/shell/dist/node/index.js');
-const BASE = process.env.MF_BASE ?? 'http://localhost:3100';
+import { EDGE as BASE } from './lib/topology.mjs';
 const REGISTRY_TTL_MS = 5_000;
 
 const results = [];
