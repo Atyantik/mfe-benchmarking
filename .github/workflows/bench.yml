@@ -29,30 +29,27 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
-      # The media pipeline shells out to these; there is no node image library to install.
-      - name: Install media tooling
-        run: sudo apt-get update && sudo apt-get install -y ffmpeg webp libavif-bin
-
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
 
-      # Fetches real photographs from Wikimedia Commons and derives the responsive set.
-      # Cached on `sources.json`, which pins every file by exact title.
-      - name: Cache media fixtures
-        uses: actions/cache@v4
-        with:
-          path: |
-            packages/media/originals
-            packages/media/dist
-            packages/media/manifest.json
-            packages/media/credits.json
-          key: media-${{ hashFiles('packages/media/sources.json', 'packages/media/scripts/*.mjs') }}
-
-      # Bounded: a cold cache fetches 17 images from a third-party service, and a benchmark
-      # must not sit waiting on someone else's rate limiter. A miss here fails the run with a
-      # clear reason rather than burning the job's timeout.
-      - run: pnpm media
-        timeout-minutes: 8
+      # The fixtures come from a release asset, NOT from Wikimedia.
+      #
+      # `pnpm media` fetches seventeen photographs from Commons, which is right for a
+      # developer setting up once and wrong for CI: shared runner IP ranges are rate-limited
+      # hard enough that a cold fetch reliably exceeded eight minutes and then failed. A
+      # benchmark should not depend on a third party being in a good mood.
+      #
+      # The asset is built by `pnpm media` and published deliberately; `sources.json` plus
+      # `scripts/derive.mjs` reproduce it byte for byte.
+      - name: Restore media fixtures
+        run: |
+          gh release download media-fixtures-v1 \
+            --pattern 'media-fixtures.tar.gz' --output /tmp/media-fixtures.tar.gz
+          tar -xzf /tmp/media-fixtures.tar.gz -C packages/media
+          test -f packages/media/manifest.json
+          echo "restored $(find packages/media/dist -type f | wc -l) fixture files"
+        env:
+          GH_TOKEN: ${{ github.token }}
       - run: pnpm build
       - run: pnpm dev
       - run: pnpm bench
