@@ -92,6 +92,17 @@ heading('1. routing - the edge sends each prefix to the right application');
 {
   const edge = await (await fetch(`${EDGE}/__edge`)).json();
   note(edge.routes.map((r) => `${r.prefix} -> ${r.origin}`).join('   '));
+
+  /**
+   * The routing table exists twice — in the edge and in the topology the suites measure
+   * against — and the two drifted the moment sign-in moved to the account host. Asserting
+   * they agree turns a silent mis-attribution into a failure that names the missing prefix.
+   */
+  const declared = new Set(HOSTS.flatMap((h) => h.prefixes ?? [h.prefix]));
+  const actual = new Set(edge.routes.map((r) => r.prefix));
+  const missing = [...actual].filter((p) => !declared.has(p));
+  check('routing', 'the topology knows every prefix the edge routes', missing.length === 0,
+    missing.length ? `edge routes ${missing.join(', ')}, topology does not` : `${actual.size} prefix(es), both agree`);
   for (const host of HOSTS) {
     const direct = await fetch(`http://localhost:${host.port}/__health`).then(
       (r) => r.ok,

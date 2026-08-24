@@ -35,6 +35,15 @@ export const HOSTS = [
     name: 'my-account',
     port: 3120,
     prefix: '/my-account',
+    /**
+     * Every prefix the edge routes here, not just the zone's own.
+     *
+     * Sign-in belongs to whoever owns sessions, so `/login` and `/logout` are this host's
+     * too. Listing only `/my-account` made asset attribution blame the storefront for the
+     * login page — the routing table exists in two places, and the `hosts` suite now asserts
+     * they agree rather than trusting that they do.
+     */
+    prefixes: ['/my-account', '/login', '/logout'],
     nav: 'zone',
     dir: 'stacks/rspack-react/my-account',
     budgetKey: 'my-account',
@@ -94,8 +103,11 @@ export function ownerOf(url) {
    *
    * Resolve by prefix, the same rule the edge itself routes on.
    */
-  const zone = HOSTS.find(
-    (h) => h.prefix !== '/' && (parsed.pathname === h.prefix || parsed.pathname.startsWith(`${h.prefix}/`)),
+  const zone = HOSTS.find((h) =>
+    (h.prefixes ?? [h.prefix]).some(
+      (prefix) =>
+        prefix !== '/' && (parsed.pathname === prefix || parsed.pathname.startsWith(`${prefix}/`)),
+    ),
   );
   return zone?.name ?? HOSTS.find((h) => h.prefix === '/')?.name ?? 'edge';
 }
