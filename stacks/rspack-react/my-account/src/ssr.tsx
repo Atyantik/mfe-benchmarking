@@ -161,11 +161,17 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   }
   for (const src of SLOT_SOURCES) {
     if (!usedSlots.has(src.slot)) continue;
-    for (const e of [src.placeholderExpose, src.expose]) want(src.remote, e, true);
+    // The placeholder is server markup (CSS only); the live component is client code. A
+    // behaviour-enhanced slot has no live component, and claiming one would preload a module
+    // that does not exist.
+    want(src.remote, src.placeholderExpose, false);
+    if (src.expose) want(src.remote, src.expose, true);
   }
   const plan = await buildPreloadPlan(webRegistry.remotes, needs);
 
-  const personalized = [...usedSlots].map((slot) => ({ slot }));
+  // See the storefront's ssr.tsx: a behaviour-enhanced slot is not an island.
+  const mountable = new Set(SLOT_SOURCES.filter((s) => s.module).map((s) => s.slot));
+  const personalized = [...usedSlots].filter((s) => mountable.has(s as never)).map((slot) => ({ slot }));
   // The SPA is handed the viewer directly, so it knows who it is serving on its first render
   // rather than parsing a cookie and re-rendering.
   const bootstrap = {

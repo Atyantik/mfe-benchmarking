@@ -33,6 +33,12 @@ async function resolveSlot(name: SlotName): Promise<ComponentType | null> {
     console.error(`[slot] ${name} has no source. Known: ${SLOT_SOURCES.map((s) => s.slot).join(', ')}`);
     return null;
   }
+  if (!source.module) {
+    // Behaviour-enhanced: the server renders the markup and a behaviour fills it, so there is
+    // no component to mount here. Asking for one is a category error, not a missing module.
+    console.error(`[slot] ${name} is enhanced by a behaviour and has no mountable component`);
+    return null;
+  }
 
   const load = loadRemote<{ default: ComponentType }>(source.module)
     .then((mod) => {

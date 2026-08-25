@@ -21,7 +21,6 @@ export default defineConfig({
       // The cart team owns a route too — /cart, which is personalized end to end.
       './routes': './src/routes.tsx',
       // Live components — client only.
-      './MiniCart': './src/MiniCart.tsx',
       './CartDrawer': './src/CartDrawer.tsx',
       './CartPage': './src/CartPage.tsx',
       // Contributed into the ACCOUNT host's overview. The cart team owns cart UI wherever

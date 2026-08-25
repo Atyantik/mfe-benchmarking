@@ -53,9 +53,23 @@ console.log('\n— the HTML carries no personalization, so a CDN can share it �
   ).text();
   record('response is byte-identical regardless of the visitor\'s cart', emptyCart === fullCart,
     `${emptyCart.length} vs ${fullCart.length} bytes`);
-  record('no cart count appears in the server HTML', !/data-testid="cart-count"/.test(emptyCart));
-  record('a reserved placeholder is rendered instead',
-    /data-testid="mini-cart-placeholder"/.test(emptyCart));
+  /**
+   * The badge ELEMENT is now server-rendered; its VALUE still must not be.
+   *
+   * It used to be a React island, so the whole element was absent from the HTML and checking
+   * for the element was the same as checking for the data. It is a behaviour now — the server
+   * renders the markup and the client fills the two numbers — so the check has to look at
+   * what the element contains, which is what it always meant.
+   */
+  const badge = /data-testid="cart-count"[^>]*>([^<]*)</.exec(emptyCart)?.[1] ?? '';
+  record(
+    'no cart count appears in the server HTML',
+    badge.trim() === '' || badge === '&nbsp;',
+    `server renders the badge empty (${JSON.stringify(badge)}), the client fills it`,
+  );
+  record('the box is reserved server-side, so filling it shifts nothing',
+    /data-testid="mini-cart"/.test(emptyCart) && /data-behavior="cart\.mini"/.test(emptyCart),
+    'markup owned by the cart team, enhanced in place rather than replaced');
 }
 
 console.log('\n— pages that need no personalization ship no JS at all —');

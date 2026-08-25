@@ -30,8 +30,15 @@ export const CHROME = {
   accountLink: 'account-link',
   accountLabel: 'account-label',
   cartCount: 'cart-count',
+  cartTotal: 'cart-total',
+  /**
+   * The header cart, server-rendered and enhanced by a behaviour.
+   *
+   * There is no separate placeholder id any more: the markup the server emits IS the cart,
+   * with its two values left empty for the client to fill. It stopped being an island so that
+   * pages showing only a badge would stop shipping react-dom.
+   */
   miniCart: 'mini-cart',
-  miniCartPlaceholder: 'mini-cart-placeholder',
 } as const;
 
 /** Catalogue and product detail. */
@@ -120,8 +127,8 @@ export interface RouteContract {
 export const ROUTE_CONTRACT: RouteContract[] = [
   {
     path: '/',
-    server: [CHROME.search, CHROME.accountLink, CHROME.miniCartPlaceholder, HOME.heroVideo],
-    clientOnly: [CHROME.cartCount],
+    server: [CHROME.search, CHROME.accountLink, CHROME.miniCart, CHROME.cartCount, HOME.heroVideo],
+    clientOnly: [CHROME.cartTotal],
   },
   {
     path: '/product',

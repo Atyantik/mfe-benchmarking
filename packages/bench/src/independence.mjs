@@ -94,7 +94,8 @@ try {
   // The cart is client-rendered, so the SERVER HTML carries its placeholder, never a
   // count. Asserting on the count here would be asserting the architecture is broken.
   record('other remotes still render (cart placeholder present)',
-    homeHtml.includes('mini-cart-placeholder'));
+    // The cart contributes server-rendered markup now, not a placeholder awaiting an island.
+    homeHtml.includes('data-testid="mini-cart"'));
 } finally {
   writeRegistry(original);
   await sleep(REGISTRY_TTL_MS + 1000);

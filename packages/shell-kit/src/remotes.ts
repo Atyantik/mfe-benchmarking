@@ -57,9 +57,16 @@ async function loadOne<T>(remote: string, id: string): Promise<T> {
 export interface SlotSource {
   slot: SlotName;
   remote: string;
-  /** Live component — client only. Personalized, never server-rendered. */
-  module: string;
-  expose: string;
+  /**
+   * Live component — client only, mounted as an island.
+   *
+   * Absent when the region is enhanced by a BEHAVIOUR instead: the server renders the real
+   * markup and a behaviour fills it in place, with no framework and no second render. The
+   * header cart works that way, which is what takes react-dom off every page that only
+   * shows a cart badge.
+   */
+  module?: string;
+  expose?: string;
   /** Reserved-size stand-in the SERVER renders, so mounting the live one shifts nothing. */
   placeholderModule: string;
   placeholderExpose: string;
@@ -67,10 +74,9 @@ export interface SlotSource {
 
 export const SLOT_SOURCES: SlotSource[] = [
   {
+    // Enhanced by `cart.mini`, not mounted. See SlotSource.module.
     slot: 'cart.mini',
     remote: 'cart',
-    module: 'cart/MiniCart',
-    expose: './MiniCart',
     placeholderModule: 'cart/MiniCartPlaceholder',
     placeholderExpose: './MiniCartPlaceholder',
   },
@@ -234,6 +240,8 @@ async function resolveRemotes(
       (s) => providerNames.has(s.remote) && (!onlySlots || onlySlots.includes(s.slot)),
     ).map(async (s) => {
       const id = variant === 'live' ? s.module : s.placeholderModule;
+      // A behaviour-enhanced slot has no live component to load.
+      if (!id) return;
       try {
         const mod = await loadOne<{ default: ComponentType }>(s.remote, id);
         slots[s.slot] = mod.default;

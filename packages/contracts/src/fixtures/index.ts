@@ -9,3 +9,7 @@ export * from './catalog.ts';
 export * from './content.ts';
 
 export { mulberry32, SEED } from './rng.ts';
+
+// Re-exported for compatibility. Import it from '@mf-eval/contracts' instead: reaching
+// through the fixtures barrel pulls the whole catalogue in with it.
+export { formatPrice } from '../money.ts';

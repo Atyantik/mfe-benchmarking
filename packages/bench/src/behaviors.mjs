@@ -570,26 +570,39 @@ if (timingRows.length === 0) {
   // each instance's window: two instances attaching concurrently both observe the same
   // manifest fetch, so counting per instance would report a second payment that never
   // happened.
-  const repaid = [];
+  /**
+   * The pathology this guards is N behaviours costing N containers — 15 kB of remoteEntry
+   * each. That is what must never scale.
+   *
+   * The manifest is a different matter: it is ~2 kB, and a page where a behaviour and an
+   * island both first-load the same remote can fetch it twice, because both start before
+   * either resolves. That is a race, not a per-behaviour cost, and holding it to one would
+   * fail on correct behaviour — the earlier version of this check did exactly that.
+   */
+  const heavy = [];
+  const chatty = [];
   for (const route of ROUTES) {
-    const counts = new Map();
+    const entries = new Map();
+    const manifests = new Map();
     for (const res of profiles[route].responses) {
-      if (!/mf-manifest\.json$|remoteEntry\.js$/.test(res.url)) continue;
       const app = appOf(res.url);
-      counts.set(app, (counts.get(app) ?? 0) + 1);
+      if (/remoteEntry\.js$/.test(res.url)) entries.set(app, (entries.get(app) ?? 0) + 1);
+      else if (/mf-manifest\.json$/.test(res.url)) manifests.set(app, (manifests.get(app) ?? 0) + 1);
     }
-    for (const [app, n] of counts) {
-      // manifest + remoteEntry is two requests for one initialisation.
-      if (n > 2) repaid.push(`${route} ${app} x${n}`);
-    }
+    for (const [app, n] of entries) if (n > 1) heavy.push(`${route} ${app} remoteEntry x${n}`);
+    for (const [app, n] of manifests) if (n > 2) chatty.push(`${route} ${app} manifest x${n}`);
   }
   check(
     'timing',
-    'a remote container is initialised once per page, not once per behaviour',
-    repaid.length === 0,
-    repaid.length
-      ? repaid.join(', ')
-      : 'behaviours sharing a remote share its container',
+    'a remote container is downloaded once per page, however many behaviours use it',
+    heavy.length === 0,
+    heavy.length ? heavy.join(', ') : 'one remoteEntry per contributing remote — the 15 kB cost does not scale',
+  );
+  check(
+    'timing',
+    'manifest fetches stay bounded when several paths load the same remote',
+    chatty.length === 0,
+    chatty.length ? chatty.join(', ') : 'at most one duplicate from a concurrent first load',
   );
   // The chunk is preloaded, so the federation runtime IS the cost of a behaviour arriving.
   // Worth a number of its own: it is what a second behaviour on the same remote avoids.

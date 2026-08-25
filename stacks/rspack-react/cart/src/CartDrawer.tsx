@@ -1,6 +1,6 @@
+import { formatPrice } from '@mf-eval/contracts';
 import './styles.css';
 import { useCart } from '@mf-eval/react-contracts';
-import { formatPrice } from '@mf-eval/contracts/fixtures';
 import { ButtonLink } from '@mf-eval/design';
 
 /** Client-only. Owned by the cart team, rendered on the product team's page. */

@@ -226,7 +226,3 @@ export function productsInCategory(categoryId: string): Product[] {
   return PRODUCTS.filter((p) => p.categoryId === categoryId);
 }
 
-/** Cents → a fixed string. Intl would vary by ICU build; this must not. */
-export function formatPrice(cents: number): string {
-  return `$${Math.floor(cents / 100).toLocaleString('en-US')}.${String(cents % 100).padStart(2, '0')}`;
-}

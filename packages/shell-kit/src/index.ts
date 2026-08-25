@@ -11,5 +11,7 @@
 export * from './registry-client.ts';
 export * from './remotes.ts';
 export * from './assets.ts';
-export * from './cart-cookie.ts';
+// The cart cookie moved to @mf-eval/contracts, beside the store it encodes. Re-exported
+// here because every host reads it and this is where they already look.
+export { CART_COOKIE, cartCookieValue, readCartCookie } from '@mf-eval/contracts';
 export * from './chrome.ts';

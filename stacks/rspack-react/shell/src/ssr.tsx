@@ -145,7 +145,11 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
       </div>
     </SlotProvider>,
   );
-  const personalized = [...usedSlots].map((slot) => ({ slot }));
+  // Only slots with a live component count as "personalized" for the client: a
+  // behaviour-enhanced slot needs no mount, and listing it would make the shell load react-dom
+  // on every page that shows a cart badge — which is exactly what this change removes.
+  const mountable = new Set(SLOT_SOURCES.filter((s) => s.module).map((s) => s.slot));
+  const personalized = [...usedSlots].filter((s) => mountable.has(s as never)).map((slot) => ({ slot }));
 
   // Which behaviours this page actually rendered, read back out of the markup.
   //
@@ -193,7 +197,11 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
     if (!usedSlots.has(src.slot)) continue;
     // Placeholder for the paint the server already produced; live component for the mount
     // the client is about to perform. Both are genuinely needed on this page.
-    for (const e of [src.placeholderExpose, src.expose]) want(src.remote, e, true);
+    // The placeholder is server markup (CSS only); the live component is client code. A
+    // behaviour-enhanced slot has no live component, and claiming one would preload a module
+    // that does not exist.
+    want(src.remote, src.placeholderExpose, false);
+    if (src.expose) want(src.remote, src.expose, true);
   }
   const plan = await buildPreloadPlan(webRegistry.remotes, needs);
 

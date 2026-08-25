@@ -15,19 +15,10 @@
 import { useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
 import { CartProvider, SlotProvider } from '@mf-eval/react-contracts';
+import { CART_STATE_GLOBAL, getCartStore, mark, MARKS, type RegistryResponse } from '@mf-eval/contracts';
 import {
-  CART_STATE_GLOBAL,
-  createCartStore,
-  mark,
-  MARKS,
-  type RegistryResponse,
-} from '@mf-eval/contracts';
-import {
-  CART_COOKIE,
-  cartCookieValue,
   loadRemotes,
   primeRegistry,
-  readCartCookie,
   register,
   SLOT_SOURCES,
 } from '@mf-eval/shell-kit';
@@ -142,10 +133,9 @@ async function start(): Promise<void> {
 
   primeRegistry('web', boot.cohort, boot.registry);
 
-  const store = createCartStore(readCartCookie(document.cookie));
-  store.subscribe(() => {
-    document.cookie = `${CART_COOKIE}=${cartCookieValue(store.getSnapshot())}; path=/; SameSite=Lax; Max-Age=2592000`;
-  });
+  // The shared client store: the header badge behaviour and the account's cart widget are
+  // looking at the same instance, and it persists itself.
+  const store = getCartStore();
 
   // Only the remotes this page pulls from: whoever owns a personalized region, plus whoever
   // owns a behaviour in the markup. The account application is this host's own code and is
@@ -190,7 +180,13 @@ async function start(): Promise<void> {
     );
   }
 
-  if (boot.personalized.length === 0) return;
+  // The account host already ships React for its own application, so there is no chunk to
+  // save here — but the header cart is still a behaviour, so there is usually nothing left to
+  // mount at all.
+  if (boot.personalized.length === 0) {
+    mark(MARKS.shellHydrateEnd);
+    return;
+  }
   const slotOwners = new Set(boot.personalized.map((p) => p.slot.split('.')[0] ?? ''));
   const { slots } = await loadRemotes(
     entries.filter((r) => slotOwners.has(r.name)),
@@ -198,7 +194,7 @@ async function start(): Promise<void> {
   );
   for (const spec of boot.personalized) {
     const el = document.querySelector<HTMLElement>(`[data-personalized="${spec.slot}"]`);
-    const Live = slots[spec.slot as 'cart.mini' | 'cart.drawer'];
+    const Live = slots[spec.slot as 'cart.drawer' | 'cart.page'];
     if (!el || !Live) continue;
     createRoot(el).render(
       <CartProvider store={store}>
