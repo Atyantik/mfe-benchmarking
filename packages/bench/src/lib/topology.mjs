@@ -1,3 +1,5 @@
+import { ACCOUNT } from '../../../contracts/src/testids.ts';
+
 /**
  * The topology, in one place.
  *
@@ -10,6 +12,24 @@
  * That is the failure mode this file exists to remove. Adding a host, a remote or a route is
  * ONE edit here, and an origin nobody declared is a hard failure rather than a shrug.
  */
+
+/**
+ * Which implementation the suites are pointed at.
+ *
+ * The whole purpose of this repo is to run the SAME suites against `vite-solid`,
+ * `rspack-preact` and whatever comes next, and compare. That only works if the stack is a
+ * parameter. It was a constant — every app directory below read `stacks/rspack-react/...`,
+ * along with the shell bundle path in `independence.mjs` — which meant a second stack could
+ * not be measured without editing the measurement code, and code edited per stack is code
+ * that measures the edit.
+ *
+ * Directory layout is therefore part of the frozen spec: `stacks/<stack>/<dir>`, with the
+ * same `dir` names in every stack. See `docs/porting-a-stack.md`.
+ */
+export const STACK = process.env.MF_STACK ?? 'rspack-react';
+
+/** Resolve an app's source directory within the stack under measurement. */
+export const appDir = (name) => `stacks/${STACK}/${name}`;
 
 /** The public origin. Both hosts are behind it; a browser never sees anything else. */
 export const EDGE = process.env.MF_BASE ?? 'http://localhost:3100';
@@ -28,7 +48,7 @@ export const HOSTS = [
     port: 3110,
     prefix: '/',
     nav: 'document',
-    dir: 'stacks/rspack-react/shell',
+    dir: appDir('shell'),
     budgetKey: 'shell',
   },
   {
@@ -45,7 +65,7 @@ export const HOSTS = [
      */
     prefixes: ['/my-account', '/login', '/logout'],
     nav: 'zone',
-    dir: 'stacks/rspack-react/my-account',
+    dir: appDir('my-account'),
     budgetKey: 'my-account',
   },
 ];
@@ -55,10 +75,10 @@ export const HOSTS = [
  * in the browser — chrome's never is, which is what makes a shared header affordable.
  */
 export const REMOTES = [
-  { name: 'chrome', port: 3104, kind: 'component', client: false, dir: 'stacks/rspack-react/chrome' },
-  { name: 'faq', port: 3101, kind: 'route', client: false, dir: 'stacks/rspack-react/faq' },
-  { name: 'product', port: 3102, kind: 'route', client: 'behaviors', dir: 'stacks/rspack-react/product' },
-  { name: 'cart', port: 3103, kind: 'route+component', client: true, dir: 'stacks/rspack-react/cart' },
+  { name: 'chrome', port: 3104, kind: 'component', client: false, dir: appDir('chrome') },
+  { name: 'faq', port: 3101, kind: 'route', client: false, dir: appDir('faq') },
+  { name: 'product', port: 3102, kind: 'route', client: 'behaviors', dir: appDir('product') },
+  { name: 'cart', port: 3103, kind: 'route+component', client: true, dir: appDir('cart') },
 ];
 
 export const REGISTRY = { name: 'registry', port: 4000 };
@@ -184,10 +204,10 @@ export const MEDIA_BUDGET = {
 export const ZONE_WALK = {
   start: '/my-account',
   steps: [
-    { click: 'nav-account.orders', expect: 'page-account.orders', path: '/my-account/orders' },
-    { click: 'order-link-o-0001', expect: 'page-account.order', path: '/my-account/orders/o-0001' },
-    { click: 'back-to-orders', expect: 'page-account.orders', path: '/my-account/orders' },
-    { click: 'nav-account.profile', expect: 'page-account.profile', path: '/my-account/profile' },
+    { click: ACCOUNT.nav('account.orders'), expect: ACCOUNT.page('account.orders'), path: '/my-account/orders' },
+    { click: ACCOUNT.orderLink('o-0001'), expect: ACCOUNT.page('account.order'), path: '/my-account/orders/o-0001' },
+    { click: ACCOUNT.backToOrders, expect: ACCOUNT.page('account.orders'), path: '/my-account/orders' },
+    { click: ACCOUNT.nav('account.profile'), expect: ACCOUNT.page('account.profile'), path: '/my-account/profile' },
   ],
 };
 

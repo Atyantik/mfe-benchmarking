@@ -35,7 +35,7 @@ export function Component(_props: PageProps<null>) {
           </p>
 
           <Card className="mt-7 p-5 sm:p-6">
-            <form method="post" action="/contact" className="flex flex-col gap-5">
+            <form data-testid="contact-form" method="post" action="/contact" className="flex flex-col gap-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <Field label="Full name">
                   <input name="name" required autoComplete="name" data-testid="contact-name" className={inputClass} />

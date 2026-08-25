@@ -146,7 +146,7 @@ function Masthead({ viewer }: { viewer: Viewer | null }) {
                 </svg>
               )}
             </span>
-            <span data-account-label>{viewer ? (viewer.name.split(' ')[0] ?? viewer.name) : 'My account'}</span>
+            <span data-account-label data-testid={CHROME.accountLabel}>{viewer ? (viewer.name.split(' ')[0] ?? viewer.name) : 'My account'}</span>
           </a>
           {/* Personalized: the server renders a reserved placeholder, the client mounts
               the live component into the same box. Never in the HTML, never cached. */}

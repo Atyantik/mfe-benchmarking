@@ -3,6 +3,7 @@ import type { PageProps, RouteLoaderArgs } from '@mf-eval/contracts';
 import { PRODUCTS, categoryById, productById, type Product } from '@mf-eval/contracts/fixtures';
 import { galleryFor, imageForProduct } from '@mf-eval/media';
 import { StockPanel } from './StockPanel';
+import { CATALOGUE } from '@mf-eval/contracts/testids';
 import {
   Badge,
   Breadcrumbs,
@@ -155,7 +156,7 @@ export function Component({ data }: PageProps<DetailData>) {
               type="button"
               size="lg"
               className="mt-5 w-full"
-              data-testid="add-to-cart"
+              data-testid={CATALOGUE.addToCart(product.id)}
               data-add-id={product.id}
               data-add-name={product.name}
               data-add-price={product.price}

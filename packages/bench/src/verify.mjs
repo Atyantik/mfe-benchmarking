@@ -16,6 +16,7 @@
 import { chromium } from 'playwright';
 
 import { EDGE as BASE } from './lib/topology.mjs';
+import { CART, CATALOGUE, CHROME } from '../../contracts/src/testids.ts';
 
 const results = [];
 const record = (name, pass, detail = '') => {
@@ -61,14 +62,14 @@ console.log('\n— the HTML carries no personalization, so a CDN can share it �
    * renders the markup and the client fills the two numbers — so the check has to look at
    * what the element contains, which is what it always meant.
    */
-  const badge = /data-testid="cart-count"[^>]*>([^<]*)</.exec(emptyCart)?.[1] ?? '';
+  const badge = new RegExp(`data-testid="${CHROME.cartCount}"[^>]*>([^<]*)<`).exec(emptyCart)?.[1] ?? '';
   record(
     'no cart count appears in the server HTML',
     badge.trim() === '' || badge === '&nbsp;',
     `server renders the badge empty (${JSON.stringify(badge)}), the client fills it`,
   );
   record('the box is reserved server-side, so filling it shifts nothing',
-    /data-testid="mini-cart"/.test(emptyCart) && /data-behavior="cart\.mini"/.test(emptyCart),
+    new RegExp(`data-testid="${CHROME.miniCart}"`).test(emptyCart) && /data-behavior="cart\.mini"/.test(emptyCart),
     'markup owned by the cart team, enhanced in place rather than replaced');
 }
 
@@ -93,12 +94,12 @@ console.log('\n— mounting personalized UI costs zero layout shift —');
     }).observe({ type: 'layout-shift', buffered: true });
   });
   await page.goto(`${BASE}/product`, { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-testid="cart-count"]', { timeout: 8000 }).catch(() => {});
+  await page.waitForSelector(`[data-testid="${CHROME.cartCount}"]`, { timeout: 8000 }).catch(() => {});
   await page.waitForTimeout(500);
   const cls = await page.evaluate(() => window.__cls);
   record('cumulative layout shift is zero', cls === 0, `CLS = ${cls}`);
   record('live cart replaced the placeholder',
-    (await page.locator('[data-testid="cart-count"]').count()) === 1);
+    (await page.locator(`[data-testid="${CHROME.cartCount}"]`).count()) === 1);
   await ctx.close();
 }
 
@@ -111,39 +112,39 @@ console.log('\n— client-owned cart, recreated from a cookie —');
   page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()); });
 
   await page.goto(`${BASE}/product`, { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-testid="cart-count"]');
-  record('cart starts empty', (await page.textContent('[data-testid="cart-count"]')) === '0');
+  await page.waitForSelector(`[data-testid="${CHROME.cartCount}"]`);
+  record('cart starts empty', (await page.textContent(`[data-testid="${CHROME.cartCount}"]`)) === '0');
 
   // The 200-row table is inert server HTML; a delegated listener makes it work.
-  await page.click('[data-testid="add-p-0001"]');
-  await page.click('[data-testid="add-p-0002"]');
+  await page.click(`[data-testid="${CATALOGUE.addToCart('p-0001')}"]`);
+  await page.click(`[data-testid="${CATALOGUE.addToCart('p-0002')}"]`);
   await page.waitForFunction(
-    () => document.querySelector('[data-testid="cart-count"]')?.textContent === '2',
+    () => document.querySelector(`[data-testid="${CHROME.cartCount}"]`)?.textContent === '2',
     null, { timeout: 5000 },
   ).catch(() => {});
   record('adding from never-hydrated markup updates the cart',
-    (await page.textContent('[data-testid="cart-count"]')) === '2');
+    (await page.textContent(`[data-testid="${CHROME.cartCount}"]`)) === '2');
 
   const cookies = await ctx.cookies();
   record('state persisted to a cookie', cookies.some((c) => c.name === 'mf_cart'));
 
   // Full document load — the SPA never has to survive this.
-  await page.click('[data-testid="link-p-0001"]');
+  await page.click(`[data-testid="${CATALOGUE.productLink('p-0001')}"]`);
   await page.waitForLoadState('networkidle');
-  await page.waitForSelector('[data-testid="cart-count"]');
+  await page.waitForSelector(`[data-testid="${CHROME.cartCount}"]`);
   record('cart survives a full document load, recreated from the cookie',
-    (await page.textContent('[data-testid="cart-count"]')) === '2',
-    `badge=${await page.textContent('[data-testid="cart-count"]')}`);
+    (await page.textContent(`[data-testid="${CHROME.cartCount}"]`)) === '2',
+    `badge=${await page.textContent(`[data-testid="${CHROME.cartCount}"]`)}`);
 
-  await page.click('[data-testid="add-to-cart"]');
+  await page.click(`[data-testid="${CATALOGUE.addToCart('p-0001')}"]`);
   await page.waitForFunction(
-    () => document.querySelector('[data-testid="cart-count"]')?.textContent === '3',
+    () => document.querySelector(`[data-testid="${CHROME.cartCount}"]`)?.textContent === '3',
     null, { timeout: 5000 },
   ).catch(() => {});
   record('detail page adds to the same cart',
-    (await page.textContent('[data-testid="cart-count"]')) === '3');
+    (await page.textContent(`[data-testid="${CHROME.cartCount}"]`)) === '3');
   record('cart drawer renders the three items',
-    (await page.locator('[data-testid="cart-row"]').count()) === 3);
+    (await page.locator(`[data-testid="${CART.row}"]`).count()) === 3);
 
   record('no console errors', consoleErrors.length === 0, consoleErrors.slice(0, 2).join(' | '));
   await ctx.close();

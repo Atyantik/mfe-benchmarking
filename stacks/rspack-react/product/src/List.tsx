@@ -7,6 +7,7 @@ import {
   type Availability,
   type Product,
 } from '@mf-eval/contracts/fixtures';
+import { CATALOGUE } from '@mf-eval/contracts/testids';
 import {
   Breadcrumbs,
   Button,
@@ -143,7 +144,10 @@ export function Component({ data }: PageProps<ListData>) {
             {single ? single.blurb : 'Circuit protection, automation, power continuity, sensing and metering.'}
           </p>
         </div>
-        <p className="text-[length:var(--fs-sm)] tabular-nums text-ink-500">
+        <p
+          data-testid={CATALOGUE.resultCount}
+          className="text-[length:var(--fs-sm)] tabular-nums text-ink-500"
+        >
           <strong className="font-semibold text-ink-800">{data.total}</strong> product
           {data.total === 1 ? '' : 's'}
           {data.query ? <> matching “{data.query}”</> : null}

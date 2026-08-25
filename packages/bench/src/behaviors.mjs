@@ -34,6 +34,7 @@ import { chunkIndex, inventory } from './lib/inventory.mjs';
 import { EDGE, ROUTES as TOPOLOGY_ROUTES, ownerOf } from './lib/topology.mjs';
 import { COLLECT, INSTRUMENT } from './lib/instrument.mjs';
 import { usedJsBytes } from './lib/coverage.mjs';
+import { CATALOGUE } from '../../contracts/src/testids.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
@@ -845,7 +846,7 @@ const strategyResults = {};
   strategyResults.interaction = await strategyRun(rewriter, {
     strategy: 'interaction',
     act: async (page) => {
-      const box = page.locator('[data-testid="filter-form"] input[type=checkbox]').first();
+      const box = page.locator(`[data-testid="${CATALOGUE.filterForm}"] input[type=checkbox]`).first();
       const value = await box.getAttribute('value');
       await box.click();
       await page

@@ -17,7 +17,12 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
-import { ROUTE_CONTRACT, ALL_TESTIDS } from '../../contracts/src/testids.ts';
+import {
+  ROUTE_CONTRACT,
+  ALL_TESTIDS,
+  CONDITIONAL_TESTIDS,
+  isContractId,
+} from '../../contracts/src/testids.ts';
 import { EDGE } from './lib/topology.mjs';
 import { cookieHeader, signedInContext } from './lib/signin.mjs';
 
@@ -78,6 +83,9 @@ for (const route of ROUTE_CONTRACT) {
   );
 }
 
+/** Every id the running site emits, gathered while §3 is already visiting every route. */
+const emitted = [];
+
 heading('3. uniqueness - an id identifies one thing');
 {
   const duplicates = [];
@@ -93,6 +101,11 @@ heading('3. uniqueness - an id identifies one thing');
     const page = await ctx.newPage();
     await page.goto(EDGE + route.path, { waitUntil: 'networkidle' });
     await page.waitForTimeout(400);
+    emitted.push(
+      ...(await page.evaluate(() =>
+        [...document.querySelectorAll('[data-testid]')].map((el) => el.getAttribute('data-testid')),
+      )),
+    );
     const dupes = await page.evaluate(() => {
       const counts = new Map();
       for (const el of document.querySelectorAll('[data-testid]')) {
@@ -112,6 +125,48 @@ heading('3. uniqueness - an id identifies one thing');
       ? duplicates.slice(0, 3).join(' | ')
       : 'every id resolves to exactly one element, so a selector cannot be ambiguous',
   );
+}
+
+// ---------------------------------------------------------------------------
+
+heading('4. drift - the contract is the only source of names');
+
+/**
+ * The check that makes the contract a contract.
+ *
+ * §1-3 verify that the ids the contract NAMES are present, unique and where they should be.
+ * None of them notices an id the site emits that the contract has never heard of — and that
+ * is the failure mode that matters here, because an invented name is invisible until a second
+ * stack invents a different one and the shared suite silently stops applying to it.
+ *
+ * When this check was written the reference app was emitting nine such ids, including a
+ * contact form with no contract entry at all, a `cart-drawer` nobody had named, and
+ * `add-to-cart` on the detail page for the identical action the list page called `add-p-0001`.
+ */
+{
+  const unique = [...new Set(emitted)].sort();
+  const drift = unique.filter((id) => !isContractId(id));
+  check('drift', 'every id the site emits is named by the contract', drift.length === 0,
+    drift.length
+      ? `${drift.length} unnamed: ${drift.slice(0, 6).join(', ')}${drift.length > 6 ? ' …' : ''}`
+      : `${unique.length} distinct id(s) across ${ROUTE_CONTRACT.length} routes, all accounted for`);
+
+  /**
+   * An id must be a usable selector fragment in any stack's test framework. `facet()`
+   * interpolated fixture values raw and produced `facet-range-Acti9 iC60` — spaces included.
+   */
+  const malformed = unique.filter((id) => !/^[a-z0-9][a-z0-9.-]*$/.test(id));
+  check('drift', 'every id is a safe selector fragment', malformed.length === 0,
+    malformed.length ? malformed.slice(0, 5).join(', ') : 'lower-case, no spaces, no quoting required');
+
+  /**
+   * And the other direction: a name the contract carries that nothing emits any more is a
+   * name the next stack will implement for no reason. Error and empty states are excluded by
+   * `CONDITIONAL_TESTIDS`, because a healthy run correctly never shows them.
+   */
+  const dead = ALL_TESTIDS.filter((id) => !CONDITIONAL_TESTIDS.includes(id) && !unique.includes(id));
+  check('drift', 'every unconditional name in the contract is emitted somewhere', dead.length === 0,
+    dead.length ? `${dead.length} named but never rendered: ${dead.join(', ')}` : `${ALL_TESTIDS.length} names checked`);
 }
 
 await browser.close();

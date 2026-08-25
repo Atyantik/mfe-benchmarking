@@ -1,28 +1,32 @@
 # Reference app — FROZEN SPEC
 
-Every stack (`rspack-react`, `vite-react`, and later `*-preact`, `*-solid`, `*-svelte`, `*-vue`)
-implements **exactly this**. Not "something equivalent". Exactly this.
+Every stack (`rspack-react`, and later `vite-react`, `*-preact`, `*-solid`, `*-svelte`,
+`*-vue`) implements **exactly this**. Not "something equivalent". Exactly this.
 
-If two stacks render a different number of DOM nodes, or fetch a different number of bytes, the
-comparison between them measures the implementer's taste rather than the technology. That makes the
-whole repo worthless. So this file is frozen: changing it invalidates every result in `results/`, and
-any change must bump `SPEC_VERSION` and force a full re-run.
+If two stacks render a different number of DOM nodes, or fetch a different number of bytes,
+the comparison between them measures the implementer's taste rather than the technology. That
+makes the whole repo worthless. So this file is frozen: changing it invalidates every result
+in `results/`, and any change must bump `SPEC_VERSION` and force a full re-run.
 
 ```
-SPEC_VERSION = 3
+SPEC_VERSION = 4
 ```
 
-**v2 — 2026-08-23.** The synthetic lorem fixtures were replaced with a realistic industrial
-catalogue (60 products across 5 categories, with specs, documents and availability) and the
-pages rebuilt as a real site: faceted catalogue, product detail with specification and
-documents, a support centre, a contact form and a cart page. Generic fixtures were hiding
-the layout problems real catalogues have — long technical names that wrap, spec tables of
-uneven length, facet values that genuinely overlap. Every result produced under v1 is void.
+**v4 — 2026-08-25.** The implementation outgrew the spec, and the spec is what a second stack
+implements, so the drift was the single largest risk in the repo. v3 described **4 owners and
+5 routes**; the application has **7 owners and 10 routes**. It did not mention the account
+host, the chrome remote, the media origin, the widget composition, the login flow, or the
+behaviour layer — every one of which a second stack must reproduce for its numbers to be
+comparable. It also specified "no CSS framework, hand-written CSS Modules only" while the
+implementation shipped Tailwind, and named exposes (`./MiniCart`, `./store`) that no longer
+exist. This version describes what is actually built and measured. Results produced under v3
+are void.
 
-**Amendments** (pre-measurement only — once `results/` is non-empty these require a version bump):
-- *2026-08-21*: the product row's name cell is a link. Step 6 of the interaction script
-  requires a client-side navigation to the detail page, and the original DOM description
-  gave it nothing to click. Internal inconsistency, fixed before any results existed.
+**v3 — 2026-08-23.** Synthetic lorem fixtures replaced with a realistic industrial catalogue
+(60 products across 5 categories) and the pages rebuilt as a real site.
+
+**Amendments** (pre-measurement only — once `results/` is non-empty these require a bump):
+- *2026-08-21*: the product row's name cell is a link.
 
 ---
 
@@ -30,206 +34,237 @@ uneven length, facet values that genuinely overlap. Every result produced under 
 
 | Held constant across every stack | Allowed to vary |
 |---|---|
-| DOM structure and node counts | Framework (React / Preact / Solid / Svelte / Vue) |
-| Fixture data, byte-for-byte | Bundler (Rspack / Vite) |
-| Interaction script and its order | Framework-idiomatic component syntax |
-| Route paths and ownership split | |
+| Topology: hosts, remotes, ports, prefixes | Framework (React / Preact / Solid / Svelte / Vue) |
+| Route paths and ownership split | Bundler (Rspack / Vite) |
+| DOM structure and node counts | Framework-idiomatic component syntax |
+| **Every `data-testid`** — see § Test-id contract | Component file organisation |
+| Fixture data, byte-for-byte | |
+| Navigation model per host (MPA vs SPA zone) | |
+| Which regions are server-rendered vs client-only | |
 | Shared dependency policy (per run) | |
 | Minifier settings, compression, target | |
-| Performance marks and their names | |
+| Directory layout under `stacks/<stack>/` | |
 
-No UI library. No CSS framework. No animation library. No state library beyond
-`@mf-eval/contracts`. Hand-written CSS Modules only — see § Styling.
+No UI library. No animation library. No state library beyond `@mf-eval/contracts`.
 
 ---
 
-## Ownership
+## Topology
+
+One public origin. A browser never sees anything else.
+
+```
+edge :3100                          prefix routing, no rewriting of app HTML
+├── /my-account/*, /login, /logout →  my-account :3120   host, SPA zone, gated
+└── /*                            →  storefront :3110   host, MPA, server-rendered
+
+remotes, resolved at runtime from the registry — never imported at build time
+    chrome   :3104   header + footer, consumed by BOTH hosts, never hydrated
+    faq      :3101   support content + a widget in the account area
+    product  :3102   catalogue + a widget in the account area
+    cart     :3103   basket + header badge + a widget in the account area
+    media    :3105   asset origin (stand-in for a DAM or image CDN)
+    registry :4000   which remote version each host resolves
+```
+
+Two hosts is not decoration. It is the case the architecture exists for: a
+**multi-page storefront** and a **single-page account application** in one site, at one
+origin, sharing chrome — measured separately, because they are different measurements.
+
+---
+
+## Ownership and exposes
 
 | Owner | Kind | Owns | Exposes |
 |---|---|---|---|
-| `shell` | host | header, footer, root router, `/`, error boundaries, registry client | — |
-| `faq` | route remote | `/faq/*` | `./routes` |
-| `product` | route remote | `/product/*` | `./routes` |
-| `cart` | component remote | cart state and UI | `./MiniCart`, `./CartDrawer`, `./store` |
+| `storefront` | host | `/`, root document, error boundaries, registry client, slot rendering | — |
+| `my-account` | host | `/my-account/*`, `/login`, `/logout`, session, zone router | — |
+| `chrome` | component remote | header, footer, search, account link | `./Header`, `./Footer`, `./behaviors/account` |
+| `faq` | route remote | `/faq/*` | `./routes`, `./AccountSupport`, `./AccountSupportPlaceholder` |
+| `product` | route remote | `/product/*` | `./routes`, `./AccountRecommended`, `./AccountRecommendedPlaceholder`, `./behaviors/gallery`, `./behaviors/autosubmit` |
+| `cart` | route + component remote | cart state, `/cart`, header badge, drawer | `./routes`, `./CartPage`, `./CartPagePlaceholder`, `./CartDrawer`, `./CartDrawerPlaceholder`, `./MiniCartPlaceholder`, `./AccountCart`, `./AccountCartPlaceholder`, `./behaviors/mini` |
+
+A host never imports a remote at build time. Every resolution goes through the registry.
 
 ---
 
-## Pages
+## Routes
 
-### `/` — home (shell-native, the CONTROL)
+Ten. Every one is checked by `packages/bench/src/contract.mjs`.
 
-Rendered by the shell itself, no federation. Exists so we can price federation by difference.
+| Path | Host | Nav | Auth | Notes |
+|---|---|---|---|---|
+| `/` | storefront | document | — | hero video, categories. The CONTROL. |
+| `/faq` | storefront | document | — | support centre, client-side filter |
+| `/faq/contact` | storefront | document | — | contact form, works with JS disabled |
+| `/product` | storefront | document | — | faceted catalogue, form-submit filters |
+| `/product/p-0001` | storefront | document | — | detail, gallery, stock panel, drawer slot |
+| `/cart` | storefront | document | — | fully personalized, never shared-cached |
+| `/login` | my-account | document | — | any email, any password ≥ 4 chars |
+| `/my-account` | my-account | zone | yes | overview, composed of **three teams' widgets** |
+| `/my-account/orders` | my-account | zone | yes | order list, filters |
+| `/my-account/profile` | my-account | zone | yes | profile detail |
 
-- `<h1>` — text `Reference Store`
-- One paragraph, exactly 240 characters of fixed lorem (see `fixtures/copy.ts`)
-- A grid of **6** `<a>` cards, each: `<article>` > `<h2>` + `<p>` (80 chars) + `<span>` price
-- No data fetching. No interactivity beyond the links.
-
-**Federation cost = (`/faq` bytes − `/` bytes)** with content held equivalent. That number is the
-entire reason this page exists.
-
-### `/cart` — cart remote (FULLY personalized)
-
-Owned by the cart team. Every part of it is per-user, so the server renders only a reserved
-skeleton and the client renders the whole page. Proves that even a personalized route stays
-shared-cacheable.
-
-### `/faq` — faq remote (the JS FLOOR)
-
-Static content. Zero interactivity in the default hydration mode. This page produces the most
-important number in the study: **what does a page cost when it needs no framework at all?**
-
-- `<h1>` — `Frequently Asked Questions`
-- Exactly **24** `<section>` elements, each `<h2>` question + `<p>` answer (fixed 320 chars)
-- No client state, no effects, no event handlers in `hydration=off`
-
-Hydration mode is a **build-time switch** on this remote (see § Hydration modes). All four modes are
-measured; none is the "real" one.
-
-`/faq/contact` is an **independence fixture**, not part of the measured surface: it exists so
-`packages/bench/src/independence.mjs` can prove a remote can add a route inside its own subtree with
-no shell rebuild. Never measure it, and never let it grow.
-
-### `/product` — product remote, list
-
-- `<h1>` — `Products`
-- Server-side loader returns **exactly 200 rows** from the fixture (below)
-- A `<table>` with one `<tr>` per row, **4** `<td>` each: name (a `<a>` link to `/product/:id`),
-  sku, price, an `Add` `<button>`
-- The `Add` button calls `cart.add(item)` through `@mf-eval/contracts`
-
-200 rows is deliberate: enough that hydration cost is measurable above noise, small enough that the
-page is not pathological.
-
-### `/product/:id` — product remote, detail
-
-- `<h1>` product name, `<p>` description (fixed 400 chars), `<span>` price
-- One `Add to cart` `<button>`
-- One `<CartDrawer>` mounted from the **cart remote** — this is the cross-remote coordination test
-
-### Header (shell) — mounts `cart/MiniCart`
-
-Present on every page. The shell owns the header; another team owns the cart inside it.
-
-- `<nav>` with 3 `<a>`: Home, FAQ, Products
-- `<MiniCart>` from the cart remote: a `<button>` with a `<span>` badge showing item count
-
-**The badge count must be correct in the server-rendered HTML**, not only after hydration. This is
-the assertion that proves cross-remote state survives SSR, and it is the one most likely to fail.
+**Navigation model decides the measurement.** A document host reports one set of Core Web
+Vitals per navigation. A zone host reports one per **soft navigation** — a different
+measurement that must never be averaged with the first (`docs/constraints.md` §14).
 
 ---
 
-## Fixture data
+## Server rendering and personalization
 
-Deterministic, seeded, identical bytes in every stack. Generated by `packages/contracts/src/fixtures`
-using a seeded PRNG (mulberry32, seed `0x5EED`) — **never** `Math.random()`, never `faker`, never a
-date-dependent value.
+The storefront is server-rendered and **never hydrated**. There is no client router.
 
-```ts
-interface Product {
-  id: string;        // "p-0001" … "p-0200"
-  name: string;      // exactly 24 chars, padded
-  sku: string;       // exactly 12 chars
-  price: number;     // integer cents, 100–99999
-  description: string; // exactly 400 chars
-}
+| Region | Rendered | Why |
+|---|---|---|
+| All storefront page content | server, no hydration | nothing on it is per-visitor |
+| Header, footer | server, no hydration | shared chrome, identical for everyone |
+| Header cart badge | server as empty markup, filled by a **behaviour** | a real count in the HTML makes every response unshareable |
+| Cart drawer, cart page | server placeholder, client island | genuinely stateful |
+| Account area | server shell + skeleton, client SPA | gated and per-visitor |
+| Account widgets | server placeholder, client module per widget | three separate owners |
+
+**A storefront document must be byte-identical for a signed-out and a signed-in visitor.**
+Personalization that de-caches the whole site is the failure this constraint exists to
+prevent, and `verify.mjs` asserts it on every run.
+
+The SSR layer is session-aware: it reads the session from the HTTP request, and the account
+application receives the same session on the client without a second round trip.
+
+---
+
+## Interactivity — two tiers
+
+**Tier 1, the default: a behaviour.** A vanilla module bound to server-rendered markup.
+No props, no serialized payload, no framework. State that must survive lives in the DOM, a
+cookie, or the URL.
+
+```html
+<div data-behavior="product.gallery" data-behavior-when="visible"> … </div>
 ```
 
-- Exactly 200 products.
-- Serialized payload size is asserted in a test. If it drifts, the fixture changed and results are
-  no longer comparable.
-- The SSR loader returns this from memory. **No network, no database, no artificial latency** —
-  we are measuring rendering, not I/O.
+Strategies: `immediate` | `idle` | `visible` | `interaction` | `media:(query)`. Default `idle`.
+A behaviour is loaded only on pages whose server HTML declares it, from its owning remote.
+
+Four exist, and every stack implements exactly these four:
+
+| Behaviour | Owner | Strategy | Does |
+|---|---|---|---|
+| `chrome.account` | chrome | idle | account link label |
+| `cart.mini` | cart | immediate | header badge count and total, owns add-to-cart |
+| `product.gallery` | product | visible | thumbnail switching, keyboard |
+| `product.autosubmit` | product | idle | facet ticking submits the form |
+
+**Tier 2, the exception: an island.** A framework component mounted into a reserved
+server-rendered placeholder. Only for genuinely personalized stateful UI — the cart drawer,
+the cart page, the account SPA. Every island is a reviewed decision.
+
+Every feature must work with JavaScript disabled. `behaviors.mjs` §9 asserts it per route.
 
 ---
 
-## Interaction script
+## Widget composition
 
-Driven identically by `packages/bench`. Order matters; do not reorder.
+`/my-account` is the three-team test. Its overview is assembled from widgets owned by
+**faq**, **product** and **cart**, and the account host imports none of them:
 
-1. Cold load `/` — capture navigation timings
-2. Cold load `/faq` — capture; this is the JS-floor sample
-3. Cold load `/product` — capture
-4. Click `Add` on row 1 → assert header badge becomes `1`
-5. Click `Add` on row 2 → assert badge becomes `2`
-6. Client-side navigate to `/product/p-0001` → assert **no full document load**
-7. Click `Add to cart` → assert badge becomes `3`, assert `CartDrawer` reflects 3 items
-8. Client-side navigate to `/faq` → capture soft-navigation cost
-9. Reload `/product/p-0001` → assert badge is `3` **in the server-rendered HTML**
+```
+account overview
+├── widget-account-cart          owned by cart
+├── widget-account-recommended   owned by product
+└── widget-account-support       owned by faq
+```
 
-Step 9 is the SSR-correctness gate for cross-remote state. Step 6 separates soft navigation from
-cold load, which is where federation's real cost usually hides.
-
----
-
-## Performance marks
-
-Every stack emits these `performance.mark()` names, spelled exactly. The bench reads them; a missing
-mark is a failed run, not a zero.
-
-| Mark | When |
-|---|---|
-| `mf:shell:hydrate:start` / `:end` | Around the shell's root hydration call |
-| `mf:remote:<name>:load:start` / `:end` | Around `loadRemote()` for each remote |
-| `mf:remote:<name>:hydrate:start` / `:end` | Around each remote's hydration, where separable |
-| `mf:registry:fetch:start` / `:end` | Around the registry request |
-| `mf:routes:merge` | After route descriptors are merged |
-
-`<name>` ∈ `faq` | `product` | `cart`.
+Each renders a server-side placeholder of its final size, then loads only its own module.
+The point being measured is **per-area cost**: a page must not download everything from
+everywhere to fill three boxes. `widgets.mjs` reports bytes per widget.
 
 ---
 
-## Hydration modes
+## Test-id contract
 
-A build-time switch, `MF_HYDRATION`, applied per remote. All four are measured for `faq`; `product`
-and `cart` always run `full` because they need interactivity.
+Every `data-testid` in this application is named in `packages/contracts/src/testids.ts`.
+This is the mechanism that lets one acceptance suite run against every stack, so it is part of
+the frozen spec rather than a convention.
 
-| Mode | Behaviour |
-|---|---|
-| `off` | Server-render only. No framework JS shipped for that remote. The JS floor. |
-| `deferred-idle` | Hydrate on `requestIdleCallback` |
-| `deferred-visible` | Hydrate on `IntersectionObserver` |
-| `full` | Hydrate immediately on load — the conventional baseline |
+- Fixed ids are constants; parametric ids are **built by the exported functions**, never
+  concatenated at the call site.
+- Values interpolated into an id are slugified by those functions. An id is always a safe
+  selector fragment: lower-case, no spaces, no quoting required.
+- `contract.mjs` asserts three things: every named id is present where the contract says,
+  **every id the site emits is named by the contract**, and every unconditional name is
+  emitted somewhere. Inventing a name fails the build.
 
-Islands are **not** a mode. Astro does them natively; the Vite plugin's React island adapter is
-marked *"do not use in production"*; Rspack has no island story. It is a Phase 3 spike whose expected
-finding is "not yet a standard" — see `docs/constraints.md` §4.
-
----
-
-## Shared dependency matrix
-
-Swept in Phase 2. Each cell is a full rebuild and a full measurement run.
-
-| Policy | `shared` config | What it tests |
-|---|---|---|
-| `singleton` | `{ react: { singleton: true, requiredVersion: '19.2.8' } }` | Smallest payload, tightest coupling |
-| `range` | `{ react: { requiredVersion: '^19.0.0' } }` | Fallback behaviour on mismatch — watch for a silent second copy |
-| `isolated` | no `shared` at all | True independence, worst payload |
-
-Crossed with:
-
-- `externalRuntime`: **on** / **off** — the single biggest MF-runtime lever
-- `experiments.optimization`: **default** / **tuned per app role**
-- `treeShaking`: **off** / `runtime-infer`
-
-Not a full cartesian product — `packages/bench` defines the exact cell list. Full factorial would be
-3 × 2 × 2 × 2 = 24 builds per stack, which is not a good use of anyone's time. We sweep the policy
-axis fully and the others one-at-a-time from the chosen baseline.
+A stack that satisfies the contract is testable by every existing suite on day one.
 
 ---
 
 ## Styling
 
-CSS Modules only, hand-written, no preprocessor. MF ships no style isolation
-(`docs/constraints.md` §5), so:
+Three layers, and the split is deliberate. v3's "hand-written CSS Modules only" was never
+implemented and is withdrawn.
 
-- Every remote scopes all class names through CSS Modules.
-- The shell owns a small set of CSS custom properties (colors, spacing) as the only shared surface.
-- No global selectors in a remote except `:root` custom-property reads.
-- Vite's `bundleAllCSS` stays `false`. Turning it on attaches all CSS to every exposed module.
+| Layer | What | Isolation mechanism |
+|---|---|---|
+| Design system | tokens, primitives, patterns (`@mf-eval/design`) | one definition, shared by all |
+| Utilities | Tailwind, per app | PostCSS rewrite to `[data-owner="<app>"]` |
+| Component CSS | CSS Modules, Sass allowed | hashed identifiers |
+
+**`localIdentName` MUST begin with the application's own name**:
+
+```
+<app>-[local]-[hash:base64:4]
+```
+
+This is not a style preference. Two apps that choose the same file name and the same class
+name hash to the **same** four characters — verified, not theoretical — so under a bare
+`[local]-[hash]` two teams silently emit the same class and load order decides the winner.
+The app name makes collision impossible by construction. `css.mjs` §2 asserts it.
+
+CSS Modules are exempt from the `[data-owner]` rewrite: their identifiers are already unique,
+and applying both would mask a failure in either.
+
+**A component's CSS must be delivered only on routes that render it.** A component that
+imports its app's shared utility bundle drags that whole bundle onto every route the component
+appears on. `css.mjs` §8 fails the build when a route fetches a stylesheet it uses less than
+5% of.
 
 CSS bytes are reported separately from JS bytes.
+
+---
+
+## Shared dependency policy
+
+Baseline, held constant unless a sweep says otherwise:
+
+```ts
+react:      { singleton: true, requiredVersion: '19.2.8' }   // literal, never "catalog:"
+react-dom:  { singleton: true, requiredVersion: '19.2.8' }
+@mf-eval/*: { singleton: true, requiredVersion: false }
+```
+
+`requiredVersion` must be a **literal**. MF infers it from `package.json`, which under a pnpm
+catalog reads `"catalog:"` and fails every semver match (`docs/constraints.md`).
+
+Swept axes, one at a time from this baseline — `packages/bench` defines the cell list:
+
+| Axis | Values |
+|---|---|
+| policy | `singleton` / `range` / `isolated` |
+| `externalRuntime` | on / off — the single biggest MF-runtime lever |
+| `MF_OPTIMIZE` | off / on |
+| `MF_ESM` | off / on |
+
+---
+
+## Fixtures and media
+
+- **60 products**, 5 categories, real ranges, specs, documents, availability, lead times.
+- **18 orders** for the account area.
+- Fixture data is byte-identical across stacks. Changing it is a `SPEC_VERSION` bump.
+- Media is **real**: 17 CC-licensed photographs and one hero video, built to the profile in
+  `docs/media.md`, served from the media origin. Fixtures are fetched from a pinned GitHub
+  release, not live from Wikimedia — CI IPs are rate-limited.
 
 ---
 
@@ -241,8 +276,28 @@ CSS bytes are reported separately from JS bytes.
 | Target | `es2022` |
 | Minify | bundler default, unmodified |
 | Source maps | off for measured builds |
-| Compression | measured as raw / `gzip -9` / `brotli -q 11`, applied by the bench |
+| Compression | raw / `gzip -9` / `brotli -q 11`, applied by the bench |
 | `chunkFilename` | `[id]-[contenthash].js` — required for `revalidate()` hash-diffing |
+| Node build | `dist/node`, web build `dist/web` — the bench reads both by path |
 
 Chunking strategy is **not** held constant, because it cannot be: the Vite plugin ignores
 `manualChunks` and owns its chunk graph. Report the difference; do not fight it.
+
+---
+
+## Directory layout
+
+Part of the spec, because the measurement code resolves paths from it. Every stack uses the
+same directory names so that `MF_STACK=<name>` is the only thing that changes:
+
+```
+stacks/<stack>/shell/         the storefront host   (budget key: shell)
+stacks/<stack>/my-account/    the account host
+stacks/<stack>/chrome/
+stacks/<stack>/faq/
+stacks/<stack>/product/
+stacks/<stack>/cart/
+```
+
+Each app builds to `dist/web` and `dist/node`, publishes `mf-manifest.json`, and commits a
+`budget.json`. See `docs/porting-a-stack.md`.

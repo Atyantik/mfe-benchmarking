@@ -10,10 +10,12 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { EDGE as BASE, hostOf } from './lib/topology.mjs';
+import { CHROME } from '../../contracts/src/testids.ts';
+
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const REGISTRY_FILE = join(ROOT, 'packages/registry/registry.json');
-const SHELL_BUNDLE = join(ROOT, 'stacks/rspack-react/shell/dist/node/index.js');
-import { EDGE as BASE } from './lib/topology.mjs';
+const SHELL_BUNDLE = join(ROOT, hostOf('storefront').dir, 'dist/node/index.js');
 const REGISTRY_TTL_MS = 5_000;
 
 const results = [];
@@ -95,7 +97,7 @@ try {
   // count. Asserting on the count here would be asserting the architecture is broken.
   record('other remotes still render (cart placeholder present)',
     // The cart contributes server-rendered markup now, not a placeholder awaiting an island.
-    homeHtml.includes('data-testid="mini-cart"'));
+    homeHtml.includes(`data-testid="${CHROME.miniCart}"`));
 } finally {
   writeRegistry(original);
   await sleep(REGISTRY_TTL_MS + 1000);

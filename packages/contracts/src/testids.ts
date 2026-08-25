@@ -18,11 +18,28 @@
  *
  * Rules:
  *   - An id is a CONTRACT, not a label. Renaming one is a breaking change for every stack.
+ *   - Every id must be a valid CSS identifier fragment. `facet()` interpolated raw fixture
+ *     values and emitted `facet-range-Acti9 iC60` — a `data-testid` containing spaces, which
+ *     survives `[data-testid="..."]` but breaks the moment anyone writes an unquoted selector
+ *     or builds one by concatenation. `slug()` closes that at the single point where those
+ *     ids are made.
  *   - Parametric ids are built by the functions here, never by string concatenation at the
  *     call site, so the shape cannot drift.
  *   - If an element is worth asserting on, it is worth naming here. If it is not, it does
  *     not need an id.
  */
+
+/**
+ * Fixture values become id fragments, and fixture values contain spaces, dots and slashes.
+ *
+ * Applied inside the parametric builders rather than at their call sites, so no stack can
+ * forget it and no two stacks can disagree about how a value is spelled in a selector.
+ */
+const slug = (value: string): string =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 
 /** Site chrome. Present on every page of every host, so every stack must emit these. */
 export const CHROME = {
@@ -52,10 +69,17 @@ export const CATALOGUE = {
   gallery: 'gallery',
   galleryMain: 'gallery-main',
   galleryThumbs: 'gallery-thumbs',
-  productLink: (id: string) => `link-${id}`,
-  productImage: (id: string) => `image-${id}`,
-  addToCart: (id: string) => `add-${id}`,
-  facet: (name: string, value: string) => `facet-${name}-${value}`,
+  productLink: (id: string) => `link-${slug(id)}`,
+  productImage: (id: string) => `image-${slug(id)}`,
+  /**
+   * Add-to-cart, wherever it appears.
+   *
+   * The detail page used to emit a bare `add-to-cart` while the list emitted `add-p-0001` for
+   * the identical action, so a suite written against one surface silently did not apply to the
+   * other. One name, parameterised by product, for both.
+   */
+  addToCart: (id: string) => `add-${slug(id)}`,
+  facet: (name: string, value: string) => `facet-${slug(name)}-${slug(value)}`,
   galleryThumb: (index: number) => `gallery-thumb-${index}`,
   /**
    * Availability and lead time on the detail page.
@@ -67,6 +91,35 @@ export const CATALOGUE = {
   stockPanel: 'stock-panel',
   stockAvailability: 'stock-availability',
   stockLead: 'stock-lead',
+} as const;
+
+/**
+ * The cart's own surfaces — the drawer and the cart page.
+ *
+ * None of these had a contract entry. They are the most stateful UI on the site, which makes
+ * them the surfaces a second stack is most likely to name differently.
+ */
+export const CART = {
+  drawer: 'cart-drawer',
+  drawerPlaceholder: 'cart-drawer-placeholder',
+  drawerTotal: 'cart-drawer-total',
+  pagePlaceholder: 'cart-page-placeholder',
+  row: 'cart-row',
+  clear: 'clear-cart',
+  empty: 'cart-empty',
+} as const;
+
+/** The support centre and its contact form. */
+export const SUPPORT = {
+  search: 'faq-search',
+  contactForm: 'contact-form',
+  contactName: 'contact-name',
+  contactEmail: 'contact-email',
+  contactCompany: 'contact-company',
+  contactPhone: 'contact-phone',
+  contactArea: 'contact-area',
+  contactDetail: 'contact-detail',
+  contactDrawings: 'contact-drawings',
 } as const;
 
 /** Sign-in. The gate between the storefront and the account application. */
@@ -92,8 +145,10 @@ export const ACCOUNT = {
   seeAllOrders: 'see-all-orders',
   ordersList: 'orders-list',
   ordersEmpty: 'orders-empty',
-  filter: (status: string) => `filter-${status}`,
+  filter: (status: string) => `filter-${slug(status)}`,
   loadError: 'load-error',
+  /** A zone URL with no matching route — the SPA's own 404, not the edge's. */
+  notFound: 'zone-404',
 } as const;
 
 /** Widgets contributed into the account area by other applications. */
@@ -105,6 +160,9 @@ export const WIDGET = {
   recommendedPlaceholder: 'placeholder-account-recommended',
   support: 'widget-account-support',
   supportPlaceholder: 'placeholder-account-support',
+  supportLink: 'widget-support-link',
+  /** One recommended product inside the recommendations widget. */
+  recommendedItem: (id: string) => `recommended-${slug(id)}`,
 } as const;
 
 /** The home page and the media primitives. */
@@ -137,13 +195,21 @@ export interface RouteContract {
 export const ROUTE_CONTRACT: RouteContract[] = [
   {
     path: '/',
-    server: [CHROME.search, CHROME.accountLink, CHROME.miniCart, CHROME.cartCount, HOME.heroVideo],
+    server: [
+      CHROME.search,
+      CHROME.accountLink,
+      CHROME.accountLabel,
+      CHROME.miniCart,
+      CHROME.cartCount,
+      HOME.heroVideo,
+    ],
     clientOnly: [CHROME.cartTotal],
   },
   {
     path: '/product',
     server: [
       CHROME.search,
+      CATALOGUE.resultCount,
       CATALOGUE.filterForm,
       CATALOGUE.applyFilters,
       CATALOGUE.sortForm,
@@ -165,6 +231,35 @@ export const ROUTE_CONTRACT: RouteContract[] = [
       CATALOGUE.stockLead,
     ],
     clientOnly: [CHROME.cartCount],
+  },
+  {
+    /**
+     * The support centre and the contact form.
+     *
+     * Neither route was in this table, so neither was ever checked — which is why nine ids,
+     * including the whole contact form, sat outside the contract without anything noticing.
+     */
+    path: '/faq',
+    server: [CHROME.search, SUPPORT.search, CHROME.miniCart],
+    clientOnly: [CHROME.cartCount],
+  },
+  {
+    path: '/faq/contact',
+    server: [
+      SUPPORT.contactForm,
+      SUPPORT.contactName,
+      SUPPORT.contactEmail,
+      SUPPORT.contactCompany,
+      SUPPORT.contactPhone,
+      SUPPORT.contactArea,
+      SUPPORT.contactDetail,
+      SUPPORT.contactDrawings,
+    ],
+  },
+  {
+    path: '/cart',
+    server: [CHROME.search, CHROME.miniCart],
+    clientOnly: [CHROME.cartCount, CHROME.cartTotal],
   },
   {
     path: '/login',
@@ -207,8 +302,76 @@ const fixedIds = (group: Record<string, unknown>): string[] =>
 export const ALL_TESTIDS: readonly string[] = Object.freeze([
   ...fixedIds(CHROME),
   ...fixedIds(CATALOGUE),
+  ...fixedIds(CART),
+  ...fixedIds(SUPPORT),
   ...fixedIds(AUTH),
   ...fixedIds(ACCOUNT),
   ...fixedIds(WIDGET),
   ...fixedIds(HOME),
+]);
+
+/**
+ * The parametric families, as patterns.
+ *
+ * `ALL_TESTIDS` can only list the FIXED ids; the builders above produce an unbounded set. To
+ * ask "is this id spoken for" of anything the site actually emits, both halves are needed —
+ * so each builder has a matching pattern here, and `isContractId()` is the only thing that
+ * should ever be asked that question.
+ *
+ * Keep this in step with the builders. A builder without a pattern makes every id it produces
+ * look like drift; a pattern without a builder lets real drift through.
+ */
+export const TESTID_PATTERNS: readonly RegExp[] = Object.freeze([
+  /^link-[a-z0-9-]+$/,
+  /^image-[a-z0-9-]+$/,
+  /^add-[a-z0-9-]+$/,
+  /^facet-[a-z0-9-]+-[a-z0-9-]+$/,
+  /^gallery-thumb-\d+$/,
+  /^nav-[a-z0-9.]+$/,
+  /^page-[a-z0-9.]+$/,
+  /^skeleton-[a-z0-9.]+$/,
+  /^order-link-[a-z0-9-]+$/,
+  /^filter-[a-z0-9-]+$/,
+  /^category-image-[a-z0-9-]+$/,
+  /^recommended-[a-z0-9-]+$/,
+]);
+
+/**
+ * Is this id part of the contract?
+ *
+ * The question `contract.mjs` asks of every `data-testid` the running site emits. An id that
+ * is neither a named constant nor a member of a parametric family is drift: a name one stack
+ * invented, which the shared suites cannot know about and the next stack will spell
+ * differently. Nine such ids existed here before this function did, including two surfaces
+ * with no contract entry at all and a whole contact form.
+ */
+export function isContractId(id: string): boolean {
+  return ALL_TESTIDS.includes(id) || TESTID_PATTERNS.some((pattern) => pattern.test(id));
+}
+
+/**
+ * Ids that are correct to be absent from a healthy run.
+ *
+ * Error and empty states, and the placeholders a client-rendered region shows before its
+ * module arrives. `contract.mjs` asserts every OTHER named id is emitted somewhere, which is
+ * how a name that no longer matches any element gets found; without this list that check
+ * would have to be switched off entirely.
+ */
+export const CONDITIONAL_TESTIDS: readonly string[] = Object.freeze([
+  AUTH.error,
+  ACCOUNT.ordersEmpty,
+  ACCOUNT.loadError,
+  ACCOUNT.backToOrders,
+  WIDGET.cartPlaceholder,
+  WIDGET.recommendedPlaceholder,
+  WIDGET.supportPlaceholder,
+  CART.empty,
+  CART.row,
+  CART.clear,
+  CART.drawer,
+  CART.drawerTotal,
+  CART.drawerPlaceholder,
+  CART.pagePlaceholder,
+  ACCOUNT.notFound,
+  ACCOUNT.seeAllOrders,
 ]);

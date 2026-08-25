@@ -31,6 +31,7 @@ import {
   ownerOf,
 } from './lib/topology.mjs';
 import { cookieHeader, signedInContext } from './lib/signin.mjs';
+import { CHROME } from '../../contracts/src/testids.ts';
 
 /**
  * The account area is behind a login now, so every measurement of it starts signed in.
@@ -135,12 +136,12 @@ heading('2. one origin - state crosses the host boundary');
   await page.locator('[data-add-id]').first().click();
   await page.locator('[data-add-id]').nth(1).click();
   await page.waitForTimeout(300);
-  const onStorefront = (await page.locator('[data-testid="cart-count"]').first().textContent())?.trim();
+  const onStorefront = (await page.locator(`[data-testid="${CHROME.cartCount}"]`).first().textContent())?.trim();
 
-  await page.locator('[data-testid="account-link"]').click();
+  await page.locator(`[data-testid="${CHROME.accountLink}"]`).click();
   await page.waitForLoadState('networkidle');
-  await page.waitForSelector('[data-testid="cart-count"]', { timeout: 8_000 }).catch(() => {});
-  const onAccount = (await page.locator('[data-testid="cart-count"]').first().textContent())?.trim();
+  await page.waitForSelector(`[data-testid="${CHROME.cartCount}"]`, { timeout: 8_000 }).catch(() => {});
+  const onAccount = (await page.locator(`[data-testid="${CHROME.cartCount}"]`).first().textContent())?.trim();
   const origins = await page.evaluate(() => location.origin);
   await ctx.close();
 

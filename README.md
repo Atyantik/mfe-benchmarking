@@ -77,6 +77,12 @@ put 19.9 kB of cart CSS on every page of the site, measuring **0% used** on `/fa
 byte budgets did not catch it: they measure what an app builds, not what a page fetches.
 Making the badge self-contained took `/` from 29.1 to 9.24 kB gzip of CSS.
 
+**A spec drifts faster than code, and it is the spec a second implementation reads.** The
+frozen spec described 4 owners and 5 routes; the application had grown to 7 and 10, with no
+mention of the account host, the widget composition or the behaviour layer — and it still
+specified a styling approach that was never implemented. Nothing failed, because nothing
+checks a document. It is rewritten at `SPEC_VERSION = 4`.
+
 **Measurement finds what review does not.** An accessibility audit found a colour token that
 passed contrast on the background a person would check by hand and failed on the two they
 would not — on all ten routes, since the palette was written.
@@ -93,7 +99,9 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 15 suites, ~280 checks, against the running stack
+pnpm bench          # 15 suites, ~290 checks, against the running stack
+
+MF_STACK=<name> pnpm bench   # the same suites against a different implementation
 ```
 
 Sign in with any email and any password of four characters or more.
@@ -130,6 +138,7 @@ docs/css.md                 two teams writing the same CSS, and why it does not 
 docs/navigation-zones.md    MPA and SPA in one site
 docs/third-party-remotes.md integrating a vendor without a shared contract package
 docs/app-authors-guide.md   the only document a new app author must read
+docs/porting-a-stack.md     the checklist for implementing stack #2
 spec/reference-app.md       the frozen spec every stack implements
 
 packages/contracts          route descriptors, cart store, fixtures, test-id contract
@@ -163,7 +172,10 @@ Stated plainly, because a benchmark that hides its gaps is marketing:
 - Storybook, a standalone dev harness and code generators are designed but not built.
 - Three behaviours exist of roughly sixteen planned.
 - The third-party vendor lane is documented (`docs/third-party-remotes.md`) but not built.
-- Apps emit test-id literals that match the shared contract rather than importing it.
+- Most app components emit test-id literals that match the contract rather than importing it.
+  The **suites** all import it, and the contract is enforced at runtime — `contract.mjs` §4
+  fails on any id the site emits that the contract does not name — so this is a style gap in
+  the apps rather than a portability risk.
 
 ## Licence
 

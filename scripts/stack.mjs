@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Start/stop the rspack-react stack.
+ * Start/stop the stack under measurement (`MF_STACK`, default `rspack-react`).
  *
  * Uses spawn({ detached: true, stdio: 'ignore' }) + unref() rather than a shell
  * backgrounding trick: macOS has no setsid, and shell-backgrounded children get
@@ -12,7 +12,10 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const S = join(ROOT, 'stacks/rspack-react');
+// The stack is a parameter, not a constant — the point of the repo is running the same
+// harness against a second implementation. Kept in step with packages/bench/src/lib/topology.mjs.
+const STACK = process.env.MF_STACK ?? 'rspack-react';
+const S = join(ROOT, 'stacks', STACK);
 const LOG = join(ROOT, '.logs');
 const PIDFILE = join(LOG, 'pids.json');
 mkdirSync(LOG, { recursive: true });

@@ -22,6 +22,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 import { EDGE, LOGIN } from './lib/topology.mjs';
+import { ACCOUNT, AUTH, CHROME } from '../../contracts/src/testids.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
@@ -79,7 +80,7 @@ heading('2. the form - a real POST, no JavaScript required');
 {
   const res = await fetch(`${EDGE}${LOGIN.path}`);
   const html = await res.text();
-  check('form', 'the sign-in page is server-rendered', res.ok && html.includes('data-testid="login-form"'),
+  check('form', 'the sign-in page is server-rendered', res.ok && html.includes(`data-testid="${AUTH.form}"`),
     `${res.status}, ${html.length} bytes`);
   check('form', 'it is a POST form, not a fetch handler', /<form[^>]+method="post"/i.test(html),
     'a GET login puts credentials in the URL and in every log');
@@ -90,11 +91,11 @@ heading('2. the form - a real POST, no JavaScript required');
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const page = await ctx.newPage();
   await page.goto(EDGE + LOGIN.path, { waitUntil: 'domcontentloaded' });
-  await page.locator('[data-testid="login-email"]').fill(LOGIN.email);
-  await page.locator('[data-testid="login-password"]').fill(LOGIN.password);
+  await page.locator(`[data-testid="${AUTH.email}"]`).fill(LOGIN.email);
+  await page.locator(`[data-testid="${AUTH.password}"]`).fill(LOGIN.password);
   await Promise.all([
     page.waitForURL('**/my-account', { timeout: 8_000 }).catch(() => {}),
-    page.locator('[data-testid="login-submit"]').click(),
+    page.locator(`[data-testid="${AUTH.submit}"]`).click(),
   ]);
   const landed = new URL(page.url()).pathname;
   const body = (await page.textContent('body')) ?? '';
@@ -134,11 +135,11 @@ heading('3. cookies - the session is not readable by script');
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   await page.goto(EDGE + LOGIN.path, { waitUntil: 'domcontentloaded' });
-  await page.locator('[data-testid="login-email"]').fill(LOGIN.email);
-  await page.locator('[data-testid="login-password"]').fill(LOGIN.password);
+  await page.locator(`[data-testid="${AUTH.email}"]`).fill(LOGIN.email);
+  await page.locator(`[data-testid="${AUTH.password}"]`).fill(LOGIN.password);
   await Promise.all([
     page.waitForURL('**/my-account', { timeout: 8_000 }).catch(() => {}),
-    page.locator('[data-testid="login-submit"]').click(),
+    page.locator(`[data-testid="${AUTH.submit}"]`).click(),
   ]);
   const visible = await page.evaluate(() => document.cookie);
   const jar = await ctx.cookies();
@@ -157,7 +158,7 @@ heading('4. failure - a bad password mints nothing');
   check('failure', 'a short password is rejected', res.status === 422,
     `${res.status} — understood and refused, distinguishable from a render`);
   check('failure', 'no session is issued', res.headers.getSetCookie().length === 0, 'nothing Set-Cookie');
-  check('failure', 'the reason is shown to the visitor', html.includes('data-testid="login-error"'), 'with role="alert"');
+  check('failure', 'the reason is shown to the visitor', html.includes(`data-testid="${AUTH.error}"`), 'with role="alert"');
 
   const badEmail = await post('/login', { email: 'nonsense', password: LOGIN.password, next: '/my-account' });
   check('failure', 'a malformed email is rejected', badEmail.status === 422, `${badEmail.status}`);
@@ -272,25 +273,25 @@ heading('6. the journey - anonymous product page to signed-in account');
   const t0 = Date.now();
   await page.goto(`${EDGE}/product`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(500);
-  const anonLabel = (await page.locator('[data-testid="account-link"] [data-account-label]').textContent())?.trim();
-  const anonFlag = await page.locator('[data-testid="account-link"]').getAttribute('data-signed-in');
+  const anonLabel = (await page.locator(`[data-testid="${CHROME.accountLink}"] [data-account-label]`).textContent())?.trim();
+  const anonFlag = await page.locator(`[data-testid="${CHROME.accountLink}"]`).getAttribute('data-signed-in');
 
-  await page.locator('[data-testid="account-link"]').click();
+  await page.locator(`[data-testid="${CHROME.accountLink}"]`).click();
   await page.waitForLoadState('networkidle');
   const gatedTo = new URL(page.url()).pathname;
   const tGate = Date.now();
 
-  await page.locator('[data-testid="login-email"]').fill(LOGIN.email);
-  await page.locator('[data-testid="login-password"]').fill(LOGIN.password);
+  await page.locator(`[data-testid="${AUTH.email}"]`).fill(LOGIN.email);
+  await page.locator(`[data-testid="${AUTH.password}"]`).fill(LOGIN.password);
   await Promise.all([
     page.waitForURL('**/my-account', { timeout: 10_000 }),
-    page.locator('[data-testid="login-submit"]').click(),
+    page.locator(`[data-testid="${AUTH.submit}"]`).click(),
   ]);
-  await page.waitForSelector('[data-testid="page-account.overview"]', { timeout: 10_000 });
+  await page.waitForSelector(`[data-testid="${ACCOUNT.page('account.overview')}"]`, { timeout: 10_000 });
   const tUseful = Date.now();
   await page.waitForTimeout(600);
-  const authedLabel = (await page.locator('[data-testid="account-link"] [data-account-label]').textContent())?.trim();
-  const authedFlag = await page.locator('[data-testid="account-link"]').getAttribute('data-signed-in');
+  const authedLabel = (await page.locator(`[data-testid="${CHROME.accountLink}"] [data-account-label]`).textContent())?.trim();
+  const authedFlag = await page.locator(`[data-testid="${CHROME.accountLink}"]`).getAttribute('data-signed-in');
 
   timings.toGateMs = tGate - t0;
   timings.signInToUsefulMs = tUseful - tGate;
@@ -301,10 +302,10 @@ heading('6. the journey - anonymous product page to signed-in account');
     `"${anonLabel}" — correct for both states, so there is no flash of anything wrong`);
   check('journey', 'the header personalizes after sign-in', authedFlag === 'true' && authedLabel !== 'My account',
     `"${authedLabel}" — from a readable cookie, on the client, so the HTML stayed shareable`);
-  check('journey', 'signed-in content renders', (await page.locator('[data-testid="page-account.overview"]').count()) > 0);
+  check('journey', 'signed-in content renders', (await page.locator(`[data-testid="${ACCOUNT.page('account.overview')}"]`).count()) > 0);
 
   // Sign out, and confirm the gate closes again.
-  await page.locator('[data-testid="sign-out"]').click();
+  await page.locator(`[data-testid="${AUTH.signOut}"]`).click();
   await page.waitForLoadState('networkidle');
   const afterOut = new URL(page.url()).pathname;
   await page.goto(`${EDGE}/my-account/orders`);

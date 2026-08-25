@@ -34,6 +34,7 @@ import { chromium } from 'playwright';
 
 import { DOCUMENT_ROUTES, EDGE, VITALS_BUDGET, ZONE_WALK } from './lib/topology.mjs';
 import { signedInContext } from './lib/signin.mjs';
+import { CHROME } from '../../contracts/src/testids.ts';
 
 const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -176,7 +177,7 @@ async function measureDocument(browser, route) {
   // A real interaction, because INP is undefined without one and a suite reporting "INP 0"
   // for a page nobody touched is reporting that it did not measure INP. The search field is
   // on every page via chrome and focusing it is something visitors actually do.
-  const search = page.locator('[data-testid="site-search"]').first();
+  const search = page.locator(`[data-testid="${CHROME.search}"]`).first();
   if (await search.count()) {
     await search.click();
     await search.type('breaker', { delay: 30 });

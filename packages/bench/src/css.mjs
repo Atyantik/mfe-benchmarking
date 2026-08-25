@@ -54,6 +54,7 @@ import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
+import { CATALOGUE, CHROME } from '../../contracts/src/testids.ts';
 import { APPS } from './lib/inventory.mjs';
 import { EDGE, ROUTES, ownerOf } from './lib/topology.mjs';
 import { usedCssBytes } from './lib/coverage.mjs';
@@ -74,8 +75,8 @@ const ARENA = '/product/p-0001';
  * and says why.
  */
 const SUBJECTS = [
-  { app: 'cart', testid: 'mini-cart', local: 'panel', display: 'inline-flex' },
-  { app: 'product', testid: 'stock-panel', local: 'panel', display: 'block' },
+  { app: 'cart', testid: CHROME.miniCart, local: 'panel', display: 'inline-flex' },
+  { app: 'product', testid: CATALOGUE.stockPanel, local: 'panel', display: 'block' },
 ];
 
 const LIMITS = {

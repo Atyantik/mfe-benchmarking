@@ -26,6 +26,7 @@ import { chromium } from 'playwright';
 
 import { EDGE, ownerOf } from './lib/topology.mjs';
 import { cookieHeader, signedInContext } from './lib/signin.mjs';
+import { ACCOUNT, WIDGET } from '../../contracts/src/testids.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
@@ -137,7 +138,7 @@ heading('2. placeholders - every region is reserved by its owning team');
     }).observe({ type: 'layout-shift', buffered: true });
   });
   await page.goto(`${EDGE}/my-account`, { waitUntil: 'networkidle' });
-  await page.waitForSelector('[data-testid="widget-account-cart"]', { timeout: 8_000 }).catch(() => {});
+  await page.waitForSelector(`[data-testid="${WIDGET.cart}"]`, { timeout: 8_000 }).catch(() => {});
   await page.waitForTimeout(600);
   const shifts = await page.evaluate(() => window.__shifts);
   await ctx.close();
@@ -209,11 +210,11 @@ console.log('');
   // Soft-navigating INTO the overview must fetch the widgets then — not on boot.
   const walk = await loadAndWatch('/my-account/profile', async (page, fetched) => {
     const before = fetched.filter((f) => ['product', 'faq'].includes(f.owner)).length;
-    await page.locator('[data-testid="nav-account.overview"]').click();
-    await page.waitForSelector('[data-testid="widget-account-support"]', { timeout: 8_000 }).catch(() => {});
+    await page.locator(`[data-testid="${ACCOUNT.nav('account.overview')}"]`).click();
+    await page.waitForSelector(`[data-testid="${WIDGET.support}"]`, { timeout: 8_000 }).catch(() => {});
     await page.waitForTimeout(500);
     const after = fetched.filter((f) => ['product', 'faq'].includes(f.owner)).length;
-    return { before, after, rendered: await page.locator('[data-testid="widget-account-support"]').count() };
+    return { before, after, rendered: await page.locator(`[data-testid="${WIDGET.support}"]`).count() };
   });
   check('cost', 'widgets are fetched on the navigation that needs them, not at boot',
     walk.extra.before === 0 && walk.extra.after > 0 && walk.extra.rendered > 0,
@@ -229,10 +230,10 @@ heading('4. isolation - one team failing costs one region');
   await page.route('**/*AccountRecommended*', (route) => route.abort());
   await page.goto(`${EDGE}/my-account`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1_200);
-  const cart = await page.locator('[data-testid="widget-account-cart"]').count();
-  const support = await page.locator('[data-testid="widget-account-support"]').count();
-  const recommended = await page.locator('[data-testid="widget-account-recommended"]').count();
-  const orders = await page.locator('[data-testid="page-account.overview"]').count();
+  const cart = await page.locator(`[data-testid="${WIDGET.cart}"]`).count();
+  const support = await page.locator(`[data-testid="${WIDGET.support}"]`).count();
+  const recommended = await page.locator(`[data-testid="${WIDGET.recommended}"]`).count();
+  const orders = await page.locator(`[data-testid="${ACCOUNT.page('account.overview')}"]`).count();
   await ctx.close();
 
   check('isolation', 'the failing widget is simply absent', recommended === 0, 'product/AccountRecommended blocked');
