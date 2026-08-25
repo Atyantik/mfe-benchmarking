@@ -1,0 +1,14 @@
+{
+  "name": "@mf-eval/spike-svelte-remote",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "rsbuild build", "serve": "node serve.mjs" },
+  "devDependencies": {
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-svelte": "catalog:",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "svelte": "catalog:",
+    "svelte-loader": "catalog:"
+  }
+}

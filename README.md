@@ -160,6 +160,7 @@ docs/navigation-zones.md    MPA and SPA in one site
 docs/third-party-remotes.md integrating a vendor without a shared contract package
 docs/app-authors-guide.md   the only document a new app author must read
 docs/porting-a-stack.md     the checklist for implementing stack #2
+docs/svelte-federation.md   is MF possible with Svelte? measured, not asserted
 spec/reference-app.md       the frozen spec every stack implements
 
 packages/contracts          route descriptors, cart store, fixtures, test-id contract

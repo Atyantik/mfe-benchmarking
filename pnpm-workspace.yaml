@@ -11,7 +11,12 @@ packages:
   - 'spike/*/*'
 
 allowBuilds:
-  simple-git-hooks: set this to true or false
+  simple-git-hooks: true
+  # Svelte spike. Neither postinstall is needed to build: @parcel/watcher is svelte-loader's
+  # optional native watcher (nothing here watches) and svelte-preprocess's is optional too.
+  # Declared rather than approved interactively, so CI and a laptop agree.
+  '@parcel/watcher': false
+  svelte-preprocess: false
 
 catalog:
   # ---- Measurement ----
@@ -38,6 +43,13 @@ catalog:
   '@rsbuild/plugin-react': 2.1.0
   '@rsbuild/plugin-sass': 2.0.1
   sass-embedded: 1.95.0
+
+  # ---- Svelte spike (spike/rspack-svelte) ----
+  # Is Module Federation possible with Svelte at all? Everything published on the question is
+  # a blog post or a broken demo, so this repo answers it the way it answers everything else.
+  svelte: 5.56.10
+  svelte-loader: 3.2.4
+  '@rsbuild/plugin-svelte': 2.0.1
   # vite 8.1.0 / plugin-react 5.1.4 deliberately match what @module-federation/vite's own
   # example suite is tested against — NOT npm latest (8.2.2 / 6.1.0). Tested beats newest.
   vite: 8.1.0
