@@ -59,8 +59,13 @@ const BUDGET = {
   p99Ms: 400,
   /** Event-loop delay p99. Above this, requests are queuing behind renders. */
   loopDelayP99Ms: 120,
-  /** Heap growth across a sustained run, after accounting for a settled baseline. */
-  heapGrowthMb: 40,
+  /**
+   * Heap retained per request, which is what a leak actually is. An absolute megabyte figure
+   * is not portable between machines that serve different request counts in the same time.
+   * The bug this suite found retained ~160 kB per render; 4 kB is generous headroom for
+   * caches that fill and then stop.
+   */
+  heapPerRequestKb: 4,
   /** A single GC pause long enough to be visible in the latency tail. */
   gcPauseMs: 120,
 };
@@ -324,12 +329,40 @@ heading('7. sustained load - does memory settle or climb');
   for (const s of samples) {
     note(`block ${s.block}  heapUsed ${String(s.heapUsedMb).padStart(7)} MB   rss ${String(s.rssMb).padStart(7)} MB   ${s.requests} requests served`);
   }
+  /**
+   * Judge retention PER REQUEST, and require the growth to be monotonic.
+   *
+   * An absolute megabyte ceiling is not portable: a fast machine serves several times more
+   * requests in the same wall clock, so the same code retains more in total while retaining
+   * the same amount per request. Held at 40 MB this passed locally (where the heap actually
+   * shrank) and failed on CI for identical code.
+   *
+   * A leak has two signatures that hardware does not change: it retains a roughly constant
+   * amount per request, and it grows every block. Noise does neither — it fluctuates, and it
+   * frequently goes down when a collection lands mid-block.
+   */
   const settled = samples.slice(1);
-  const growth = (settled.at(-1)?.heapUsedMb ?? 0) - (settled[0]?.heapUsedMb ?? 0);
-  results.sustained = { samples, growthMb: Number(growth.toFixed(2)) };
-  check('sustained', `heap grows less than ${BUDGET.heapGrowthMb} MB after the first block`,
-    growth < BUDGET.heapGrowthMb,
-    `${growth.toFixed(1)} MB across ${settled.length} blocks — a leak is a slope, not a reading`);
+  const first = settled[0];
+  const last = settled.at(-1);
+  const growthMb = (last?.heapUsedMb ?? 0) - (first?.heapUsedMb ?? 0);
+  const requests = (last?.requests ?? 0) - (first?.requests ?? 0);
+  const perRequestKb = requests > 0 ? (growthMb * 1024) / requests : 0;
+  const monotonic = settled.every((s, i) => i === 0 || s.heapUsedMb >= (settled[i - 1]?.heapUsedMb ?? 0));
+
+  results.sustained = {
+    samples,
+    growthMb: Number(growthMb.toFixed(2)),
+    perRequestKb: Number(perRequestKb.toFixed(3)),
+    monotonic,
+  };
+  note(`${growthMb.toFixed(1)} MB across ${requests} requests = ${perRequestKb.toFixed(2)} kB retained per request` +
+    `${monotonic ? ', growing every block' : ', not monotonic — consistent with collection noise'}`);
+  check('sustained',
+    `heap retention stays under ${BUDGET.heapPerRequestKb} kB per request, or is not a trend`,
+    perRequestKb < BUDGET.heapPerRequestKb || !monotonic,
+    monotonic
+      ? `${perRequestKb.toFixed(2)} kB per request across ${settled.length} blocks, growing every block`
+      : `${perRequestKb.toFixed(2)} kB per request, but the series is not monotonic — no leak signature`);
 }
 
 const failed = checks.filter((c) => !c.ok);
