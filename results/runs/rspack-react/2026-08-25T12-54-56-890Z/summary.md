@@ -1,6 +1,6 @@
-# Bench run — rspack-react — 2026-08-25T12:46:05.826Z
+# Bench run — rspack-react — 2026-08-25T12:54:56.890Z
 
-**SPEC_VERSION 4** · catalog `65aa797f2a92` · commit `4091efd` *(working tree dirty)*
+**SPEC_VERSION 4** · catalog `65aa797f2a92` · commit `59329f2` *(working tree dirty)*
 
 366/366 checks passed across 13 reports.
 
@@ -54,23 +54,23 @@
 
 | route | LCP | CLS | INP | TBT | FCP | TTFB | long tasks |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `/` | 156 | 0.000 | 8 | 0 | 156 | 5.0 | 0 |
-| `/faq` | 156 | 0.000 | 8 | 0 | 156 | 5.2 | 1 |
-| `/faq/contact` | 144 | 0.000 | 8 | 0 | 144 | 4.6 | 1 |
-| `/product` | 168 | 0.000 | 8 | 0 | 168 | 6.4 | 1 |
-| `/product/p-0001` | 172 | 0.000 | 8 | 0 | 172 | 4.9 | 1 |
-| `/cart` | 124 | 0.008 | 8 | 0 | 124 | 2.9 | 1 |
+| `/` | 144 | 0.000 | 8 | 0 | 144 | 2.9 | 0 |
+| `/faq` | 140 | 0.000 | 8 | 0 | 140 | 2.5 | 1 |
+| `/faq/contact` | 140 | 0.000 | 8 | 0 | 140 | 2.6 | 1 |
+| `/product` | 164 | 0.000 | 8 | 0 | 164 | 5.0 | 1 |
+| `/product/p-0001` | 168 | 0.000 | 8 | 0 | 168 | 4.5 | 1 |
+| `/cart` | 124 | 0.008 | 8 | 0 | 124 | 2.2 | 1 |
 
 ## Server cost
 
 | route | req/s | p50 ms | p99 ms | CPU ms/req |
 | --- | ---: | ---: | ---: | ---: |
-| `/` | 1304 | 6 | 8 | 1.033 |
-| `/product` | 938 | 8 | 12 | 1.322 |
-| `/product/p-0001` | 1475 | 5 | 7 | 0.847 |
-| `/my-account` | 2311 | 2 | 12 | 0.539 |
+| `/` | 1638 | 4 | 6 | 0.828 |
+| `/product` | 1079 | 7 | 10 | 1.146 |
+| `/product/p-0001` | 1690 | 4 | 6 | 0.758 |
+| `/my-account` | 4013 | 1 | 2 | 0.329 |
 
-Sustained heap: **0.03 kB retained per request** (monotonic), measured after a forced collection.
+Sustained heap: **0.05 kB retained per request** (monotonic), measured after a forced collection.
 
 ## Behaviours (gzip bytes)
 
@@ -88,27 +88,27 @@ Sustained heap: **0.03 kB retained per request** (monotonic), measured after a f
 
 |  | seconds |
 | --- | ---: |
-| Cold build (no dist, no cache) | 17.20 |
-| Warm build (cache intact) | 17.49 |
-| Bundler cache saving | -2% |
-| Incremental (one app) | 3.15 |
-| Stack startup | 3.71 |
-| **Clean tree to a rendering page** | **20.91** |
-| **Edit to browser** | **9.34** |
-| Lint | 8.71 |
-| Typecheck | 4.90 |
-| Test | 8.21 |
+| Cold build (no dist, no cache) | 14.21 |
+| Warm build (cache intact) | 13.35 |
+| Bundler cache saving | 6% |
+| Incremental (one app) | 2.91 |
+| Stack startup | 3.36 |
+| **Clean tree to a rendering page** | **17.58** |
+| **Edit to browser** | **7.64** |
+| Lint | 7.74 |
+| Typecheck | 4.41 |
+| Test | 4.87 |
 
 Hot update: **no**. This stack has no watch mode — `pnpm dev` serves built artefacts, so every edit costs a full rebuild and restart. That is the number above, and it is the one a stack with hot updates should be compared against.
 
 | app | cold s | warm s |
 | --- | ---: | ---: |
-| chrome | 3.35 | 2.90 |
-| faq | 2.96 | 3.75 |
-| product | 4.06 | 3.74 |
-| cart | 3.69 | 3.97 |
-| storefront | 1.96 | 1.95 |
-| my-account | 1.19 | 1.19 |
+| chrome | 2.86 | 2.77 |
+| faq | 2.85 | 2.75 |
+| product | 3.13 | 2.81 |
+| cart | 2.98 | 2.80 |
+| storefront | 1.19 | 1.11 |
+| my-account | 1.21 | 1.11 |
 
 ## CSS Modules
 

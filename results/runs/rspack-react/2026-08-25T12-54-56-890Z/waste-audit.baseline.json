@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T12:43:09.875Z",
+  "generatedAt": "2026-08-25T12:52:24.502Z",
   "config": "baseline",
   "variants": {
     "site": [
@@ -608,8 +608,8 @@
             "owner": "storefront",
             "kind": "js",
             "totalBytes": 116851,
-            "usedBytes": 65646,
-            "usedPct": 56.2,
+            "usedBytes": 66074,
+            "usedPct": 56.5,
             "gzip": 32565,
             "foreign": false,
             "verdict": "used"

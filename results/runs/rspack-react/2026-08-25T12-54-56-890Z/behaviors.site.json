@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T12:42:08.809Z",
+  "generatedAt": "2026-08-25T12:51:29.117Z",
   "config": "site",
   "limits": {
     "behaviorGzip": 3000,
@@ -338,278 +338,278 @@
     {
       "route": "/",
       "key": "chrome.account#0",
-      "wait": 1.6999999284744263,
-      "fetch": 21.90000009536743,
+      "wait": 23.200000047683716,
+      "fetch": 5.700000047683716,
       "attach": 0.19999992847442627,
-      "total": 23.799999952316284,
-      "attachedAt": 74.29999995231628,
+      "total": 29.100000023841858,
+      "attachedAt": 81.19999992847443,
       "fcp": 64,
-      "lcp": 64,
-      "afterFcp": 10.299999952316284
+      "lcp": 72,
+      "afterFcp": 17.199999928474426
     },
     {
       "route": "/",
       "key": "cart.mini#0",
       "wait": 0,
-      "fetch": 15.400000095367432,
-      "attach": 7.699999928474426,
-      "total": 23.100000023841858,
-      "attachedAt": 73.79999995231628,
+      "fetch": 15.200000047683716,
+      "attach": 7.099999904632568,
+      "total": 22.299999952316284,
+      "attachedAt": 74.59999990463257,
       "fcp": 64,
-      "lcp": 64,
-      "afterFcp": 9.799999952316284
+      "lcp": 72,
+      "afterFcp": 10.599999904632568
     },
     {
       "route": "/faq",
       "key": "chrome.account#0",
-      "wait": 25.399999976158142,
-      "fetch": 7.299999952316284,
-      "attach": 0.5,
-      "total": 33.199999928474426,
-      "attachedAt": 83.29999995231628,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 31.299999952316284
-    },
-    {
-      "route": "/faq",
-      "key": "cart.mini#0",
-      "wait": 0,
-      "fetch": 12.100000023841858,
-      "attach": 9.600000023841858,
-      "total": 21.700000047683716,
-      "attachedAt": 72,
-      "fcp": 52,
-      "lcp": 52,
+      "wait": 16.600000023841858,
+      "fetch": 5.300000071525574,
+      "attach": 0.2999999523162842,
+      "total": 22.200000047683716,
+      "attachedAt": 60,
+      "fcp": 40,
+      "lcp": 40,
       "afterFcp": 20
     },
     {
-      "route": "/faq/contact",
-      "key": "chrome.account#0",
-      "wait": 1.7000000476837158,
-      "fetch": 18.799999952316284,
-      "attach": 0.30000007152557373,
-      "total": 20.800000071525574,
-      "attachedAt": 60.800000071525574,
+      "route": "/faq",
+      "key": "cart.mini#0",
+      "wait": 0.10000002384185791,
+      "fetch": 8.5,
+      "attach": 7.200000047683716,
+      "total": 15.800000071525574,
+      "attachedAt": 53.700000047683716,
       "fcp": 40,
       "lcp": 40,
-      "afterFcp": 20.800000071525574
+      "afterFcp": 13.700000047683716
+    },
+    {
+      "route": "/faq/contact",
+      "key": "chrome.account#0",
+      "wait": 16.200000047683716,
+      "fetch": 5.200000047683716,
+      "attach": 0.2999999523162842,
+      "total": 21.700000047683716,
+      "attachedAt": 60.10000002384186,
+      "fcp": 40,
+      "lcp": 40,
+      "afterFcp": 20.100000023841858
     },
     {
       "route": "/faq/contact",
       "key": "cart.mini#0",
       "wait": 0,
-      "fetch": 9.300000071525574,
-      "attach": 6.799999952316284,
-      "total": 16.100000023841858,
-      "attachedAt": 56.200000047683716,
+      "fetch": 8.299999952316284,
+      "attach": 7.100000023841858,
+      "total": 15.399999976158142,
+      "attachedAt": 54,
       "fcp": 40,
       "lcp": 40,
-      "afterFcp": 16.200000047683716
+      "afterFcp": 14
     },
     {
       "route": "/product",
       "key": "chrome.account#0",
-      "wait": 21.399999976158142,
-      "fetch": 4.5,
-      "attach": 0.10000002384185791,
-      "total": 26,
-      "attachedAt": 71.29999995231628,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 19.299999952316284
+      "wait": 21,
+      "fetch": 4.799999952316284,
+      "attach": 0,
+      "total": 25.799999952316284,
+      "attachedAt": 70.09999990463257,
+      "fcp": 44,
+      "lcp": 44,
+      "afterFcp": 26.09999990463257
     },
     {
       "route": "/product",
       "key": "cart.mini#0",
-      "wait": 0.10000002384185791,
-      "fetch": 10,
-      "attach": 7.099999904632568,
-      "total": 17.199999928474426,
-      "attachedAt": 62.59999990463257,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 10.599999904632568
+      "wait": 0,
+      "fetch": 12.799999952316284,
+      "attach": 7.100000023841858,
+      "total": 19.899999976158142,
+      "attachedAt": 64.39999997615814,
+      "fcp": 44,
+      "lcp": 44,
+      "afterFcp": 20.399999976158142
     },
     {
       "route": "/product",
       "key": "product.autosubmit#0",
       "wait": 0.19999992847442627,
-      "fetch": 20.600000023841858,
-      "attach": 0,
-      "total": 20.799999952316284,
-      "attachedAt": 66.29999995231628,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 14.299999952316284
+      "fetch": 20,
+      "attach": 0.10000002384185791,
+      "total": 20.299999952316284,
+      "attachedAt": 64.79999995231628,
+      "fcp": 44,
+      "lcp": 44,
+      "afterFcp": 20.799999952316284
     },
     {
       "route": "/product",
       "key": "product.autosubmit#1",
       "wait": 0.2999999523162842,
-      "fetch": 20.5,
+      "fetch": 20,
       "attach": 0,
-      "total": 20.799999952316284,
-      "attachedAt": 66.29999995231628,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 14.299999952316284
+      "total": 20.299999952316284,
+      "attachedAt": 64.79999995231628,
+      "fcp": 44,
+      "lcp": 44,
+      "afterFcp": 20.799999952316284
     },
     {
       "route": "/product/p-0001",
       "key": "chrome.account#0",
-      "wait": 1.7999999523162842,
-      "fetch": 9.600000023841858,
-      "attach": 0.19999992847442627,
-      "total": 11.599999904632568,
-      "attachedAt": 59.59999990463257,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 7.599999904632568
+      "wait": 1.899999976158142,
+      "fetch": 9,
+      "attach": 0.2999999523162842,
+      "total": 11.199999928474426,
+      "attachedAt": 58.60000002384186,
+      "fcp": 48,
+      "lcp": 48,
+      "afterFcp": 10.600000023841858
     },
     {
       "route": "/product/p-0001",
       "key": "cart.mini#0",
       "wait": 0.3999999761581421,
-      "fetch": 20.5,
-      "attach": 7,
-      "total": 27.899999976158142,
-      "attachedAt": 76.09999990463257,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 24.09999990463257
+      "fetch": 20.200000047683716,
+      "attach": 6.799999952316284,
+      "total": 27.399999976158142,
+      "attachedAt": 75,
+      "fcp": 48,
+      "lcp": 48,
+      "afterFcp": 27
     },
     {
       "route": "/product/p-0001",
       "key": "product.gallery#0",
       "wait": 1.5,
-      "fetch": 27.200000047683716,
-      "attach": 0.19999992847442627,
-      "total": 28.899999976158142,
-      "attachedAt": 77.09999990463257,
-      "fcp": 52,
-      "lcp": 52,
-      "afterFcp": 25.09999990463257
-    },
-    {
-      "route": "/cart",
-      "key": "chrome.account#0",
-      "wait": 2.6999999284744263,
-      "fetch": 8.300000071525574,
-      "attach": 0.3999999761581421,
-      "total": 11.399999976158142,
-      "attachedAt": 52.60000002384186,
-      "fcp": 40,
-      "lcp": 40,
-      "afterFcp": 12.600000023841858
-    },
-    {
-      "route": "/cart",
-      "key": "cart.mini#0",
-      "wait": 0.30000007152557373,
-      "fetch": 17.299999952316284,
-      "attach": 7.100000023841858,
-      "total": 24.700000047683716,
-      "attachedAt": 66.10000002384186,
-      "fcp": 40,
-      "lcp": 40,
-      "afterFcp": 26.100000023841858
-    },
-    {
-      "route": "/login",
-      "key": "chrome.account#0",
-      "wait": 15.199999928474426,
-      "fetch": 5,
-      "attach": 0.20000004768371582,
-      "total": 20.399999976158142,
-      "attachedAt": 71.20000004768372,
-      "fcp": 40,
-      "lcp": 40,
-      "afterFcp": 31.200000047683716
-    },
-    {
-      "route": "/login",
-      "key": "cart.mini#0",
-      "wait": 0.09999990463256836,
-      "fetch": 7.300000071525574,
-      "attach": 7.100000023841858,
-      "total": 14.5,
-      "attachedAt": 65.40000009536743,
-      "fcp": 40,
-      "lcp": 40,
-      "afterFcp": 25.40000009536743
-    },
-    {
-      "route": "/my-account",
-      "key": "chrome.account#0",
-      "wait": 17.399999976158142,
-      "fetch": 5.100000023841858,
+      "fetch": 18.700000047683716,
       "attach": 0.2999999523162842,
-      "total": 22.799999952316284,
-      "attachedAt": 69.10000002384186,
+      "total": 20.5,
+      "attachedAt": 68.10000002384186,
+      "fcp": 48,
+      "lcp": 48,
+      "afterFcp": 20.100000023841858
+    },
+    {
+      "route": "/cart",
+      "key": "chrome.account#0",
+      "wait": 27.799999952316284,
+      "fetch": 0.7000000476837158,
+      "attach": 0.20000004768371582,
+      "total": 28.700000047683716,
+      "attachedAt": 63.5,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 33.10000002384186
+      "afterFcp": 27.5
+    },
+    {
+      "route": "/cart",
+      "key": "cart.mini#0",
+      "wait": 0.3999999761581421,
+      "fetch": 15.899999976158142,
+      "attach": 7.100000023841858,
+      "total": 23.399999976158142,
+      "attachedAt": 58.299999952316284,
+      "fcp": 36,
+      "lcp": 36,
+      "afterFcp": 22.299999952316284
+    },
+    {
+      "route": "/login",
+      "key": "chrome.account#0",
+      "wait": 16.899999976158142,
+      "fetch": 4.800000071525574,
+      "attach": 0.10000002384185791,
+      "total": 21.800000071525574,
+      "attachedAt": 70.10000002384186,
+      "fcp": 40,
+      "lcp": 40,
+      "afterFcp": 30.100000023841858
+    },
+    {
+      "route": "/login",
+      "key": "cart.mini#0",
+      "wait": 0.10000002384185791,
+      "fetch": 7.299999952316284,
+      "attach": 6.899999976158142,
+      "total": 14.299999952316284,
+      "attachedAt": 62.699999928474426,
+      "fcp": 40,
+      "lcp": 40,
+      "afterFcp": 22.699999928474426
+    },
+    {
+      "route": "/my-account",
+      "key": "chrome.account#0",
+      "wait": 16.799999952316284,
+      "fetch": 4.900000095367432,
+      "attach": 0.19999992847442627,
+      "total": 21.899999976158142,
+      "attachedAt": 67.5,
+      "fcp": 36,
+      "lcp": 36,
+      "afterFcp": 31.5
     },
     {
       "route": "/my-account",
       "key": "cart.mini#0",
       "wait": 0.10000002384185791,
-      "fetch": 7.399999976158142,
-      "attach": 7.100000023841858,
-      "total": 14.600000023841858,
-      "attachedAt": 61.10000002384186,
+      "fetch": 7.299999952316284,
+      "attach": 6.799999952316284,
+      "total": 14.199999928474426,
+      "attachedAt": 59.89999997615814,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 25.100000023841858
+      "afterFcp": 23.899999976158142
     },
     {
       "route": "/my-account/orders",
       "key": "chrome.account#0",
-      "wait": 15.299999952316284,
-      "fetch": 5,
-      "attach": 0.10000002384185791,
-      "total": 20.399999976158142,
-      "attachedAt": 65.30000007152557,
+      "wait": 17.09999990463257,
+      "fetch": 4.700000047683716,
+      "attach": 0.20000004768371582,
+      "total": 22,
+      "attachedAt": 66.30000007152557,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 29.300000071525574
+      "afterFcp": 30.300000071525574
     },
     {
       "route": "/my-account/orders",
       "key": "cart.mini#0",
-      "wait": 0,
+      "wait": 0.10000002384185791,
       "fetch": 7.399999976158142,
       "attach": 7,
-      "total": 14.399999976158142,
-      "attachedAt": 59.5,
+      "total": 14.5,
+      "attachedAt": 58.89999997615814,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 23.5
+      "afterFcp": 22.899999976158142
     },
     {
       "route": "/my-account/profile",
       "key": "chrome.account#0",
-      "wait": 17,
-      "fetch": 5.099999904632568,
-      "attach": 0.20000004768371582,
-      "total": 22.299999952316284,
-      "attachedAt": 68.79999995231628,
+      "wait": 16.800000071525574,
+      "fetch": 4.899999976158142,
+      "attach": 0.19999992847442627,
+      "total": 21.899999976158142,
+      "attachedAt": 66.89999997615814,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 32.799999952316284
+      "afterFcp": 30.899999976158142
     },
     {
       "route": "/my-account/profile",
       "key": "cart.mini#0",
       "wait": 0.10000002384185791,
-      "fetch": 7.300000071525574,
+      "fetch": 7,
       "attach": 7,
-      "total": 14.400000095367432,
-      "attachedAt": 61,
+      "total": 14.100000023841858,
+      "attachedAt": 59.300000071525574,
       "fcp": 36,
       "lcp": 36,
-      "afterFcp": 25
+      "afterFcp": 23.300000071525574
     }
   ],
   "coverage": [
@@ -643,20 +643,13 @@
     },
     {
       "route": "/faq/contact",
-      "key": "chrome.account",
-      "total": 996,
-      "used": 504,
-      "ratio": 0.5060240963855421
-    },
-    {
-      "route": "/faq/contact",
       "key": "cart.mini",
       "total": 1110,
       "used": 833,
       "ratio": 0.7504504504504504
     },
     {
-      "route": "/product",
+      "route": "/faq/contact",
       "key": "chrome.account",
       "total": 996,
       "used": 504,
@@ -668,6 +661,13 @@
       "total": 902,
       "used": 580,
       "ratio": 0.6430155210643016
+    },
+    {
+      "route": "/product",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
     },
     {
       "route": "/product",
@@ -713,20 +713,13 @@
     },
     {
       "route": "/login",
-      "key": "chrome.account",
-      "total": 996,
-      "used": 504,
-      "ratio": 0.5060240963855421
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
     },
     {
       "route": "/login",
-      "key": "cart.mini",
-      "total": 1110,
-      "used": 833,
-      "ratio": 0.7504504504504504
-    },
-    {
-      "route": "/my-account",
       "key": "chrome.account",
       "total": 996,
       "used": 504,
@@ -738,6 +731,13 @@
       "total": 1110,
       "used": 833,
       "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
     },
     {
       "route": "/my-account/orders",
@@ -755,17 +755,17 @@
     },
     {
       "route": "/my-account/profile",
-      "key": "chrome.account",
-      "total": 996,
-      "used": 504,
-      "ratio": 0.5060240963855421
-    },
-    {
-      "route": "/my-account/profile",
       "key": "cart.mini",
       "total": 1110,
       "used": 833,
       "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account/profile",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
     }
   ],
   "strategies": {
@@ -908,8 +908,8 @@
   "perRoute": {
     "/": {
       "heap": {
-        "afterAttach": 2248120,
-        "afterTeardown": 2263044
+        "afterAttach": 2248152,
+        "afterTeardown": 2263076
       },
       "teardown": {
         "torn": 2,
@@ -918,10 +918,10 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 24.199999928474426,
-        "load": 52,
+        "domContentLoaded": 30,
+        "load": 53.799999952316284,
         "fcp": 64,
-        "lcp": 64
+        "lcp": 72
       },
       "roots": [
         {
@@ -948,8 +948,8 @@
     },
     "/faq": {
       "heap": {
-        "afterAttach": 2246852,
-        "afterTeardown": 2256052
+        "afterAttach": 2246732,
+        "afterTeardown": 2255932
       },
       "teardown": {
         "torn": 2,
@@ -958,10 +958,10 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 44.799999952316284,
-        "load": 44.799999952316284,
-        "fcp": 52,
-        "lcp": 52
+        "domContentLoaded": 34.200000047683716,
+        "load": 34.200000047683716,
+        "fcp": 40,
+        "lcp": 40
       },
       "roots": [
         {
@@ -988,8 +988,8 @@
     },
     "/faq/contact": {
       "heap": {
-        "afterAttach": 2330680,
-        "afterTeardown": 2339880
+        "afterAttach": 2330688,
+        "afterTeardown": 2339888
       },
       "teardown": {
         "torn": 2,
@@ -998,8 +998,8 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 36.10000002384186,
-        "load": 36.10000002384186,
+        "domContentLoaded": 35.300000071525574,
+        "load": 35.300000071525574,
         "fcp": 40,
         "lcp": 40
       },
@@ -1038,10 +1038,10 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 41.89999997615814,
-        "load": 42,
-        "fcp": 52,
-        "lcp": 52
+        "domContentLoaded": 41,
+        "load": 41.199999928474426,
+        "fcp": 44,
+        "lcp": 44
       },
       "roots": [
         {
@@ -1098,10 +1098,10 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 44.39999997615814,
-        "load": 46.299999952316284,
-        "fcp": 52,
-        "lcp": 52
+        "domContentLoaded": 43.5,
+        "load": 45.60000002384186,
+        "fcp": 48,
+        "lcp": 48
       },
       "roots": [
         {
@@ -1138,8 +1138,8 @@
     },
     "/cart": {
       "heap": {
-        "afterAttach": 3326780,
-        "afterTeardown": 3335992
+        "afterAttach": 3324504,
+        "afterTeardown": 3333716
       },
       "teardown": {
         "torn": 2,
@@ -1148,7 +1148,7 @@
       "longTasks": [],
       "shifts": [
         {
-          "at": 84,
+          "at": 74.89999997615814,
           "value": 0.007739325629340278,
           "roots": [
             null
@@ -1156,10 +1156,10 @@
         }
       ],
       "timings": {
-        "domContentLoaded": 37.700000047683716,
-        "load": 37.700000047683716,
-        "fcp": 40,
-        "lcp": 40
+        "domContentLoaded": 31.799999952316284,
+        "load": 31.799999952316284,
+        "fcp": 36,
+        "lcp": 36
       },
       "roots": [
         {
@@ -1186,8 +1186,8 @@
     },
     "/login": {
       "heap": {
-        "afterAttach": 2785436,
-        "afterTeardown": 2800384
+        "afterAttach": 2785424,
+        "afterTeardown": 2800372
       },
       "teardown": {
         "torn": 2,
@@ -1196,8 +1196,8 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 38.700000047683716,
-        "load": 38.700000047683716,
+        "domContentLoaded": 37.5,
+        "load": 37.5,
         "fcp": 40,
         "lcp": 40
       },
@@ -1226,8 +1226,8 @@
     },
     "/my-account": {
       "heap": {
-        "afterAttach": 2785436,
-        "afterTeardown": 2800384
+        "afterAttach": 2785424,
+        "afterTeardown": 2800372
       },
       "teardown": {
         "torn": 2,
@@ -1236,8 +1236,8 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 33.800000071525574,
-        "load": 33.800000071525574,
+        "domContentLoaded": 34.39999997615814,
+        "load": 34.39999997615814,
         "fcp": 36,
         "lcp": 36
       },
@@ -1276,8 +1276,8 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 34.200000047683716,
-        "load": 34.200000047683716,
+        "domContentLoaded": 33.60000002384186,
+        "load": 33.60000002384186,
         "fcp": 36,
         "lcp": 36
       },
@@ -1316,8 +1316,8 @@
       "longTasks": [],
       "shifts": [],
       "timings": {
-        "domContentLoaded": 34.89999997615814,
-        "load": 34.89999997615814,
+        "domContentLoaded": 33.89999997615814,
+        "load": 33.89999997615814,
         "fcp": 36,
         "lcp": 36
       },
@@ -1410,13 +1410,13 @@
       "section": "isolation",
       "label": "/faq/contact       fetches only its own declared behaviours",
       "ok": true,
-      "detail": "2 fetched from [chrome, cart]"
+      "detail": "2 fetched from [cart, chrome]"
     },
     {
       "section": "isolation",
       "label": "/product           fetches only its own declared behaviours",
       "ok": true,
-      "detail": "3 fetched from [chrome, product, cart]"
+      "detail": "3 fetched from [product, chrome, cart]"
     },
     {
       "section": "isolation",
@@ -1434,13 +1434,13 @@
       "section": "isolation",
       "label": "/login             fetches only its own declared behaviours",
       "ok": true,
-      "detail": "2 fetched from [chrome, cart]"
+      "detail": "2 fetched from [cart, chrome]"
     },
     {
       "section": "isolation",
       "label": "/my-account        fetches only its own declared behaviours",
       "ok": true,
-      "detail": "2 fetched from [chrome, cart]"
+      "detail": "2 fetched from [cart, chrome]"
     },
     {
       "section": "isolation",
@@ -1452,7 +1452,7 @@
       "section": "isolation",
       "label": "/my-account/profile fetches only its own declared behaviours",
       "ok": true,
-      "detail": "2 fetched from [chrome, cart]"
+      "detail": "2 fetched from [cart, chrome]"
     },
     {
       "section": "isolation",
@@ -1464,7 +1464,7 @@
       "section": "timing",
       "label": "no behaviour's setup blocks for a long task (50 ms)",
       "ok": true,
-      "detail": "slowest 9.6 ms"
+      "detail": "slowest 7.2 ms"
     },
     {
       "section": "timing",
@@ -1500,7 +1500,7 @@
       "section": "timing",
       "label": "federation runtime overhead per behaviour stays under 60 ms",
       "ok": true,
-      "detail": "worst 25.6 ms — container init and share-scope setup, not the behaviour"
+      "detail": "worst 18.1 ms — container init and share-scope setup, not the behaviour"
     },
     {
       "section": "execution",

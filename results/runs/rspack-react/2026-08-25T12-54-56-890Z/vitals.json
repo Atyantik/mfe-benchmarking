@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T12:42:52.771Z",
+  "generatedAt": "2026-08-25T12:52:09.848Z",
   "runs": 3,
   "library": "web-vitals@6 (attribution build, reportSoftNavs)",
   "budget": {
@@ -20,7 +20,7 @@
   "documents": {
     "/": {
       "LCP": {
-        "value": 156,
+        "value": 144,
         "samples": 3
       },
       "CLS": {
@@ -36,23 +36,23 @@
         "samples": 3
       },
       "FCP": {
-        "value": 156,
+        "value": 144,
         "samples": 3
       },
       "TTFB": {
-        "value": 5,
+        "value": 2.899999976158142,
         "samples": 3
       },
       "scriptMs": {
-        "value": 45.44,
+        "value": 41.229,
         "samples": 3
       },
       "layoutMs": {
-        "value": 34.766999999999996,
+        "value": 32.252,
         "samples": 3
       },
       "styleMs": {
-        "value": 49.397999999999996,
+        "value": 41.154999999999994,
         "samples": 3
       },
       "longTasks": {
@@ -66,7 +66,7 @@
     },
     "/faq": {
       "LCP": {
-        "value": 156,
+        "value": 140,
         "samples": 3
       },
       "CLS": {
@@ -82,23 +82,23 @@
         "samples": 3
       },
       "FCP": {
-        "value": 156,
+        "value": 140,
         "samples": 3
       },
       "TTFB": {
-        "value": 5.200000047683716,
+        "value": 2.5,
         "samples": 3
       },
       "scriptMs": {
-        "value": 45.887,
+        "value": 39.154,
         "samples": 3
       },
       "layoutMs": {
-        "value": 24.400000000000002,
+        "value": 23.441,
         "samples": 3
       },
       "styleMs": {
-        "value": 36.851,
+        "value": 33.128,
         "samples": 3
       },
       "longTasks": {
@@ -106,13 +106,13 @@
         "samples": 3
       },
       "longestTask": {
-        "value": 86,
+        "value": 77,
         "samples": 3
       }
     },
     "/faq/contact": {
       "LCP": {
-        "value": 144,
+        "value": 140,
         "samples": 3
       },
       "CLS": {
@@ -128,23 +128,23 @@
         "samples": 3
       },
       "FCP": {
-        "value": 144,
+        "value": 140,
         "samples": 3
       },
       "TTFB": {
-        "value": 4.600000023841858,
+        "value": 2.600000023841858,
         "samples": 3
       },
       "scriptMs": {
-        "value": 42.393,
+        "value": 38.629999999999995,
         "samples": 3
       },
       "layoutMs": {
-        "value": 28.292,
+        "value": 27.195,
         "samples": 3
       },
       "styleMs": {
-        "value": 34.056000000000004,
+        "value": 32.794999999999995,
         "samples": 3
       },
       "longTasks": {
@@ -152,11 +152,57 @@
         "samples": 3
       },
       "longestTask": {
-        "value": 83,
+        "value": 81,
         "samples": 3
       }
     },
     "/product": {
+      "LCP": {
+        "value": 164,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 164,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 5,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 44.778,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 32.707,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 38.443,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 92,
+        "samples": 3
+      }
+    },
+    "/product/p-0001": {
       "LCP": {
         "value": 168,
         "samples": 3
@@ -178,19 +224,19 @@
         "samples": 3
       },
       "TTFB": {
-        "value": 6.399999976158142,
+        "value": 4.5,
         "samples": 3
       },
       "scriptMs": {
-        "value": 48.086,
+        "value": 57.365,
         "samples": 3
       },
       "layoutMs": {
-        "value": 35.623000000000005,
+        "value": 34.635,
         "samples": 3
       },
       "styleMs": {
-        "value": 38.534,
+        "value": 40.832,
         "samples": 3
       },
       "longTasks": {
@@ -199,52 +245,6 @@
       },
       "longestTask": {
         "value": 93,
-        "samples": 3
-      }
-    },
-    "/product/p-0001": {
-      "LCP": {
-        "value": 172,
-        "samples": 3
-      },
-      "CLS": {
-        "value": 0,
-        "samples": 3
-      },
-      "INP": {
-        "value": 8,
-        "samples": 3
-      },
-      "TBT": {
-        "value": 0,
-        "samples": 3
-      },
-      "FCP": {
-        "value": 172,
-        "samples": 3
-      },
-      "TTFB": {
-        "value": 4.899999976158142,
-        "samples": 3
-      },
-      "scriptMs": {
-        "value": 60.945,
-        "samples": 3
-      },
-      "layoutMs": {
-        "value": 37.318,
-        "samples": 3
-      },
-      "styleMs": {
-        "value": 39.775,
-        "samples": 3
-      },
-      "longTasks": {
-        "value": 1,
-        "samples": 3
-      },
-      "longestTask": {
-        "value": 94,
         "samples": 3
       }
     },
@@ -270,19 +270,19 @@
         "samples": 3
       },
       "TTFB": {
-        "value": 2.899999976158142,
+        "value": 2.200000047683716,
         "samples": 3
       },
       "scriptMs": {
-        "value": 56.824,
+        "value": 55.830999999999996,
         "samples": 3
       },
       "layoutMs": {
-        "value": 17.744,
+        "value": 18.235999999999997,
         "samples": 3
       },
       "styleMs": {
-        "value": 33.797000000000004,
+        "value": 32.764,
         "samples": 3
       },
       "longTasks": {
@@ -290,7 +290,7 @@
         "samples": 3
       },
       "longestTask": {
-        "value": 68,
+        "value": 69,
         "samples": 3
       }
     }
@@ -302,7 +302,7 @@
       "type": "navigate",
       "metrics": {
         "LCP": {
-          "value": 336,
+          "value": 328,
           "samples": 3
         },
         "CLS": {
@@ -321,7 +321,7 @@
       "type": "soft-navigation",
       "metrics": {
         "LCP": {
-          "value": 73.30000007152557,
+          "value": 72.70000004768372,
           "samples": 3
         },
         "CLS": {
@@ -340,7 +340,7 @@
       "type": "soft-navigation",
       "metrics": {
         "LCP": {
-          "value": 31.899999976158142,
+          "value": 28.700000047683716,
           "samples": 3
         },
         "CLS": {
@@ -359,7 +359,7 @@
       "type": "soft-navigation",
       "metrics": {
         "LCP": {
-          "value": 22.5,
+          "value": 21.600000023841858,
           "samples": 3
         },
         "CLS": {
@@ -378,7 +378,7 @@
       "type": "soft-navigation",
       "metrics": {
         "LCP": {
-          "value": 29,
+          "value": 30.5,
           "samples": 3
         },
         "CLS": {
@@ -398,7 +398,7 @@
       "section": "document",
       "label": "LCP within the good threshold (2500 ms) on every indexed route",
       "ok": true,
-      "detail": "worst 172 ms"
+      "detail": "worst 168 ms"
     },
     {
       "section": "document",
@@ -416,7 +416,7 @@
       "section": "document",
       "label": "TTFB within the good threshold (800 ms) on every indexed route",
       "ok": true,
-      "detail": "worst 6 ms"
+      "detail": "worst 5 ms"
     },
     {
       "section": "document",

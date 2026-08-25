@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-25T12:41:30.224Z",
+  "generatedAt": "2026-08-25T12:50:50.796Z",
   "config": "site",
   "arena": "/product/p-0001",
   "limits": {
@@ -441,16 +441,6 @@
       "gzipTotal": 9486,
       "sheets": [
         {
-          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
-          "owner": "storefront",
-          "file": "index.b68db6ffff.css",
-          "bytes": 21538,
-          "gzip": 5290,
-          "used": 17577,
-          "ratio": 0.816,
-          "defines": []
-        },
-        {
           "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
           "owner": "chrome",
           "file": "465.dd7fb8b1f8.css",
@@ -458,6 +448,16 @@
           "gzip": 3813,
           "used": 16978,
           "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
           "defines": []
         },
         {
@@ -482,6 +482,16 @@
       "gzipTotal": 13254,
       "sheets": [
         {
+          "url": "http://localhost:3101/static/css/async/__federation_expose_routes.dc503edf29.css",
+          "owner": "faq",
+          "file": "__federation_expose_routes.dc503edf29.css",
+          "bytes": 19933,
+          "gzip": 3768,
+          "used": 16098,
+          "ratio": 0.808,
+          "defines": []
+        },
+        {
           "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
           "owner": "storefront",
           "file": "index.b68db6ffff.css",
@@ -489,16 +499,6 @@
           "gzip": 5290,
           "used": 17577,
           "ratio": 0.816,
-          "defines": []
-        },
-        {
-          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
-          "owner": "chrome",
-          "file": "465.dd7fb8b1f8.css",
-          "bytes": 20990,
-          "gzip": 3813,
-          "used": 16978,
-          "ratio": 0.809,
           "defines": []
         },
         {
@@ -517,13 +517,13 @@
           ]
         },
         {
-          "url": "http://localhost:3101/static/css/async/__federation_expose_routes.dc503edf29.css",
-          "owner": "faq",
-          "file": "__federation_expose_routes.dc503edf29.css",
-          "bytes": 19933,
-          "gzip": 3768,
-          "used": 16098,
-          "ratio": 0.808,
+          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "465.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
           "defines": []
         }
       ]
@@ -533,26 +533,6 @@
       "gzipTotal": 13254,
       "sheets": [
         {
-          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
-          "owner": "storefront",
-          "file": "index.b68db6ffff.css",
-          "bytes": 21538,
-          "gzip": 5290,
-          "used": 17577,
-          "ratio": 0.816,
-          "defines": []
-        },
-        {
-          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
-          "owner": "chrome",
-          "file": "465.dd7fb8b1f8.css",
-          "bytes": 20990,
-          "gzip": 3813,
-          "used": 16978,
-          "ratio": 0.809,
-          "defines": []
-        },
-        {
           "url": "http://localhost:3101/static/css/async/__federation_expose_routes.dc503edf29.css",
           "owner": "faq",
           "file": "__federation_expose_routes.dc503edf29.css",
@@ -576,27 +556,16 @@
             "cart-value-sVMb",
             "cart-total-HcAx"
           ]
-        }
-      ]
-    },
-    {
-      "route": "/product",
-      "gzipTotal": 13341,
-      "sheets": [
+        },
         {
-          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
-          "owner": "cart",
-          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
-          "bytes": 807,
-          "gzip": 383,
-          "used": 748,
-          "ratio": 0.927,
-          "defines": [
-            "cart-panel-V0TX",
-            "cart-label-ldEi",
-            "cart-value-sVMb",
-            "cart-total-HcAx"
-          ]
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
         },
         {
           "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
@@ -607,7 +576,13 @@
           "used": 16978,
           "ratio": 0.809,
           "defines": []
-        },
+        }
+      ]
+    },
+    {
+      "route": "/product",
+      "gzipTotal": 13341,
+      "sheets": [
         {
           "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
           "owner": "storefront",
@@ -619,6 +594,16 @@
           "defines": []
         },
         {
+          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "465.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
           "url": "http://localhost:3102/static/css/async/__federation_expose_routes.93fe576e8f.css",
           "owner": "product",
           "file": "__federation_expose_routes.93fe576e8f.css",
@@ -627,6 +612,21 @@
           "used": 17745,
           "ratio": 0.823,
           "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
         }
       ]
     },
@@ -634,6 +634,51 @@
       "route": "/product/p-0001",
       "gzipTotal": 17404,
       "sheets": [
+        {
+          "url": "http://localhost:3102/static/css/async/product-detail.b1d644678b.css",
+          "owner": "product",
+          "file": "product-detail.b1d644678b.css",
+          "bytes": 748,
+          "gzip": 349,
+          "used": 748,
+          "ratio": 1,
+          "defines": [
+            "product-panel-V0TX",
+            "product-label-ldEi",
+            "product-value-sVMb",
+            "product-row-mleQ"
+          ]
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/356.221b00df26.css",
+          "owner": "cart",
+          "file": "356.221b00df26.css",
+          "bytes": 19856,
+          "gzip": 3714,
+          "used": 15920,
+          "ratio": 0.802,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "465.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
         {
           "url": "http://localhost:3102/static/css/async/__federation_expose_routes.93fe576e8f.css",
           "owner": "product",
@@ -658,51 +703,6 @@
             "cart-value-sVMb",
             "cart-total-HcAx"
           ]
-        },
-        {
-          "url": "http://localhost:3102/static/css/async/product-detail.b1d644678b.css",
-          "owner": "product",
-          "file": "product-detail.b1d644678b.css",
-          "bytes": 748,
-          "gzip": 349,
-          "used": 748,
-          "ratio": 1,
-          "defines": [
-            "product-panel-V0TX",
-            "product-label-ldEi",
-            "product-value-sVMb",
-            "product-row-mleQ"
-          ]
-        },
-        {
-          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
-          "owner": "chrome",
-          "file": "465.dd7fb8b1f8.css",
-          "bytes": 20990,
-          "gzip": 3813,
-          "used": 16978,
-          "ratio": 0.809,
-          "defines": []
-        },
-        {
-          "url": "http://localhost:3103/static/css/async/356.221b00df26.css",
-          "owner": "cart",
-          "file": "356.221b00df26.css",
-          "bytes": 19856,
-          "gzip": 3714,
-          "used": 15920,
-          "ratio": 0.802,
-          "defines": []
-        },
-        {
-          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
-          "owner": "storefront",
-          "file": "index.b68db6ffff.css",
-          "bytes": 21538,
-          "gzip": 5290,
-          "used": 17577,
-          "ratio": 0.816,
-          "defines": []
         }
       ]
     },
@@ -721,26 +721,6 @@
           "defines": []
         },
         {
-          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
-          "owner": "chrome",
-          "file": "465.dd7fb8b1f8.css",
-          "bytes": 20990,
-          "gzip": 3813,
-          "used": 16978,
-          "ratio": 0.809,
-          "defines": []
-        },
-        {
-          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
-          "owner": "storefront",
-          "file": "index.b68db6ffff.css",
-          "bytes": 21538,
-          "gzip": 5290,
-          "used": 17577,
-          "ratio": 0.816,
-          "defines": []
-        },
-        {
           "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
           "owner": "cart",
           "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
@@ -754,6 +734,26 @@
             "cart-value-sVMb",
             "cart-total-HcAx"
           ]
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/465.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "465.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
         }
       ]
     }
@@ -931,7 +931,7 @@
       "section": "cascade",
       "label": "every stylesheet on the page is attributable to an application",
       "ok": true,
-      "detail": "chrome:20990b, product:21565b, product:748b, storefront:21538b, cart:807b, cart:19856b"
+      "detail": "chrome:20990b, product:21565b, storefront:21538b, product:748b, cart:807b, cart:19856b"
     },
     {
       "section": "cascade",
