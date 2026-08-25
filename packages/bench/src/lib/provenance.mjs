@@ -75,8 +75,15 @@ export function provenance() {
       commit: git('rev-parse', 'HEAD'),
       shortCommit: git('rev-parse', '--short', 'HEAD'),
       branch: git('rev-parse', '--abbrev-ref', 'HEAD'),
-      /** A dirty tree means the artefacts may not match the commit. Recorded, not judged. */
-      dirty: git('status', '--porcelain') !== '',
+      /**
+       * A dirty tree means the artefacts may not match the commit. Recorded, not judged.
+       *
+       * `results/` is excluded because the run writes it: a bench in progress is ALWAYS dirty
+       * there, so including it made every record claim a dirty tree even when the source it
+       * measured was clean — which is worse than not reporting it, since it trains the reader
+       * to ignore the flag.
+       */
+      dirty: git('status', '--porcelain', '--', ':!results') !== '',
     },
     runtime: {
       node: process.version,
