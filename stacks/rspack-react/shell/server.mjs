@@ -79,7 +79,11 @@ if (process.env.MF_HEAP_DUMP === '1') {
 }
 
 /** What this host costs to run. Read as a delta; POST to /reset to start a fresh window. */
-app.get('/__metrics', (c) => c.json(metrics.snapshot()));
+// `?gc=1` forces a major collection first, so the memory figures are retention rather than
+// whatever has not been collected yet. See packages/host-metrics/index.mjs.
+app.get('/__metrics', (c) =>
+  c.json(metrics.snapshot({ collect: c.req.query('gc') === '1' })),
+);
 app.get('/__loads', async (c) => c.json(await loadStats()));
 app.post('/__metrics/reset', (c) => {
   metrics.reset();

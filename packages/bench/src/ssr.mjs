@@ -80,6 +80,13 @@ const heading = (t) => console.log(`\n--- ${t} ${'-'.repeat(Math.max(0, 72 - t.l
 const ms = (n) => `${Number(n).toFixed(1)} ms`;
 
 const metricsUrl = (host) => `http://localhost:${host.port}/__metrics`;
+/**
+ * Retention sampling: forces a major GC server-side before reading memory.
+ *
+ * Without it this suite compared GC PHASE, not retention — the identical build reported
+ * +5.31 kB and -2.07 kB retained per request on two consecutive runs.
+ */
+const retentionUrl = (host) => `${metricsUrl(host)}?gc=1`;
 
 async function resetMetrics(host) {
   await fetch(`${metricsUrl(host)}/reset`, { method: 'POST' });
@@ -323,8 +330,14 @@ heading('7. sustained load - does memory settle or climb');
   await resetMetrics(host);
   for (let i = 0; i < blocks; i += 1) {
     await load(`${EDGE}/product`, { duration: 4, headers: {} });
-    const m = await readMetrics(host);
-    samples.push({ block: i + 1, heapUsedMb: m.memory.heapUsedMb, rssMb: m.memory.rssMb, requests: m.requests });
+    const m = await fetch(retentionUrl(host)).then((r) => r.json());
+    samples.push({
+      block: i + 1,
+      heapUsedMb: m.memory.heapUsedMb,
+      rssMb: m.memory.rssMb,
+      requests: m.requests,
+      collected: m.collected,
+    });
   }
   for (const s of samples) {
     note(`block ${s.block}  heapUsed ${String(s.heapUsedMb).padStart(7)} MB   rss ${String(s.rssMb).padStart(7)} MB   ${s.requests} requests served`);
@@ -340,7 +353,20 @@ heading('7. sustained load - does memory settle or climb');
    * A leak has two signatures that hardware does not change: it retains a roughly constant
    * amount per request, and it grows every block. Noise does neither — it fluctuates, and it
    * frequently goes down when a collection lands mid-block.
+   *
+   * Both signatures are only readable if the samples measure RETENTION. `heapUsed` on its own
+   * measures whatever V8 has not collected yet, which on a four-sample series makes the
+   * direction close to a coin flip: the identical build reported +5.31 kB and -2.07 kB per
+   * request on two consecutive runs, and the first of those failed the build. The samples
+   * above are taken through `?gc=1`, which forces a major collection first, so what is left
+   * is what is genuinely held.
    */
+  // A reading that was not preceded by a collection is not retention, and must not be judged
+  // as though it were — say so rather than quietly reporting a weaker number as a strong one.
+  const collected = samples.every((s) => s.collected);
+  check('sustained', 'memory is sampled after a forced collection', collected,
+    collected ? 'figures are retention, not allocation' : 'server could not force a GC — readings are noisy');
+
   const settled = samples.slice(1);
   const first = settled[0];
   const last = settled.at(-1);

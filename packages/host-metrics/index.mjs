@@ -28,7 +28,43 @@
  * work under test rather than everything since the process started.
  */
 import { PerformanceObserver, monitorEventLoopDelay, performance } from 'node:perf_hooks';
-import { getHeapStatistics } from 'node:v8';
+import { getHeapStatistics, setFlagsFromString } from 'node:v8';
+import { runInNewContext } from 'node:vm';
+
+/**
+ * Force a major collection, so a heap reading measures what is RETAINED rather than what has
+ * merely not been collected yet.
+ *
+ * This exists because the leak check built on `heapUsed` was flaky, and flaky in the worst
+ * way: two runs of the identical build reported +5.31 kB and -2.07 kB retained per request.
+ * Neither number was wrong. `heapUsed` samples wherever V8 happens to be in its GC cycle, so
+ * on a four-sample series the direction is close to a coin flip — and a leak check that fails
+ * one run in six teaches everyone to re-run it, which is worse than not having it.
+ *
+ * `global.gc` normally needs `--expose-gc` on the command line. Enabling the flag at runtime
+ * keeps the servers bootable by any means (`pnpm dev`, the stack script, a bare `node`)
+ * without every entry point having to remember it.
+ *
+ * Deliberately opt-in per request: a forced major GC costs milliseconds and would contaminate
+ * the CPU and pause numbers that the same endpoint reports.
+ */
+let forceGc = null;
+function collectGarbage() {
+  if (forceGc === null) {
+    try {
+      setFlagsFromString('--expose-gc');
+      forceGc = runInNewContext('gc');
+    } catch {
+      forceGc = false; // not available; readings stay honest, just noisier
+    }
+  }
+  if (typeof forceGc !== 'function') return false;
+  // Twice: the first pass can resurrect objects through finalizers and weak callbacks, and
+  // what survives two consecutive collections is what is genuinely held.
+  forceGc();
+  forceGc();
+  return true;
+}
 
 /** GC kinds are numeric constants; names make a report readable. */
 const GC_KIND = {
@@ -81,7 +117,13 @@ export function startMetrics() {
       requests += 1;
     },
 
-    snapshot() {
+    /**
+     * @param {{collect?: boolean}} [options] `collect` forces a major GC first, making the
+     *   memory figures retention rather than allocation. Costs a few ms and perturbs the CPU
+     *   and pause numbers in the same response, so ask for it only when memory is the subject.
+     */
+    snapshot(options = {}) {
+      const collected = options.collect ? collectGarbage() : false;
       const windowMs = performance.now() - startedAt;
       const cpu = process.cpuUsage(cpuBase);
       const elu = performance.eventLoopUtilization(eluBase);
@@ -95,6 +137,8 @@ export function startMetrics() {
       return {
         windowMs: round(windowMs),
         requests,
+        /** Whether the memory figures below are post-collection. */
+        collected,
         cpu: {
           userMs: round(userMs),
           systemMs: round(systemMs),

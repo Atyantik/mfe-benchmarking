@@ -27,6 +27,7 @@ const SUITES = [
   { id: 'contract', file: 'contract.mjs', needsStack: true, node: ['--experimental-strip-types'], what: 'every stack emits the same test ids' },
   { id: 'auth', file: 'auth.mjs', needsStack: true, what: 'the login journey, and what it costs the cache' },
   { id: 'widgets', file: 'widgets.mjs', needsStack: true, what: 'three teams on one page, and per-area cost' },
+  { id: 'css', file: 'css.mjs', needsStack: true, what: 'two teams, identical class names, one page' },
   { id: 'media', file: 'media.mjs', needsStack: true, what: 'real photographs and video: weight, formats, priority' },
   { id: 'behaviors', file: 'behaviors.mjs', needsStack: true, what: 'the client interactivity layer, end to end' },
   { id: 'vitals', file: 'vitals.mjs', needsStack: true, what: 'Core Web Vitals, documents and soft navigations' },
@@ -89,4 +90,4 @@ if (failed.length) {
 } else {
   console.log(`all ${results.length} suite(s) green`);
 }
-console.log('Reports in results/: vitals, ssr, hosts, media, auth, widgets, leakage, a11y, contract, behaviors\n');
+console.log('Reports in results/: vitals, ssr, hosts, media, auth, widgets, leakage, a11y, contract, behaviors, css\n');

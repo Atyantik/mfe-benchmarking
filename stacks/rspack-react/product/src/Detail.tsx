@@ -2,6 +2,7 @@ import { Slot } from '@mf-eval/react-contracts';
 import type { PageProps, RouteLoaderArgs } from '@mf-eval/contracts';
 import { PRODUCTS, categoryById, productById, type Product } from '@mf-eval/contracts/fixtures';
 import { galleryFor, imageForProduct } from '@mf-eval/media';
+import { StockPanel } from './StockPanel';
 import {
   Badge,
   Breadcrumbs,
@@ -86,6 +87,9 @@ export function Component({ data }: PageProps<DetailData>) {
                 </ul>
               ) : null}
               <MediaCredit image={gallery[0] ?? imageForProduct(product.id, product.family)} />
+              {/* Same class names as the cart badge in the header above, from a different
+                  application. See docs/css.md. */}
+              <StockPanel product={product} />
             </div>
             <div>
               <p className="text-[length:var(--fs-2xs)] font-semibold uppercase tracking-[0.14em] text-brand-700">

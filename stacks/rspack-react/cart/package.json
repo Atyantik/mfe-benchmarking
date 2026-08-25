@@ -39,6 +39,7 @@
     "@testing-library/user-event": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "jsdom": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "@rsbuild/plugin-sass": "catalog:"
   }
 }

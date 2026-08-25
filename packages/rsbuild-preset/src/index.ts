@@ -11,6 +11,7 @@ import path from 'node:path';
 import type { RsbuildConfig, RsbuildPlugin, Rspack } from '@rsbuild/core';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
+import { pluginSass } from '@rsbuild/plugin-sass';
 import type { moduleFederationPlugin } from '@module-federation/sdk';
 
 type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
@@ -250,13 +251,30 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
 interface PostcssRule {
   selectors: string[];
   parent?: { type?: string; name?: string } | undefined;
+  source?: { input?: { from?: string } } | undefined;
 }
+
+/** A CSS Module already carries its own boundary; see scopeRemoteCss. */
+const IS_CSS_MODULE = /\.module\.(s?css|sass|less)$/i;
 
 function scopeRemoteCss(owner: string) {
   const SKIP = /^(:root|html|body|\*|::?[a-z-]*(selection|backdrop|placeholder|marker))/i;
   return {
     postcssPlugin: `mf-scope-${owner}`,
+    /**
+     * CSS MODULES ARE EXEMPT, and that exemption is the point of the comparison.
+     *
+     * This plugin exists because utility CSS is global by nature: one remote's `.hidden`
+     * beat another remote's `.lg\:block` and silently hid the site header
+     * (docs/constraints.md §12). Prefixing every rule with `[data-owner]` is a workaround for
+     * a language that has no module boundary.
+     *
+     * A CSS Module has one. Its class names are already unique to the file that declared
+     * them, so scoping them again would add specificity, add bytes, and prove nothing. Left
+     * unscoped, they demonstrate whether the boundary actually holds.
+     */
     Rule(rule: PostcssRule) {
+      if (IS_CSS_MODULE.test(rule.source?.input?.from ?? '')) return;
       const parentName = rule.parent?.type === 'atrule' ? rule.parent.name : undefined;
       if (parentName && /^(keyframes|font-face|property|counter-style)$/i.test(parentName)) return;
       rule.selectors = rule.selectors.map((sel) =>
@@ -293,7 +311,30 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
     plugins: [
       ...(extra.plugins ?? []),
       pluginTailwindcss(),
+      // Sass is available to every app, for components written as CSS Modules rather than
+      // utilities. Both approaches coexist on purpose — see docs/css.md.
+      pluginSass(),
     ],
+    output: {
+      ...extra.output,
+      cssModules: {
+        /**
+         * The generated class name carries the APP NAME.
+         *
+         * The default identifier is a hash of the file path and the local name, which is
+         * *probably* unique across remotes — two teams would have to name a file identically,
+         * at an identical relative path, with identical content. "Probably" is the wrong
+         * guarantee for a boundary between independently deployed applications, and it fails
+         * silently and visually when it does not hold.
+         *
+         * Including the app name makes a cross-remote collision impossible by construction
+         * rather than unlikely by hash. It costs a few bytes per rule and removes an entire
+         * class of bug that only appears in production, on the one page where two remotes
+         * happen to meet.
+         */
+        localIdentName: `${opts.name}-[local]-[hash:base64:4]`,
+      },
+    },
     // The automatic JSX runtime, stated explicitly rather than inherited.
     //
     // Workspace packages ship .tsx source and are pulled in via source.include; once that

@@ -1,0 +1,56 @@
+// The product team's panel.
+//
+// Same file name, same class names, same Sass variable names as the cart team's
+// `panel.module.scss`. Every value here contradicts theirs — block instead of inline, a
+// square radius instead of a pill, a muted surface instead of the brand colour, larger type.
+//
+// Both render on /product/p-0001. If CSS Modules did not hold the boundary, one of these two
+// components would visibly become the other.
+
+$surface: var(--color-sunken);
+$ink: var(--color-ink-900);
+$radius: 0.5rem;
+$pad: 1rem 1.25rem;
+
+@mixin frame {
+  display: block;
+  width: 100%;
+}
+
+.panel {
+  @include frame;
+  padding: $pad;
+  border: 1px solid var(--color-line);
+  border-radius: $radius;
+  background: $surface;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ink-500);
+}
+
+.value {
+  display: block;
+  font-size: var(--fs-xl);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: $ink;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  & + & {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+}

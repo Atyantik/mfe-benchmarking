@@ -57,6 +57,16 @@ export const CATALOGUE = {
   addToCart: (id: string) => `add-${id}`,
   facet: (name: string, value: string) => `facet-${name}-${value}`,
   galleryThumb: (index: number) => `gallery-thumb-${index}`,
+  /**
+   * Availability and lead time on the detail page.
+   *
+   * Styled by a CSS Module whose class names collide, on purpose, with the cart team's. It is
+   * named here because `packages/bench/src/css.mjs` addresses it by id, and a stack that
+   * renames it silently would turn that whole suite into a no-op.
+   */
+  stockPanel: 'stock-panel',
+  stockAvailability: 'stock-availability',
+  stockLead: 'stock-lead',
 } as const;
 
 /** Sign-in. The gate between the storefront and the account application. */
@@ -146,7 +156,14 @@ export const ROUTE_CONTRACT: RouteContract[] = [
   },
   {
     path: '/product/p-0001',
-    server: [CATALOGUE.gallery, CATALOGUE.galleryMain, CATALOGUE.galleryThumb(0)],
+    server: [
+      CATALOGUE.gallery,
+      CATALOGUE.galleryMain,
+      CATALOGUE.galleryThumb(0),
+      CATALOGUE.stockPanel,
+      CATALOGUE.stockAvailability,
+      CATALOGUE.stockLead,
+    ],
     clientOnly: [CHROME.cartCount],
   },
   {

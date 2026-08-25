@@ -64,6 +64,19 @@ a page is Module Federation initialising the container it lives in.
 **Signing in need not de-cache the site.** Account documents are private; storefront
 documents stay byte-identical and shared-cacheable for signed-in visitors.
 
+**Style isolation survives two teams writing the same CSS — but not by the mechanism you would
+assume.** Two applications ship `panel.module.scss` declaring `.panel`, `.label` and `.value`,
+and both render on one page without touching each other. The hashes, though, are *identical*:
+`.cart-panel-V0TX` and `.product-panel-V0TX`. Under the default `[local]-[hash]` both teams
+would have emitted the same class and load order would have decided the winner. The app name
+in `localIdentName` is the whole mechanism — see `docs/css.md`.
+
+**A component's stylesheet should travel with the component.** The header cart badge imported
+its app's shared utility bundle — the convention every component in that app followed — which
+put 19.9 kB of cart CSS on every page of the site, measuring **0% used** on `/faq`. Per-app
+byte budgets did not catch it: they measure what an app builds, not what a page fetches.
+Making the badge self-contained took `/` from 29.1 to 9.24 kB gzip of CSS.
+
 **Measurement finds what review does not.** An accessibility audit found a colour token that
 passed contrast on the background a person would check by hand and failed on the two they
 would not — on all ten routes, since the palette was written.
@@ -80,7 +93,7 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 12 suites, ~230 checks, against the running stack
+pnpm bench          # 15 suites, ~280 checks, against the running stack
 ```
 
 Sign in with any email and any password of four characters or more.
@@ -97,6 +110,7 @@ Sign in with any email and any password of four characters or more.
 | `contract` | does every route emit the shared test ids, so suites port to another stack? |
 | `auth` | the login journey, and what personalization costs the cache |
 | `widgets` | three teams on one page, and per-area download cost |
+| `css` | identical class names from two teams on one page, and CSS delivered only where it renders |
 | `media` | real photographs and video: weight, formats, dimensions, priority |
 | `behaviors` | client interactivity: size, timing, coverage, teardown, loading strategies |
 | `vitals` | Core Web Vitals, per document navigation and per soft navigation |
@@ -112,6 +126,7 @@ docs/constraints.md         verified Module Federation facts, with dates and sou
 docs/decision-log.md        what was decided, why, and what would reverse it
 docs/media.md               the media profile the fixtures are built to
 docs/interactivity.md       behaviours vs islands, and when each applies
+docs/css.md                 two teams writing the same CSS, and why it does not collide
 docs/navigation-zones.md    MPA and SPA in one site
 docs/third-party-remotes.md integrating a vendor without a shared contract package
 docs/app-authors-guide.md   the only document a new app author must read
