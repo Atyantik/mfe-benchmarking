@@ -32,9 +32,58 @@ there is.
 
 ## The result
 
-All 51 checks pass. The two elements resolve to different values on 4 of the 7 properties
+All 65 checks pass. The two elements resolve to different values on 4 of the 7 properties
 measured, `.label` and `.value` diverge inside them, no application's rule matches another
 application's element, and flipping stylesheet order changes nothing.
+
+## The fair objection, and the answer
+
+On the real page the two components sit eight levels apart — one in `header`, one in `main`.
+Flat class selectors can only collide by *name*, so two elements that never share an ancestor
+never test the case that actually breaks design systems: a **descendant selector** reaching
+into someone else's subtree.
+
+So both stylesheets now carry one, with contradictory declarations:
+
+```css
+.cart-panel-V0TX    .cart-label-ldEi    { text-transform: none;      letter-spacing: 0;      }
+.product-panel-V0TX .product-label-ldEi { text-transform: uppercase; letter-spacing: 0.16em; }
+```
+
+Note that **both halves** of each selector are hashed. That is what makes the rule unable to
+escape its own component, and §9 proves it by cloning both components out of the live page and
+rebuilding them in three arrangements: side by side under one parent, cart nested inside
+product, and product nested inside cart. In every arrangement each `.panel` keeps every
+declared value it has in its natural position, and nested in one subtree the two `.label`
+elements still disagree on `text-transform`, `letter-spacing` and `color`.
+
+Layout-derived values are deliberately excluded from that comparison. A block element nested
+in a flex parent is blockified, and its computed `display` changes — that is CSS working, not
+a leak, and asserting otherwise would make the section lie.
+
+## The negative control
+
+Every check above is worthless if it would pass anyway. Reverting `localIdentName` to the
+stock `[local]-[hash:base64:4]` and rebuilding collapses the suite — **20 checks fail**, and
+the page breaks visibly:
+
+```
+mini-cart     class=panel-V0TX  inline-flex  r:6px  bg:rgb(255,255,255)  p:4px 12px
+stock-panel   class=panel-V0TX  flex         r:6px  bg:rgb(255,255,255)  p:4px 12px
+```
+
+Identical class. The stock panel *becomes* the cart badge — green pills, a cramped inline row,
+text overflowing its box. Among the failures:
+
+- `product's .panel renders its own display: block` — computed `flex`
+- `.panel disagrees on borderRadius` — cart 6px · product 6px
+- **`cart's .panel is unchanged by stylesheet order` — changed: display, borderRadius,
+  backgroundColor, padding**
+
+That last one is the whole argument for doing this by construction. With the app name gone,
+which team wins is decided by which stylesheet the network delivered last — one way on a cold
+load, the other on a warm cache. The bug would not reproduce on the machine of whoever was
+asked to fix it.
 
 ## What actually does the work — and the near-miss
 

@@ -32,6 +32,19 @@ $pad: 0.25rem 0.75rem;
   &:hover {
     border-color: var(--color-brand-600);
   }
+
+  // A DESCENDANT selector, and the reason this experiment is not rigged in its own favour.
+  //
+  // Flat class selectors can only collide by name. A descendant selector reaches DOWN the
+  // tree, so if class names were global this rule would restyle any `.label` nested anywhere
+  // inside any `.panel` — including the product team's, if the two are ever nested. That is
+  // the hazard a real design system hits, and `css.mjs` §9 nests these two components inside
+  // each other, both ways round, to prove the rule cannot escape its own component.
+  .label {
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-brand-700);
+  }
 }
 
 .label {

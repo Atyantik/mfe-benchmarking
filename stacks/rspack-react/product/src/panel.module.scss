@@ -23,6 +23,14 @@ $pad: 1rem 1.25rem;
   border: 1px solid var(--color-line);
   border-radius: $radius;
   background: $surface;
+
+  // The mirror image of the cart team's descendant rule, with every value contradicting it.
+  // Nest either component inside the other and exactly one of these two rules must apply.
+  .label {
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-ink-500);
+  }
 }
 
 .label {

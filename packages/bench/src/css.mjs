@@ -26,6 +26,14 @@
  *   6  containment   does a module leak anything global on its way out
  *   7  cost          bytes, and how much of them the page actually uses
  *   8  delivery      is CSS split per route and component, and fetched only where it renders
+ *   9  arrangement   the two components nested inside each other, both ways round
+ *
+ * Section 9 answers the fair objection to all of the above: on the real page the two
+ * components sit eight levels apart, in `header` and `main`, so they never got close enough to
+ * fight. It clones both into one container as siblings and then nests each inside the other,
+ * and both stylesheets now carry a DESCENDANT selector (`.panel .label`) with contradictory
+ * declarations — a rule that reaches down the tree and would, if class names were global,
+ * restyle whatever `.label` it found inside whatever `.panel` it was in.
  *
  * Section 8 earned its place immediately: it found cart shipping a 19.9 kB stylesheet on
  * every page of the site that measured **0% used** on /faq. The header badge imported the
@@ -706,6 +714,154 @@ for (const { route, sheets } of delivery) {
     total < LIMITS.routeCssGzip, `${kb(total)} across ${sheets.length} stylesheet(s)`);
 }
 
+// ---------------------------------------------------------------------------
+// 9. arrangement — put them inside each other and measure again
+// ---------------------------------------------------------------------------
+
+heading('9. arrangement — nested inside each other, both ways round');
+
+/**
+ * Everything above measures the two components where the site happens to put them: the cart
+ * badge in the header, the stock panel in the main column, eight levels apart. That is a fair
+ * objection to the whole experiment — flat class selectors can only collide by NAME, and two
+ * elements that never share an ancestor never test the case that actually breaks design
+ * systems, which is a descendant selector reaching into someone else's subtree.
+ *
+ * So: clone both components out of the live page, and rebuild them in three arrangements —
+ * side by side, cart inside product, product inside cart. The clones keep their real class
+ * names and the real stylesheets are already loaded, so this is the shipped CSS being asked a
+ * question the page's own layout never asks it.
+ *
+ * Both modules now carry `.panel .label` with contradictory declarations. Nested, exactly one
+ * of those two rules may apply to any given label.
+ */
+const arrangements = await page.evaluate(
+  ({ subjects, props, labelProps }) => {
+    const source = Object.fromEntries(
+      subjects.map((s) => [s.app, document.querySelector(`[data-testid="${s.testid}"]`)]),
+    );
+    if (Object.values(source).some((el) => !el)) return null;
+
+    const read = (el) => {
+      const style = getComputedStyle(el);
+      const label = el.querySelector('[class*="-label-"]');
+      return {
+        className: el.className,
+        ...Object.fromEntries(props.map((p) => [p, style[p]])),
+        label: label
+          ? {
+              className: label.className,
+              ...Object.fromEntries(labelProps.map((p) => [p, getComputedStyle(label)[p]])),
+            }
+          : null,
+      };
+    };
+
+    const baseline = Object.fromEntries(subjects.map((s) => [s.app, read(source[s.app])]));
+
+    // Off-screen but LAID OUT — `display: none` would make every computed value useless.
+    const arena = document.createElement('div');
+    arena.setAttribute('data-css-arena', '');
+    arena.style.cssText = 'position:absolute;left:-10000px;top:0;width:900px';
+    document.body.appendChild(arena);
+
+    const clone = (app) => source[app].cloneNode(true);
+    const [first, second] = subjects.map((s) => s.app);
+    const layouts = {};
+
+    // 1. siblings under one parent — a shared ancestor and adjacent source order
+    {
+      const box = document.createElement('div');
+      const a = clone(first);
+      const b = clone(second);
+      box.append(a, b);
+      arena.appendChild(box);
+      layouts.siblings = { [first]: read(a), [second]: read(b) };
+    }
+    // 2. cart inside product's panel — product's `.panel .label` now has cart's label below it
+    {
+      const outer = clone(second);
+      const inner = clone(first);
+      outer.appendChild(inner);
+      arena.appendChild(outer);
+      layouts.firstInsideSecond = { [second]: read(outer), [first]: read(inner) };
+    }
+    // 3. and the reverse
+    {
+      const outer = clone(first);
+      const inner = clone(second);
+      outer.appendChild(inner);
+      arena.appendChild(outer);
+      layouts.secondInsideFirst = { [first]: read(outer), [second]: read(inner) };
+    }
+
+    const result = { baseline, layouts };
+    arena.remove();
+    return result;
+  },
+  {
+    subjects: SUBJECTS.map((s) => ({ app: s.app, testid: s.testid })),
+    // Declared properties only. Layout-derived values (width, computed display under a flex
+    // parent) legitimately change with arrangement — blockification is CSS working, not a
+    // leak — and treating them as failures would make this section lie.
+    props: ['borderRadius', 'backgroundColor', 'padding', 'borderColor'],
+    labelProps: ['fontSize', 'fontWeight', 'textTransform', 'letterSpacing', 'color'],
+  },
+);
+
+check('arrangement', 'both components could be cloned into a shared container',
+  arrangements !== null, arrangements ? 'three arrangements built' : 'source elements missing');
+
+if (arrangements) {
+  const { baseline, layouts } = arrangements;
+  const NAMES = {
+    siblings: 'side by side under one parent',
+    firstInsideSecond: `${SUBJECTS[0].app} nested inside ${SUBJECTS[1].app}`,
+    secondInsideFirst: `${SUBJECTS[1].app} nested inside ${SUBJECTS[0].app}`,
+  };
+
+  for (const [key, label] of Object.entries(NAMES)) {
+    const layout = layouts[key];
+    note(`${label}`);
+    for (const subject of SUBJECTS) {
+      const base = baseline[subject.app];
+      const got = layout[subject.app];
+      const drift = Object.keys(base)
+        .filter((p) => p !== 'label' && p !== 'className')
+        .filter((p) => base[p] !== got[p]);
+      note(`    ${subject.app.padEnd(9)} ${got.className}  radius:${got.borderRadius} bg:${got.backgroundColor}`);
+      check('arrangement', `${subject.app}'s .panel is unchanged ${label}`,
+        drift.length === 0,
+        drift.length ? drift.map((p) => `${p}: ${base[p]} -> ${got[p]}`).join(', ') : 'identical to its natural position');
+
+      // The one the descendant selector is aimed at.
+      if (base.label && got.label) {
+        const labelDrift = Object.keys(base.label)
+          .filter((p) => p !== 'className')
+          .filter((p) => base.label[p] !== got.label[p]);
+        check('arrangement', `${subject.app}'s .label keeps its own styling ${label}`,
+          labelDrift.length === 0,
+          labelDrift.length
+            ? labelDrift.map((p) => `${p}: ${base.label[p]} -> ${got.label[p]}`).join(', ')
+            : `${got.label.textTransform}/${got.label.letterSpacing}/${got.label.fontSize}`);
+      }
+    }
+  }
+
+  // Say the finding out loud rather than leaving it in the pass/fail column: the two labels
+  // are nested in the same subtree and still disagree on every property the two teams set.
+  const nestedCart = layouts.firstInsideSecond[SUBJECTS[0].app]?.label;
+  const nestedProduct = layouts.firstInsideSecond[SUBJECTS[1].app]?.label;
+  if (nestedCart && nestedProduct) {
+    const differ = ['textTransform', 'letterSpacing', 'color'].filter((p) => nestedCart[p] !== nestedProduct[p]);
+    check('arrangement', 'a descendant rule cannot escape its own component',
+      differ.length > 0,
+      `nested in one subtree, the two .label elements still differ on ${differ.join(', ')}`);
+    note(`    ${SUBJECTS[0].app}'s label: ${nestedCart.textTransform} / ${nestedCart.letterSpacing}`);
+    note(`    ${SUBJECTS[1].app}'s label: ${nestedProduct.textTransform} / ${nestedProduct.letterSpacing}`);
+  }
+}
+
 await browser.close();
 
 // ---------------------------------------------------------------------------
@@ -733,6 +889,7 @@ writeFileSync(
       wouldHaveCollidedWithoutAppName: wouldHaveCollided.map(([k, apps]) => ({ id: k, apps: [...apps].sort() })),
       computed,
       cascade: reach,
+      arrangement: arrangements,
       coverage: { rows: coverageRows, usedBytes: cssUsed, totalBytes: cssTotal, ratio: overall },
       delivery: delivery.map(({ route, sheets }) => ({
         route,
