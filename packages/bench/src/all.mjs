@@ -39,6 +39,10 @@ const SUITES = [
   // Last: it saturates the servers under load, so anything measured after it would be
   // measuring a machine that has just been hammered.
   { id: 'ssr', file: 'ssr.mjs', needsStack: true, what: 'server cost: CPU, memory, heap, event loop, latency' },
+  // After that: dx DELETES every dist and rebuilds it, so any suite running afterwards would
+  // be measuring artefacts this one produced rather than the ones the run started with. It
+  // also restarts the stack, which is why it goes last rather than merely late.
+  { id: 'dx', file: 'dx.mjs', needsStack: false, what: 'build, startup and edit-to-browser time' },
 ];
 
 const only = process.argv.slice(2).filter((a) => !a.startsWith('-'));
@@ -81,7 +85,21 @@ for (const r of results) {
   console.log(`  ${r.ok ? 'ok  ' : 'FAIL'}  ${r.id.padEnd(15)} ${String(r.seconds).padStart(6)}s   ${r.what}`);
 }
 
+/**
+ * A complete, green run becomes a permanent record; anything else does not.
+ *
+ * `results/*.json` is overwritten by the next run, so without this step every number this repo
+ * has ever produced was unrecoverable the moment it produced another. A partial or failing run
+ * is deliberately not archived: a baseline that a second stack will be compared against must
+ * be one that actually passed.
+ */
 const failed = results.filter((r) => !r.ok);
+if (!failed.length && selected.length === SUITES.length) {
+  const archive = spawnSync(process.execPath, [join(HERE, 'archive.mjs')], { stdio: 'inherit', env: process.env });
+  if (archive.status !== 0) console.error('archive step failed — the run is green but not recorded');
+} else if (!failed.length) {
+  console.log(`\nnot archived: ${selected.length} of ${SUITES.length} suites selected — a baseline must be a full run`);
+}
 console.log('');
 if (failed.length) {
   console.log(`${failed.length} of ${results.length} suite(s) failed: ${failed.map((f) => f.id).join(', ')}`);

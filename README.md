@@ -99,7 +99,7 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 15 suites, ~290 checks, against the running stack
+pnpm bench          # 16 suites, ~366 checks, against the running stack
 
 MF_STACK=<name> pnpm bench   # the same suites against a different implementation
 ```
@@ -123,9 +123,30 @@ Sign in with any email and any password of four characters or more.
 | `behaviors` | client interactivity: size, timing, coverage, teardown, loading strategies |
 | `vitals` | Core Web Vitals, per document navigation and per soft navigation |
 | `a11y` | axe-core, WCAG 2.1 A and AA, every route |
+| `dx` | build, startup and edit-to-browser time — what it costs an engineer |
 
 Core Web Vitals are measured with `web-vitals` itself, injected into the page, so the lab and
 the field cannot disagree about what counts.
+
+## Recorded runs
+
+`results/*.json` is working output and is gitignored — every run overwrites it. A **complete,
+green** run is archived instead, and committed:
+
+```
+results/runs/<stack>/<timestamp>/
+    manifest.json    provenance + per-suite verdicts + headline metrics
+    summary.md       the same, readable
+    <suite>.json     every raw report, unmodified
+results/runs/<stack>/latest.json     pointer to the newest run
+```
+
+Each record carries `SPEC_VERSION`, the catalog hash, the git commit, and the CPU it was taken
+on. **Never compare across `SPEC_VERSION`** — a different spec is a different application,
+however similar the numbers look. Build times are the most hardware-sensitive figures in the
+record and are only comparable on the same machine.
+
+A partial or failing run is deliberately not archived: a baseline is a run that passed.
 
 ## Layout
 

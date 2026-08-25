@@ -315,6 +315,25 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
       // utilities. Both approaches coexist on purpose — see docs/css.md.
       pluginSass(),
     ],
+    /**
+     * Persistent build cache, on for production builds too.
+     *
+     * Rsbuild enables `buildCache` only in development by default. That default assumes `dev`
+     * means a watch server — but in this repo `pnpm dev` serves BUILT artefacts, so every
+     * developer's inner loop pays a full production build with no cache. Measured: the cache
+     * was worth **-2%** of a cold build, which is to say it was not running at all.
+     *
+     * `cacheDigest` is the part that must not be omitted. `MF_OPTIMIZE` and `MF_ESM` change
+     * the emitted output without changing a single source file, so a cache that ignored them
+     * would happily serve artefacts built under the other setting — the exact failure the
+     * bench exists to catch, introduced by the thing meant to speed it up.
+     */
+    performance: {
+      ...extra.performance,
+      buildCache: {
+        cacheDigest: [process.env.MF_OPTIMIZE, process.env.MF_ESM, process.env.NODE_ENV],
+      },
+    },
     output: {
       ...extra.output,
       cssModules: {

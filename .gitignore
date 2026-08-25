@@ -4,8 +4,12 @@ dist-ssr/
 .rsbuild/
 .vite/
 *.tsbuildinfo
-results/**/*.json
+# Working output: every run overwrites it, so it is noise in a diff.
+results/*.json
 !results/.gitkeep
+# Archived runs ARE the record. A dated, committed baseline is the only way a second stack's
+# numbers can be compared to this one's months later — see packages/bench/src/archive.mjs.
+!results/runs/**
 # Runtime logs from scripts/stack.mjs — megabytes of server output, regenerated every run.
 .logs/
 .mf/

@@ -1,0 +1,470 @@
+{
+  "generatedAt": "2026-08-25T12:42:52.771Z",
+  "runs": 3,
+  "library": "web-vitals@6 (attribution build, reportSoftNavs)",
+  "budget": {
+    "document": {
+      "LCP": 2500,
+      "CLS": 0.1,
+      "INP": 200,
+      "TBT": 300,
+      "TTFB": 800,
+      "FCP": 1800
+    },
+    "soft": {
+      "LCP": 1200,
+      "CLS": 0.02,
+      "INP": 200
+    }
+  },
+  "documents": {
+    "/": {
+      "LCP": {
+        "value": 156,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 156,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 5,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 45.44,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 34.766999999999996,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 49.397999999999996,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 0,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 0,
+        "samples": 3
+      }
+    },
+    "/faq": {
+      "LCP": {
+        "value": 156,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 156,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 5.200000047683716,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 45.887,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 24.400000000000002,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 36.851,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 86,
+        "samples": 3
+      }
+    },
+    "/faq/contact": {
+      "LCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 4.600000023841858,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 42.393,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 28.292,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 34.056000000000004,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 83,
+        "samples": 3
+      }
+    },
+    "/product": {
+      "LCP": {
+        "value": 168,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 168,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 6.399999976158142,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 48.086,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 35.623000000000005,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 38.534,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 93,
+        "samples": 3
+      }
+    },
+    "/product/p-0001": {
+      "LCP": {
+        "value": 172,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 172,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 4.899999976158142,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 60.945,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 37.318,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 39.775,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 94,
+        "samples": 3
+      }
+    },
+    "/cart": {
+      "LCP": {
+        "value": 124,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0.007739325629340278,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 124,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 2.899999976158142,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 56.824,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 17.744,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 33.797000000000004,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 68,
+        "samples": 3
+      }
+    }
+  },
+  "soft": [
+    {
+      "index": 0,
+      "label": "/my-account",
+      "type": "navigate",
+      "metrics": {
+        "LCP": {
+          "value": 336,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 40,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 1,
+      "label": "/my-account/orders",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 73.30000007152557,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 2,
+      "label": "/my-account/orders/o-0001",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 31.899999976158142,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 3,
+      "label": "/my-account/orders",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 22.5,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 4,
+      "label": "/my-account/profile",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 29,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        }
+      }
+    }
+  ],
+  "softNavEntriesPerRun": [
+    4,
+    4,
+    4
+  ],
+  "checks": [
+    {
+      "section": "document",
+      "label": "LCP within the good threshold (2500 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 172 ms"
+    },
+    {
+      "section": "document",
+      "label": "CLS within the good threshold (0.1000) on every indexed route",
+      "ok": true,
+      "detail": "worst 0.0077"
+    },
+    {
+      "section": "document",
+      "label": "INP within the good threshold (200 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 8 ms"
+    },
+    {
+      "section": "document",
+      "label": "TTFB within the good threshold (800 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 6 ms"
+    },
+    {
+      "section": "document",
+      "label": "TBT stays under 300 ms at 4x CPU throttling",
+      "ok": true,
+      "detail": "worst 0 ms"
+    },
+    {
+      "section": "document",
+      "label": "INP was actually measured, not merely absent",
+      "ok": true,
+      "detail": "every route had a rated interaction"
+    },
+    {
+      "section": "soft",
+      "label": "every zone route change is recorded as a soft navigation",
+      "ok": true,
+      "detail": "4/4 — a step that paints nothing is invisible to Core Web Vitals"
+    },
+    {
+      "section": "soft",
+      "label": "web-vitals attributes metrics to each soft navigation separately",
+      "ok": true,
+      "detail": "4 navigation(s) reported independently"
+    },
+    {
+      "section": "soft",
+      "label": "LCP within 1200 ms on every soft navigation",
+      "ok": true,
+      "detail": "worst 73 ms"
+    },
+    {
+      "section": "soft",
+      "label": "CLS within 0.0200 on every soft navigation",
+      "ok": true,
+      "detail": "worst 0.0000"
+    },
+    {
+      "section": "soft",
+      "label": "INP within 200 ms on every soft navigation",
+      "ok": true,
+      "detail": "worst 8 ms"
+    },
+    {
+      "section": "reporting",
+      "label": "zone vitals are held to their own budget, not the document one",
+      "ok": true,
+      "detail": "document LCP 2500 ms vs soft 1200 ms"
+    }
+  ]
+}

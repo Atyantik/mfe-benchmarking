@@ -59,12 +59,25 @@ async function waitFor(url, label, tries = 60) {
  */
 const PORTS = [3100, 3101, 3102, 3103, 3104, 3105, 3110, 3120, 4000];
 
+/**
+ * Kill whatever is LISTENING on a port. The `-sTCP:LISTEN` is not optional.
+ *
+ * Without it, `lsof -ti tcp:3100` also matches every process holding a CLIENT connection to
+ * that port — and Node keeps sockets alive after a fetch. The bench runner health-checks the
+ * edge before running any suite, so it was still holding a keep-alive socket to :3100 when the
+ * dx suite called `stop`, and this function SIGKILLed its own parent mid-run. It presented as
+ * `pnpm bench` exiting 137 with no error, three quarters of the way through.
+ *
+ * The self-PID guard is belt and braces for the same class of mistake.
+ */
 function killPort(port) {
   try {
-    const pids = execSync(`lsof -ti tcp:${port}`, { stdio: ['ignore', 'pipe', 'ignore'] })
-      .toString().trim().split('\n').filter(Boolean);
+    const pids = execSync(`lsof -ti tcp:${port} -sTCP:LISTEN`, { stdio: ['ignore', 'pipe', 'ignore'] })
+      .toString().trim().split('\n').filter(Boolean)
+      .map(Number)
+      .filter((pid) => pid !== process.pid && pid !== process.ppid);
     for (const pid of pids) {
-      try { process.kill(Number(pid), 'SIGKILL'); } catch { /* already gone */ }
+      try { process.kill(pid, 'SIGKILL'); } catch { /* already gone */ }
     }
     return pids.length;
   } catch {
