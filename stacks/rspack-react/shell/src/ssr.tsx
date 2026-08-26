@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 /**
  * MPA server render.
  *
@@ -61,7 +62,7 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   // 'placeholder' — the server never loads the live personalized components.
   const [{ routes: remoteRoutes, slots, failures }, Chrome] = await Promise.all([
     loadRemotes(nodeRegistry.remotes, { variant: 'placeholder', routes: true }),
-    loadChrome(nodeRegistry.remotes),
+    loadChrome<ComponentType<Record<string, unknown>>>(nodeRegistry.remotes),
   ]);
   if (!Chrome) failures.push({ name: CHROME_REMOTE, error: 'chrome unavailable' });
 

@@ -1,5 +1,11 @@
 /**
- * Shared Rsbuild + Module Federation config for every app in the rspack-react stack.
+ * Shared Rsbuild + Module Federation config for every app in every rspack-based stack.
+ *
+ * ONE preset, with the framework as a parameter, rather than one per stack. That is not
+ * tidiness: the MF wiring, the CSS scoping, the asset prefixes, the ESM output and the cache
+ * digest all have to be IDENTICAL between two stacks for the byte comparison between them to
+ * mean anything. Two copies of this file would drift within a week and every number produced
+ * afterwards would be measuring the drift.
  *
  * This exists to make the six traps from docs/spike-rspack-ssr.md structurally
  * impossible to reintroduce across 4 apps. Read that doc before changing anything here —
@@ -39,6 +45,10 @@ type ExposesMap = Exclude<NonNullable<MFOptions['exposes']>, readonly unknown[]>
  * "catalog:" and fails every semver match. (Trap 3.)
  */
 export const REACT_VERSION = '19.2.8';
+export const SVELTE_VERSION = '5.56.10';
+
+/** Which framework an app is written in. Decides the shared map and the source includes. */
+export type Framework = 'react' | 'svelte';
 
 export const SHARED_REACT: SharedMap = {
   react: { singleton: true, requiredVersion: REACT_VERSION },
@@ -62,6 +72,31 @@ export const SHARED_REACT: SharedMap = {
    * went unnoticed until a page composed three remotes at once.
    */
   '@mf-eval/media': { singleton: true, requiredVersion: false },
+};
+
+/**
+ * The Svelte equivalent, and it is deliberately shorter than it looks like it should be.
+ *
+ * `svelte` is shared because it can be. `svelte/internal/client` — which is where Svelte 5's
+ * reactivity actually lives, and therefore the only share that would pay for itself — is NOT,
+ * because sharing it leaves the container's initialisation promise permanently unsettled: every
+ * chunk returns 200, no error is raised anywhere, and the dynamic import never resolves.
+ *
+ * The consequence is structural and belongs in the results, not in a comment: every Svelte
+ * remote carries its own copy of the runtime, and each copy is its own reactive graph. Shared
+ * state between remotes therefore travels through `@mf-eval/contracts` and a cookie, which is
+ * framework-agnostic and works for both stacks. See docs/svelte-federation.md.
+ */
+export const SHARED_SVELTE: SharedMap = {
+  svelte: { singleton: true, requiredVersion: SVELTE_VERSION },
+  '@mf-eval/contracts': { singleton: true, requiredVersion: false },
+  '@mf-eval/svelte-contracts': { singleton: true, requiredVersion: false },
+  '@mf-eval/media': { singleton: true, requiredVersion: false },
+};
+
+const SHARED_BY_FRAMEWORK: Record<Framework, SharedMap> = {
+  react: SHARED_REACT,
+  svelte: SHARED_SVELTE,
 };
 
 export interface AppPorts {
@@ -129,6 +164,8 @@ export interface MfAppOptions {
    * fetch its own local chunks.
    */
   isRemote: boolean;
+  /** Defaults to `react` so every existing app keeps its current behaviour untouched. */
+  framework?: Framework;
   extraShared?: SharedMap;
   /** Build-time constants, applied to both environments. */
   define?: Record<string, string>;
@@ -145,12 +182,30 @@ export const SSR_PATH_SEGMENT = 'ssr';
  * packages into node_modules, so without this their JSX is passed through untransformed
  * and the server dies with a bare `React is not defined`.
  */
-const WORKSPACE_SRC = [
-  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/design/package.json'), '..', 'src'),
-  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/contracts/package.json'), '..', 'src'),
-  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/react-contracts/package.json'), '..', 'src'),
-  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/shell-kit/package.json'), '..', 'src'),
-  path.resolve(createRequire(import.meta.url).resolve('@mf-eval/media/package.json'), '..', 'src'),
+const srcOf = (pkg: string) =>
+  path.resolve(createRequire(import.meta.url).resolve(`${pkg}/package.json`), '..', 'src');
+
+const FRAMEWORK_PACKAGES: Record<Framework, string[]> = {
+  react: ['@mf-eval/react-contracts', '@mf-eval/design'],
+  svelte: ['@mf-eval/svelte-contracts', '@mf-eval/design-svelte'],
+};
+
+/**
+ * A stack must not compile the OTHER stack's component source.
+ *
+ * Both design packages resolve from the same workspace, so including both would hand Svelte
+ * source to the React stack's loaders and vice versa. Tokens and CSS are shared through
+ * `@mf-eval/design`'s stylesheets, which are framework-agnostic and identical for both — that
+ * sharing is the point, and it is what keeps the visual output comparable.
+ */
+const workspaceSrc = (framework: Framework) => [
+  srcOf('@mf-eval/contracts'),
+  srcOf('@mf-eval/shell-kit'),
+  srcOf('@mf-eval/media'),
+  ...FRAMEWORK_PACKAGES[framework].map(srcOf),
+  // The design package's stylesheets are consumed by both stacks; only React consumes its
+  // components, and `design-svelte` re-exports the same tokens.
+  ...(framework === 'svelte' ? [srcOf('@mf-eval/design')] : []),
 ];
 
 /**
@@ -199,7 +254,7 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
       return Object.keys(exposes).length > 0 ? { exposes } : {};
     })(),
     ...(opts.remotes ? { remotes: opts.remotes } : {}),
-    shared: { ...SHARED_REACT, ...opts.extraShared },
+    shared: { ...SHARED_BY_FRAMEWORK[opts.framework ?? 'react'], ...opts.extraShared },
   };
   // Same options both sides today. Kept as two objects because they diverge the moment
   // a host resolves different remote URLs per environment, and because the node build
@@ -373,7 +428,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
     environments: {
       web: {
         source: {
-          include: WORKSPACE_SRC,
+          include: workspaceSrc(opts.framework ?? 'react'),
           entry: { index: opts.clientEntry },
           define: { ...(opts.define ?? {}), __MF_ESM__: JSON.stringify(ESM) },
         },
@@ -394,7 +449,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
       },
       node: {
         source: {
-          include: WORKSPACE_SRC,
+          include: workspaceSrc(opts.framework ?? 'react'),
           entry: { index: opts.serverEntry },
           // __MF_ESM__ is needed on BOTH sides: the server decides how to write the
           // script tag, the client is what the tag points at.

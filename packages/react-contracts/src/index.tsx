@@ -70,17 +70,9 @@ export function useCartActions(): { add: (item: CartItem) => void; clear: () => 
  * named slots. Product renders <Slot name="cart.drawer" /> and knows nothing about
  * which remote (or which version of it) supplies the component.
  */
-export type SlotName =
-  | 'cart.drawer'
-  | 'cart.mini'
-  | 'cart.page'
-  // Account-area widgets, each contributed by a DIFFERENT app into a region of the account
-  // overview. This is the composition the whole architecture is for: three teams contribute
-  // to one page, the page depends on none of them, and a visitor who never opens the account
-  // area downloads none of it.
-  | 'account.cart'
-  | 'account.recommended'
-  | 'account.support';
+/** Re-exported so React app code keeps one import site; the list itself is shared. */
+import type { SlotName } from '@mf-eval/contracts/slots';
+export type { SlotName };
 
 interface SlotRegistry {
   slots: Partial<Record<SlotName, ComponentType>>;
@@ -96,16 +88,31 @@ interface SlotRegistry {
 
 const SlotContext = createContext<SlotRegistry>({ slots: {} });
 
+/**
+ * Narrow `shell-kit`'s opaque slot map to React components.
+ *
+ * `shell-kit` resolves remotes for every stack and never renders anything, so it types a
+ * resolved slot as `unknown` — it genuinely does not know what a component is. The assertion
+ * belongs here, in the binding that is about to render them, and nowhere else.
+ */
+export const asReactSlots = (slots: Partial<Record<SlotName, unknown>>) =>
+  slots as Partial<Record<SlotName, ComponentType>>;
+
+/** The same narrowing for the chrome remote's Header and Footer. */
+export const asReactComponent = <P,>(component: unknown) => component as ComponentType<P>;
+
 export function SlotProvider({
   slots,
   onUse,
   children,
 }: {
-  slots: Partial<Record<SlotName, ComponentType>>;
+  slots: Partial<Record<SlotName, unknown>>;
   onUse?: ((name: SlotName) => void) | undefined;
   children: ReactNode;
 }) {
-  return <SlotContext.Provider value={{ slots, onUse }}>{children}</SlotContext.Provider>;
+  return (
+    <SlotContext.Provider value={{ slots: asReactSlots(slots), onUse }}>{children}</SlotContext.Provider>
+  );
 }
 
 /**

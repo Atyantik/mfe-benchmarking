@@ -14,7 +14,7 @@
  */
 import { useEffect, useState, type ComponentType } from 'react';
 import { createRoot } from 'react-dom/client';
-import { CartProvider, SlotProvider } from '@mf-eval/react-contracts';
+import { CartProvider, SlotProvider, asReactSlots } from '@mf-eval/react-contracts';
 import { CART_STATE_GLOBAL, getCartStore, mark, MARKS, type RegistryResponse } from '@mf-eval/contracts';
 import {
   loadRemotes,
@@ -194,7 +194,7 @@ async function start(): Promise<void> {
   );
   for (const spec of boot.personalized) {
     const el = document.querySelector<HTMLElement>(`[data-personalized="${spec.slot}"]`);
-    const Live = slots[spec.slot as 'cart.drawer' | 'cart.page'];
+    const Live = asReactSlots(slots)[spec.slot as 'cart.drawer' | 'cart.page'];
     if (!el || !Live) continue;
     createRoot(el).render(
       <CartProvider store={store}>

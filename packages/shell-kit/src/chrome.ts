@@ -11,7 +11,7 @@
  * container is initialised once per process and cached, so the per-render cost is a function
  * call, not a federation round trip.
  */
-import type { ComponentType } from 'react';
+import type { FrameworkComponent } from './remotes.ts';
 import type { RegistryEntry } from '@mf-eval/contracts';
 import { loadRemote } from '@module-federation/enhanced/runtime';
 
@@ -29,8 +29,8 @@ export interface Viewer {
 }
 
 export interface Chrome {
-  Header: ComponentType<{ host?: ChromeHost; viewer?: Viewer | null }>;
-  Footer: ComponentType;
+  Header: FrameworkComponent;
+  Footer: FrameworkComponent;
 }
 
 /**
@@ -41,14 +41,21 @@ export interface Chrome {
  * traded one team's outage for everyone's. The caller renders its page without chrome —
  * plain, navigable, still server-rendered.
  */
-export async function loadChrome(entries: RegistryEntry[]): Promise<Chrome | null> {
+/**
+ * @typeParam C the calling stack's component type. Defaults to `unknown`, because this module
+ *   resolves chrome for every stack and renders none of it — the caller names the type once,
+ *   here, rather than asserting at every JSX site.
+ */
+export async function loadChrome<C = unknown>(
+  entries: RegistryEntry[],
+): Promise<{ Header: C; Footer: C } | null> {
   const entry = entries.find((e) => e.name === CHROME_REMOTE);
   if (!entry) return null;
   register([entry]);
   try {
     const [header, footer] = await Promise.all([
-      loadRemote<{ Header: Chrome['Header'] }>(`${CHROME_REMOTE}/Header`),
-      loadRemote<{ Footer: Chrome['Footer'] }>(`${CHROME_REMOTE}/Footer`),
+      loadRemote<{ Header: C }>(`${CHROME_REMOTE}/Header`),
+      loadRemote<{ Footer: C }>(`${CHROME_REMOTE}/Footer`),
     ]);
     if (!header?.Header || !footer?.Footer) return null;
     return { Header: header.Header, Footer: footer.Footer };

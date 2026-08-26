@@ -1,3 +1,4 @@
+import type { ComponentType } from 'react';
 /**
  * my-account server render.
  *
@@ -88,7 +89,7 @@ export async function renderApp(input: RenderInput): Promise<RenderOutput> {
   const [{ slots, failures }, Chrome] = await Promise.all([
     // 'placeholder' — the server never renders the live cart, here or anywhere.
     loadRemotes(nodeRegistry.remotes, { variant: 'placeholder', routes: false }),
-    loadChrome(nodeRegistry.remotes),
+    loadChrome<ComponentType<Record<string, unknown>>>(nodeRegistry.remotes),
   ]);
   if (!Chrome) failures.push({ name: CHROME_REMOTE, error: 'chrome unavailable' });
 

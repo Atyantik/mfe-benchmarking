@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { CartProvider, SlotProvider } from '@mf-eval/react-contracts';
+import { CartProvider, SlotProvider, asReactSlots } from '@mf-eval/react-contracts';
 import { MARKS, getCartStore, mark, type RegistryResponse } from '@mf-eval/contracts';
 import { loadRemotes } from '@mf-eval/shell-kit';
 
@@ -31,7 +31,7 @@ export async function mountIslands(boot: {
   mark(MARKS.shellHydrateStart);
   for (const spec of boot.personalized) {
     const el = document.querySelector<HTMLElement>(`[data-personalized="${spec.slot}"]`);
-    const Live = slots[spec.slot as 'cart.drawer' | 'cart.page'];
+    const Live = asReactSlots(slots)[spec.slot as 'cart.drawer' | 'cart.page'];
     if (!el || !Live) continue;
     mark(MARKS.remoteHydrateStart(spec.slot));
     createRoot(el).render(

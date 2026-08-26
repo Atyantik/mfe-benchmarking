@@ -9,12 +9,21 @@ import {
   type RegistryEntry,
   type RouteDescriptor,
 } from '@mf-eval/contracts';
-import type { ComponentType } from 'react';
-import type { SlotName } from '@mf-eval/react-contracts';
+import type { SlotName } from '@mf-eval/contracts/slots';
+
+/**
+ * A framework component, deliberately opaque.
+ *
+ * This module resolves remotes and fills slots; it never renders anything, so it has no
+ * business knowing what a component IS. Typing this as React's `ComponentType` was the last
+ * thing tying the shared host infrastructure to one framework — and it bought nothing, since
+ * every value here is passed straight through to the framework that will render it.
+ */
+export type FrameworkComponent = unknown;
 
 export interface LoadedRemotes {
   routes: RouteDescriptor[];
-  slots: Partial<Record<SlotName, ComponentType>>;
+  slots: Partial<Record<SlotName, FrameworkComponent>>;
   /** Remotes that failed. A dead remote degrades its routes, it does not break the page. */
   failures: { name: string; error: string }[];
 }
@@ -219,7 +228,7 @@ async function resolveRemotes(
 
   const failures: { name: string; error: string }[] = [];
   const routes: RouteDescriptor[] = [];
-  const slots: Partial<Record<SlotName, ComponentType>> = {};
+  const slots: Partial<Record<SlotName, FrameworkComponent>> = {};
 
   const routeEntries = wantRoutes ? entries.filter((e) => e.kind === 'route') : [];
   // A remote can be BOTH a route owner and a component provider — the cart owns /cart and
@@ -243,7 +252,7 @@ async function resolveRemotes(
       // A behaviour-enhanced slot has no live component to load.
       if (!id) return;
       try {
-        const mod = await loadOne<{ default: ComponentType }>(s.remote, id);
+        const mod = await loadOne<{ default: FrameworkComponent }>(s.remote, id);
         slots[s.slot] = mod.default;
       } catch (err) {
         failures.push({ name: id, error: String(err) });

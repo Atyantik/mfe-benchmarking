@@ -47,6 +47,10 @@ export default defineConfig({
       // rather than a different function on the same one.
       exposes: { './mount': './src/mount.js' },
       shared: sharedWeb,
+      // The same lever the React stack uses: don't bundle the MF runtime into every remote,
+      // take it from the host. Applied here so the byte comparison between the two stacks is
+      // between two OPTIMISED configurations rather than flattering one of them.
+      experiments: { externalRuntime: true, optimization: { disableRemote: true } },
     }),
   ],
   environments: {

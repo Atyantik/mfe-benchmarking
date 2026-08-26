@@ -1,0 +1,16 @@
+{
+  "name": "@mf-eval/design-svelte",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "dependencies": {
+    "@mf-eval/contracts": "workspace:*",
+    "@mf-eval/design": "workspace:*",
+    "@mf-eval/media": "workspace:*"
+  },
+  "devDependencies": { "svelte": "catalog:" }
+}

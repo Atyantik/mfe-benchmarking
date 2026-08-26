@@ -17,6 +17,9 @@ export default defineConfig({
       // initialisation permanently, with no error anywhere. See docs/svelte-federation.md for
       // the matrix. Sharing `svelte` is legal, works, and buys almost nothing.
       shared: { svelte: { singleton: true, requiredVersion: SVELTE } },
+      // The other half of externalRuntime: the host provides the runtime the remotes omit.
+      // The two flags are useless apart.
+      experiments: { provideExternalRuntime: true },
     }),
   ],
   html: {
