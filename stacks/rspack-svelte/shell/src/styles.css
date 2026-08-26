@@ -1,0 +1,4 @@
+/* The shell owns the site's one full stylesheet: preflight, tokens, base layer and the
+   utilities the shell itself uses. Remotes import @mf-eval/design/utilities.css instead,
+   which emits only their own utilities — see docs/design-system.md. */
+@import "@mf-eval/design/theme.css";

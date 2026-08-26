@@ -8,7 +8,7 @@ export default defineConfig({
     appRoot,
     framework: 'svelte',
     name: 'cart',
-    port: 3203,
+    port: 3103,
     isRemote: true,
     clientEntry: './src/entry.client.ts',
     serverEntry: './src/entry.server.ts',

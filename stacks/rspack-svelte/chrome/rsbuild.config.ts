@@ -15,7 +15,7 @@ export default defineConfig({
     appRoot,
     framework: 'svelte',
     name: 'chrome',
-    port: 3204,
+    port: 3104,
     isRemote: true,
     clientEntry: './src/entry.client.ts',
     serverEntry: './src/entry.server.ts',

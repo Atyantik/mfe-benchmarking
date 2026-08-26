@@ -8,7 +8,7 @@ export default defineConfig({
     appRoot,
     framework: 'svelte',
     name: 'product',
-    port: 3202,
+    port: 3102,
     isRemote: true,
     clientEntry: './src/entry.client.ts',
     serverEntry: './src/entry.server.ts',

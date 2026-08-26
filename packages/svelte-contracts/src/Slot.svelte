@@ -21,6 +21,7 @@
    * Safe here: a server render is a single synchronous pass, and on the client `onUse` is
    * undefined, so this is a no-op there.
    */
+  // svelte-ignore state_referenced_locally
   if (slots[name]) onUse?.(name);
 </script>
 
