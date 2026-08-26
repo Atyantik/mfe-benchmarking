@@ -7,9 +7,9 @@ real enterprise site rather than a demo.
 It exists because most micro-frontend material is architecture diagrams and claims. This
 repo runs a real site, measures it, and **fails the build when a claim stops being true**.
 
-> **Status: experimental.** One stack is implemented (Rspack + React). The comparison axis —
-> Vite, Preact, Solid — is the point of the repo and is not built yet. Findings below are
-> reproducible today; treat them as a baseline, not a verdict.
+> **Status: experimental.** Two stacks are implemented — **Rspack + React** and
+> **Rspack + Svelte** — and both pass all 16 suites, 366 checks, against the same frozen spec.
+> The bundler axis (Vite) is not built yet.
 
 ## The question
 
@@ -77,6 +77,19 @@ put 19.9 kB of cart CSS on every page of the site, measuring **0% used** on `/fa
 byte budgets did not catch it: they measure what an app builds, not what a page fetches.
 Making the badge self-contained took `/` from 29.1 to 9.24 kB gzip of CSS.
 
+**A framework's size is a property of how many times you pay for it.** Svelte's runtime is
+3.3× smaller than React's — and cannot be shared between remotes, while React's can. Measured
+across the same ten routes: content pages tie, a page with one interactive remote is ~36 kB
+lighter in Svelte, and the page composing three teams' widgets is **67.8 kB heavier**. On that
+page each contributing remote roughly doubles while the host shrinks. Svelte also builds
+~3× faster on an incremental rebuild. See `docs/svelte-federation.md`.
+
+**In the Svelte stack, only plain data and DOM nodes may cross a federation boundary.** A
+component, a context, a lifecycle call — each belongs to exactly one side, because
+`svelte/internal/client` cannot be shared. Note the exact inversion: React's binding package
+*must* be a shared singleton or `useCart` breaks; Svelte's *must not* be or it throws
+`lifecycle_outside_component`. Same architecture, opposite requirement.
+
 **A spec drifts faster than code, and it is the spec a second implementation reads.** The
 frozen spec described 4 owners and 5 routes; the application had grown to 7 and 10, with no
 mention of the account host, the widget composition or the behaviour layer — and it still
@@ -99,7 +112,10 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 16 suites, ~366 checks, against the running stack
+pnpm bench          # 16 suites, 366 checks, against the running stack
+
+MF_STACK=rspack-svelte pnpm dev     # the Svelte implementation
+MF_STACK=rspack-svelte pnpm bench   # the same suites, unmodified
 
 MF_STACK=<name> pnpm bench   # the same suites against a different implementation
 ```
@@ -173,7 +189,8 @@ packages/shell-kit          host infrastructure shared by every host
 packages/bench              the measurement suites
 packages/eslint-plugin-mf   the traps, encoded as lint rules
 
-stacks/rspack-react/        the implemented stack
+stacks/rspack-react/        the React implementation
+stacks/rspack-svelte/       the Svelte implementation — same spec, same suites
 ```
 
 ## Conventions worth knowing before reading the code
@@ -190,7 +207,8 @@ stacks/rspack-react/        the implemented stack
 
 Stated plainly, because a benchmark that hides its gaps is marketing:
 
-- Only one stack exists. The Vite / Preact / Solid comparison is unbuilt.
+- Two stacks exist (React, Svelte). The Vite / Preact / Solid axis is unbuilt, so every
+  finding so far is about frameworks under Rspack rather than about bundlers.
 - Storybook, a standalone dev harness and code generators are designed but not built.
 - Three behaviours exist of roughly sixteen planned.
 - The third-party vendor lane is documented (`docs/third-party-remotes.md`) but not built.
