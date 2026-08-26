@@ -22,7 +22,8 @@
     "@mf-eval/media": "workspace:*",
     "@mf-eval/shell-kit": "workspace:*",
     "@mf-eval/registry": "workspace:*",
-    "@module-federation/enhanced": "catalog:"
+    "@module-federation/enhanced": "catalog:",
+    "@mf-eval/host-metrics": "workspace:*"
   },
   "devDependencies": {
     "@mf-eval/rsbuild-preset": "workspace:*",

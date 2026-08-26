@@ -1322,6 +1322,9 @@ importers:
       '@mf-eval/design-svelte':
         specifier: workspace:*
         version: link:../../../packages/design-svelte
+      '@mf-eval/host-metrics':
+        specifier: workspace:*
+        version: link:../../../packages/host-metrics
       '@mf-eval/media':
         specifier: workspace:*
         version: link:../../../packages/media

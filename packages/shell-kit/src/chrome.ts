@@ -54,11 +54,22 @@ export async function loadChrome<C = unknown>(
   register([entry]);
   try {
     const [header, footer] = await Promise.all([
-      loadRemote<{ Header: C }>(`${CHROME_REMOTE}/Header`),
-      loadRemote<{ Footer: C }>(`${CHROME_REMOTE}/Footer`),
+      loadRemote<{ Header?: C; default?: C }>(`${CHROME_REMOTE}/Header`),
+      loadRemote<{ Footer?: C; default?: C }>(`${CHROME_REMOTE}/Footer`),
     ]);
-    if (!header?.Header || !footer?.Footer) return null;
-    return { Header: header.Header, Footer: footer.Footer };
+    /**
+     * Named export or default — both are correct, depending on the framework.
+     *
+     * A React component is a named `export function Header`. A `.svelte` file has exactly one
+     * export and it is the default. This module resolves chrome for every stack, so it accepts
+     * either rather than forcing one framework's convention onto the other. Getting this wrong
+     * fails as `Cannot read properties of undefined` from deep inside the renderer, naming
+     * neither the remote nor the export it wanted.
+     */
+    const Header = header?.Header ?? header?.default;
+    const Footer = footer?.Footer ?? footer?.default;
+    if (!Header || !Footer) return null;
+    return { Header, Footer };
   } catch {
     return null;
   }
