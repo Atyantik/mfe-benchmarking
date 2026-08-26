@@ -1,0 +1,8 @@
+{
+  "_comment": "Chrome is server-rendered on every page of every host and never hydrated, so its client JS is one small behaviour and nothing else \u2014 the header's signed-in label, which cannot be server-rendered without making every response user-specific. CSS is the real cost and it is shared by every page on the site.",
+  "ownJsGzip": 4000,
+  "containerJsGzip": 17000,
+  "cssGzip": 8000,
+  "largestJsGzip": 2000,
+  "behaviorJsGzip": 3000
+}

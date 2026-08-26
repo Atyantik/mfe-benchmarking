@@ -26,6 +26,7 @@
     "@mf-eval/react-contracts": "workspace:*",
     "@mf-eval/shell-kit": "workspace:*",
     "@mf-eval/media": "workspace:*",
-    "@rsbuild/plugin-sass": "catalog:"
+    "@rsbuild/plugin-sass": "catalog:",
+    "@rsbuild/plugin-svelte": "catalog:"
   }
 }

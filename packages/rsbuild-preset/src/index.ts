@@ -18,6 +18,7 @@ import type { RsbuildConfig, RsbuildPlugin, Rspack } from '@rsbuild/core';
 import { pluginModuleFederation } from '@module-federation/rsbuild-plugin';
 import { pluginTailwindcss } from '@rsbuild/plugin-tailwindcss';
 import { pluginSass } from '@rsbuild/plugin-sass';
+import { pluginSvelte } from '@rsbuild/plugin-svelte';
 import type { moduleFederationPlugin } from '@module-federation/sdk';
 
 type MFOptions = moduleFederationPlugin.ModuleFederationPluginOptions;
@@ -267,7 +268,25 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
   const web: MFOptions = ESM
     ? { ...base, library: { type: 'module' }, remoteType: 'module' }
     : { ...base };
-  const node: MFOptions = { ...base };
+  /**
+   * The node build does NOT share `svelte`.
+   *
+   * Two reasons, and the second is the one that forces it. Sharing buys nothing server-side:
+   * SSR runs in-process, so there is no share scope to deduplicate across and no network to
+   * save. And keeping it shared makes Module Federation bundle Svelte into the server build,
+   * which fails — Svelte ships SOURCE rather than compiled output, and Rspack's optimizer
+   * mangles the static private method in `internal/server/renderer.js` into something it then
+   * cannot re-parse. The error names a line in Svelte's own dist and nothing in this repo.
+   *
+   * Externalised instead (see `environments.node.output.externals`), so Node resolves it from
+   * node_modules at runtime. The BROWSER build still bundles and shares it, which is where
+   * Svelte's size is actually measured.
+   */
+  const nodeShared =
+    opts.framework === 'svelte'
+      ? Object.fromEntries(Object.entries(base.shared ?? {}).filter(([k]) => k !== 'svelte'))
+      : base.shared;
+  const node: MFOptions = { ...base, shared: nodeShared };
   /**
    * Per-environment exposes MERGE with the shared ones, key by key.
    *
@@ -357,6 +376,26 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
   const { web: webMf, node: nodeMf } = mfConfigs(opts);
   const origin = `http://localhost:${opts.port}`;
 
+  /**
+   * The framework's own plugin, wired PER ENVIRONMENT and only here.
+   *
+   * For Svelte this is not a convenience, it is a trap that has to be encoded once. Svelte
+   * compiles a component differently per target — `generate: 'client'` emits DOM instructions,
+   * `generate: 'server'` emits a string builder — and declaring the plugin once at the root
+   * with a node-level override produces a node bundle containing BOTH compilations. The server
+   * render then returns an empty string, with no error at build time or run time. Every Svelte
+   * app in this repo gets the correct wiring by not being able to express the wrong one.
+   *
+   * React apps keep adding `pluginReact()` themselves: it takes no per-environment options,
+   * and moving it would change the existing stack for no benefit.
+   */
+  const frameworkPlugins = (env: 'web' | 'node'): RsbuildPlugin[] => {
+    if (opts.framework !== 'svelte') return [];
+    return env === 'node'
+      ? [pluginSvelte({ svelteLoaderOptions: { compilerOptions: { generate: 'server' } } })]
+      : [pluginSvelte()];
+  };
+
   return {
     ...extra,
     // Each app compiles Tailwind over its own source plus the design package's. Utilities
@@ -440,7 +479,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
           // at all (docs/constraints.md §2).
           filename: { js: '[name].[contenthash:8].js' },
         },
-        plugins: [pluginModuleFederation(webMf, { environment: 'web' })],
+        plugins: [...frameworkPlugins('web'), pluginModuleFederation(webMf, { environment: 'web' })],
         ...(ESM
           ? {
               tools: { rspack: toEsmOutput },
@@ -460,8 +499,25 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
           distPath: { root: 'dist/node' },
           // Trap 5/6 — see isRemote docs above.
           ...(opts.isRemote ? { assetPrefix: `${origin}/${SSR_PATH_SEGMENT}` } : {}),
+          /**
+           * Svelte's SERVER runtime is required, not bundled.
+           *
+           * Rspack's parser fails on `static #serialize_failed_boundary` inside
+           * `svelte/internal/server` — a static private method, which is valid ES2022 and which
+           * the optimizer mangles into something it then cannot re-parse. The error names a
+           * line in Svelte's dist, not anything in this repo, which makes it a long afternoon
+           * for whoever meets it first.
+           *
+           * Bundling it was never the right call anyway: a Node SSR bundle can resolve from
+           * node_modules at runtime, and not bundling it is both the fix and less work per
+           * build. The BROWSER build still bundles Svelte, which is where its size is measured.
+           */
+          ...(opts.framework === 'svelte'
+            ? { externals: [/^svelte(\/|$)/] as Rspack.Configuration['externals'] }
+            : {}),
         },
         plugins: [
+          ...frameworkPlugins('node'),
           // Trap 1: `ssr: true` throws (deprecated) and `target: 'dual'` throws outside
           // Rslib/Rspress. Two plugin instances is the supported shape for a plain
           // Rsbuild app, and they are NOT deduplicated.

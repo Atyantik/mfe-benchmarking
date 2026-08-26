@@ -49,6 +49,7 @@ catalog:
   # a blog post or a broken demo, so this repo answers it the way it answers everything else.
   svelte: 5.56.10
   svelte-loader: 3.2.4
+  svelte-check: 4.3.5
   '@rsbuild/plugin-svelte': 2.0.1
   # vite 8.1.0 / plugin-react 5.1.4 deliberately match what @module-federation/vite's own
   # example suite is tested against — NOT npm latest (8.2.2 / 6.1.0). Tested beats newest.
