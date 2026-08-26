@@ -42,7 +42,6 @@ catalog:
   '@rsbuild/core': 2.1.13
   '@rsbuild/plugin-react': 2.1.0
   '@rsbuild/plugin-sass': 2.0.1
-  sass-embedded: 1.95.0
 
   # ---- Svelte spike (spike/rspack-svelte) ----
   # Is Module Federation possible with Svelte at all? Everything published on the question is

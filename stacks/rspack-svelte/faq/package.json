@@ -1,0 +1,36 @@
+{
+  "name": "@mf-eval/rspack-svelte-faq",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rsbuild build",
+    "serve": "node serve.mjs",
+    "lint": "eslint src *.ts",
+    "typecheck": "svelte-check --threshold error --output human",
+    "test": "echo no-unit-tests",
+    "check": "pnpm lint && pnpm typecheck && pnpm build"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "@mf-eval/contracts": "workspace:*",
+    "@mf-eval/svelte-contracts": "workspace:*",
+    "@mf-eval/design": "workspace:*",
+    "@mf-eval/design-svelte": "workspace:*",
+    "@mf-eval/behaviors": "workspace:*",
+    "hono": "catalog:",
+    "svelte": "catalog:"
+  },
+  "devDependencies": {
+    "@mf-eval/rsbuild-preset": "workspace:*",
+    "@mf-eval/tsconfig": "workspace:*",
+    "@module-federation/rsbuild-plugin": "catalog:",
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-svelte": "catalog:",
+    "@rsbuild/plugin-tailwindcss": "catalog:",
+    "svelte-loader": "catalog:",
+    "svelte-check": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "eslint": "catalog:"
+  }
+}

@@ -255,6 +255,17 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
       return Object.keys(exposes).length > 0 ? { exposes } : {};
     })(),
     ...(opts.remotes ? { remotes: opts.remotes } : {}),
+    /**
+     * Type declarations, off for Svelte.
+     *
+     * The DTS plugin generates `.d.ts` from a remote's exposes so consumers get types from the
+     * producer's build (docs/third-party-remotes.md § 2). It cannot do that for a `.svelte`
+     * file — tsc does not parse them — so it fails on every build, is ignored, and trains
+     * everyone to scroll past a red line. Turning it off is honest; `svelte-check` covers the
+     * types inside the app, and the CONSUMER-side story is a genuine gap this stack has and
+     * the React one does not. Recorded in docs/porting-a-stack.md rather than hidden.
+     */
+    ...(opts.framework === 'svelte' ? { dts: false } : {}),
     shared: { ...SHARED_BY_FRAMEWORK[opts.framework ?? 'react'], ...opts.extraShared },
   };
   // Same options both sides today. Kept as two objects because they diverge the moment

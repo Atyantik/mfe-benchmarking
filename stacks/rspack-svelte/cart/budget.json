@@ -1,0 +1,8 @@
+{
+  "_comment": "The cart team owns more than a page: the /cart route, the drawer on product detail, the account-area widget, and the header badge behaviour. `largestJsGzip` covers CartPage, which looks products up by id \u2014 that lookup reaches the catalogue fixture standing in for a product API, and the catalogue travels with it. Raised deliberately rather than hidden: it is fixture weight, and a real API call would not carry it.",
+  "ownJsGzip": 12000,
+  "containerJsGzip": 17000,
+  "cssGzip": 6000,
+  "largestJsGzip": 7000,
+  "behaviorJsGzip": 3000
+}
