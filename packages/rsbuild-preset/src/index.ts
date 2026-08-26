@@ -282,11 +282,15 @@ export function mfConfigs(opts: MfAppOptions): { web: MFOptions; node: MFOptions
    * node_modules at runtime. The BROWSER build still bundles and shares it, which is where
    * Svelte's size is actually measured.
    */
-  const nodeShared =
+  const node: MFOptions =
     opts.framework === 'svelte'
-      ? Object.fromEntries(Object.entries(base.shared ?? {}).filter(([k]) => k !== 'svelte'))
-      : base.shared;
-  const node: MFOptions = { ...base, shared: nodeShared };
+      ? {
+          ...base,
+          shared: Object.fromEntries(
+            Object.entries((base.shared ?? {}) as SharedMap).filter(([key]) => key !== 'svelte'),
+          ),
+        }
+      : { ...base };
   /**
    * Per-environment exposes MERGE with the shared ones, key by key.
    *
@@ -391,9 +395,19 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
    */
   const frameworkPlugins = (env: 'web' | 'node'): RsbuildPlugin[] => {
     if (opts.framework !== 'svelte') return [];
-    return env === 'node'
-      ? [pluginSvelte({ svelteLoaderOptions: { compilerOptions: { generate: 'server' } } })]
-      : [pluginSvelte()];
+    if (env !== 'node') return [pluginSvelte()];
+    /**
+     * `generate` is Omit-ed from the plugin's `compilerOptions` type, on the assumption that
+     * the plugin decides the target itself. It does not: there is one plugin per environment
+     * here and the node one must compile for the server, which it does correctly at runtime.
+     * The cast is the narrowest way to say "yes, deliberately" — and if the plugin ever starts
+     * setting this itself, the duplicate is harmless.
+     */
+    return [
+      pluginSvelte({
+        svelteLoaderOptions: { compilerOptions: { generate: 'server' } },
+      } as unknown as Parameters<typeof pluginSvelte>[0]),
+    ];
   };
 
   return {
@@ -513,7 +527,7 @@ export function defineMfApp(opts: MfAppOptions, extra: RsbuildConfig = {}): Rsbu
            * build. The BROWSER build still bundles Svelte, which is where its size is measured.
            */
           ...(opts.framework === 'svelte'
-            ? { externals: [/^svelte(\/|$)/] as Rspack.Configuration['externals'] }
+            ? { externals: [/^svelte(\/|$)/] as NonNullable<Rspack.Configuration['externals']> }
             : {}),
         },
         plugins: [
