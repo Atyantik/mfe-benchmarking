@@ -12,7 +12,7 @@
   let { family, id, class: klass, label }: { family: ProductFamily; id: string; class?: string; label?: string } =
     $props();
 
-  const v = variantOf(id);
+  const v = $derived(variantOf(id));
 </script>
 
 <div class={cx('relative flex aspect-4/3 items-center justify-center overflow-hidden rounded-md bg-sunken', klass)}>
