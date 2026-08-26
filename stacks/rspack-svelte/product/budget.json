@@ -1,8 +1,8 @@
 {
-  "_comment": "Catalogue pages are server-rendered; `own` covers route chunks and behaviours. The generous-looking headroom is deliberate: the gallery, filter drawer and compare behaviours are still to come and each should cost 1-3 kB.",
-  "ownJsGzip": 14000,
+  "_comment": "Measured for the SVELTE stack on 2026-08-26, with roughly 15% headroom \u2014 the same basis as the React budgets, not a copy of their values. The shape differs on purpose: this stack's HOSTS are far smaller (no framework in the host at all) and its REMOTES are larger, because Svelte's runtime cannot be shared across a federation boundary and every remote carries a private copy. See docs/svelte-federation.md. Raising a budget is a reviewed commit with a reason.",
+  "ownJsGzip": 12000,
   "containerJsGzip": 17000,
-  "cssGzip": 6000,
-  "largestJsGzip": 4000,
+  "cssGzip": 5900,
+  "largestJsGzip": 4500,
   "behaviorJsGzip": 3000
 }

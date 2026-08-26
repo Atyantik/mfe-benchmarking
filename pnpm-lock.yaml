@@ -393,6 +393,9 @@ importers:
       svelte:
         specifier: 'catalog:'
         version: 5.56.10(@typescript-eslint/types@8.67.0)
+      svelte-check:
+        specifier: 'catalog:'
+        version: 4.3.5(picomatch@4.0.5)(svelte@5.56.10(@typescript-eslint/types@8.67.0))(typescript@5.9.3)
 
   packages/tsconfig: {}
 

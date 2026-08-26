@@ -7,7 +7,14 @@
     ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
-  "scripts": { "typecheck": "svelte-check --threshold error || true" },
-  "dependencies": { "@mf-eval/contracts": "workspace:*" },
-  "devDependencies": { "svelte": "catalog:" }
+  "scripts": {
+    "typecheck": "svelte-check --threshold error || true"
+  },
+  "dependencies": {
+    "@mf-eval/contracts": "workspace:*"
+  },
+  "devDependencies": {
+    "svelte": "catalog:",
+    "svelte-check": "catalog:"
+  }
 }

@@ -83,10 +83,11 @@
     {/snippet}
   </Frame>
 {:else}
+  {@const params = view.match.params}
   <Frame {activeId} {viewer}>
     {#snippet children()}
       {#if Body}
-        <Body params={view.match.params} />
+        <Body {params} />
       {:else}
         <Skeleton />
       {/if}

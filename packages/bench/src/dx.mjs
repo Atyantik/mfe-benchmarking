@@ -27,7 +27,7 @@
  * regression of a few percent — and every number is archived with the CPU it was taken on.
  */
 import { spawnSync } from 'node:child_process';
-import { mkdirSync, readFileSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, readdirSync, rmSync, statSync, utimesSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
@@ -153,7 +153,31 @@ heading('3. incremental - one file touched, one app rebuilt');
  * where the result is observed in a browser.
  */
 const subject = REMOTES.find((r) => r.name === 'product');
-const touchTarget = join(ROOT, subject.dir, 'src/List.tsx');
+
+/**
+ * Source files, DISCOVERED rather than named.
+ *
+ * This suite used to touch `src/List.tsx` and edit `src/StockPanel.tsx` by name, which is a
+ * React filename and made the whole suite unrunnable against a Svelte stack — the exact class
+ * of bug docs/porting-a-stack.md tells a porter to fix in the SUITE rather than work around in
+ * their stack. A stack is a parameter; a file extension is not something the measurement gets
+ * to assume.
+ */
+const sourceFiles = (dir) => {
+  const out = [];
+  (function walk(d) {
+    for (const entry of readdirSync(d)) {
+      const full = join(d, entry);
+      if (statSync(full).isDirectory()) walk(full);
+      else if (/\.(tsx?|jsx?|svelte|vue)$/.test(entry) && !/\.(test|spec)\./.test(entry)) out.push(full);
+    }
+  })(dir);
+  return out;
+};
+
+const subjectSources = sourceFiles(join(ROOT, subject.dir, 'src'));
+/** The largest source file: the most representative single-file edit this app has. */
+const touchTarget = subjectSources.sort((a, b) => statSync(b).size - statSync(a).size)[0];
 const rebuilds = [];
 for (let i = 0; i < 3; i += 1) {
   const now = new Date();
@@ -219,11 +243,19 @@ heading('6. loop - edit a source file, see it in a browser');
  * the browser can tell you which happened.
  */
 {
-  const file = join(ROOT, subject.dir, 'src/StockPanel.tsx');
+  /**
+   * The file is found by the TEXT it renders, not by its name.
+   *
+   * Every stack renders the stock panel's "Availability" label; none of them has to agree on
+   * what the file is called or what extension it has.
+   */
+  const NEEDLE = '>Availability<';
+  const file = subjectSources.find((f) => readFileSync(f, 'utf8').includes(NEEDLE));
+  if (!file) throw new Error(`No source file in ${subject.dir} renders "${NEEDLE}" — dx cannot measure an edit.`);
   const original = readFileSync(file, 'utf8');
   const marker = `DX-LOOP-${Date.now()}`;
   try {
-    writeFileSync(file, original.replace('Availability</span>', `${marker}</span>`));
+    writeFileSync(file, original.replace(NEEDLE, `>${marker}<`));
     const started = performance.now();
     const rebuild = buildApp(subject);
     stack('stop');

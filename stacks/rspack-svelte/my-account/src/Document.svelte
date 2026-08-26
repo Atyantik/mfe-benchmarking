@@ -31,7 +31,9 @@
     Skeleton: Component | null;
   } = $props();
 
-  provideSlots({ slots, onUse });
+  // See App.svelte in the storefront: a slot value in this stack is a mount function, not a
+  // component, and shell-kit keeps the registry opaque on purpose.
+  provideSlots({ slots: slots as Parameters<typeof provideSlots>[0]['slots'], onUse });
 </script>
 
 <div class="flex min-h-screen flex-col bg-page">

@@ -11,7 +11,15 @@ import type { ZoneRoute } from '@mf-eval/zone-router';
  * exactly the way a document route's is.
  */
 export interface PageModule {
-  Page: Component<{ params: Record<string, string> }>;
+  /**
+   * A route component is HANDED params and may ignore them.
+   *
+   * Every page declares `params`, including the three that never read it. Component props are
+   * contravariant, so a page declaring no props is not assignable to "a page the router can
+   * render" — and widening the router's type until that stops mattering would be a type
+   * describing itself rather than the application.
+   */
+  Page: Component<{ params?: Record<string, string> }>;
   title: (params: Record<string, string>) => string;
 }
 

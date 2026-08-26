@@ -10,6 +10,16 @@
   import Stat from './Stat.svelte';
   import FallbackSkeleton from '../skeletons/Fallback.svelte';
 
+
+  /**
+   * Route params, part of the contract every zone page is rendered with.
+   *
+   * Declared even where unread: component props are contravariant, so a page that declares no
+   * props is not assignable to "a page the router can render". Saying it explicitly is more
+   * honest than widening the router's type until the mismatch disappears.
+   */
+  let { params: _params }: { params?: Record<string, string> } = $props();
+
   const summary = new Resource<AccountSummary>(fetchSummary);
 </script>
 

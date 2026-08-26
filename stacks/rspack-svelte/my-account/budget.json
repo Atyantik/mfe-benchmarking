@@ -1,8 +1,6 @@
 {
-  "_comment": "The one client-routed host on the site, and the only one that legitimately ships a framework, a router and hydration. Budgeted HIGHER than any document page and measured separately \u2014 a zone must never hide its cost inside the site average. `own` covers the zone router, the app pages, the sign-in page and the slot loader that composes three other teams' widgets.",
-  "ownJsGzip": 125000,
-  "containerJsGzip": 17000,
-  "cssGzip": 9000,
-  "largestJsGzip": 60000,
-  "behaviorJsGzip": 3000
+  "_comment": "Measured for the SVELTE stack on 2026-08-26, with roughly 15% headroom \u2014 the same basis as the React budgets, not a copy of their values. The shape differs on purpose: this stack's HOSTS are far smaller (no framework in the host at all) and its REMOTES are larger, because Svelte's runtime cannot be shared across a federation boundary and every remote carries a private copy. See docs/svelte-federation.md. Raising a budget is a reviewed commit with a reason.",
+  "ownJsGzip": 120000,
+  "cssGzip": 8800,
+  "largestJsGzip": 44000
 }

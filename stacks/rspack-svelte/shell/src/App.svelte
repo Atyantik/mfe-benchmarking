@@ -33,7 +33,11 @@
     variant: 'home' | 'route' | 'not-found' | 'no-component';
   } = $props();
 
-  provideSlots({ slots, onUse });
+  // `provideSlots` types its registry as components because the React-shaped Slot renders one.
+  // In this stack a slot value is whatever the remote exposed — a mount function — so the cast
+  // is where the two descriptions meet. shell-kit deliberately keeps it opaque; see
+  // packages/shell-kit/src/remotes.ts.
+  provideSlots({ slots: slots as Parameters<typeof provideSlots>[0]['slots'], onUse });
 </script>
 
 <div class="flex min-h-screen flex-col bg-page">

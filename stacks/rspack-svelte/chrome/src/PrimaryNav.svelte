@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Container } from '@mf-eval/design-svelte';
 
-  let { host, CATEGORIES }: { host: string; CATEGORIES: { id: string; name: string }[] } = $props();
+  let { host, CATEGORIES }: { host: string; CATEGORIES: readonly { id: string; name: string }[] } = $props();
   const inAccount = $derived(host === 'my-account');
 </script>
 

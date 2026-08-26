@@ -9,8 +9,8 @@
   import StatusPill from './StatusPill.svelte';
   import OrderSkeleton from '../skeletons/Order.svelte';
 
-  let { params }: { params: Record<string, string> } = $props();
-  const id = $derived(params.id ?? '');
+  let { params }: { params?: Record<string, string> } = $props();
+  const id = $derived(params?.id ?? '');
 
   // The rune tracks `id` because the closure reads it — no dependency array to keep in step.
   const order = new Resource<Order>(() => fetchOrder(id));
