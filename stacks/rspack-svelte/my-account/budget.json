@@ -1,0 +1,8 @@
+{
+  "_comment": "The one client-routed host on the site, and the only one that legitimately ships a framework, a router and hydration. Budgeted HIGHER than any document page and measured separately \u2014 a zone must never hide its cost inside the site average. `own` covers the zone router, the app pages, the sign-in page and the slot loader that composes three other teams' widgets.",
+  "ownJsGzip": 125000,
+  "containerJsGzip": 17000,
+  "cssGzip": 9000,
+  "largestJsGzip": 60000,
+  "behaviorJsGzip": 3000
+}

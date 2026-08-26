@@ -1,0 +1,8 @@
+/* my-account is a HOST, not a remote, so it ships the full stylesheet: preflight, tokens,
+   base layer and its own utilities.
+
+   Importing utilities.css here instead — the remote entry — is a mistake that looks like a
+   styling bug rather than a config one: the page renders, but with no reset, no design
+   tokens and no base layer, so lists grow bullets, links go browser-blue and the logo turns
+   black because `--color-brand-700` was never declared. See docs/design-system.md. */
+@import "@mf-eval/design/theme.css";

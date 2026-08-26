@@ -14,7 +14,7 @@ export default defineConfig({
     serverEntry: './src/entry.server.ts',
     // Contributed into the ACCOUNT host's overview — a third team on the same page.
     exposes: {
-      './AccountSupport': './src/AccountSupport.svelte',
+      './AccountSupport': './src/AccountSupport.mount.ts',
       './AccountSupportPlaceholder': './src/AccountSupportPlaceholder.svelte',
       './routes': './src/routes.ts',
     },

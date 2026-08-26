@@ -16,11 +16,11 @@ export default defineConfig({
       // The cart team owns a route too — /cart, which is personalized end to end.
       './routes': './src/routes.ts',
       // Live components — client only.
-      './CartDrawer': './src/CartDrawer.svelte',
-      './CartPage': './src/CartPage.svelte',
+      './CartDrawer': './src/CartDrawer.mount.ts',
+      './CartPage': './src/CartPage.mount.ts',
       // Contributed into the ACCOUNT host's overview. The cart team owns cart UI wherever it
       // appears; the account host renders a named slot and knows nothing about this.
-      './AccountCart': './src/AccountCart.svelte',
+      './AccountCart': './src/AccountCart.mount.ts',
       './AccountCartPlaceholder': './src/AccountCartPlaceholder.svelte',
       // Server-rendered placeholders. The cart team owns both halves, because the team that
       // owns a component is the only one that knows the box it needs.

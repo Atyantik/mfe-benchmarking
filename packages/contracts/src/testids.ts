@@ -147,6 +147,8 @@ export const ACCOUNT = {
   ordersEmpty: 'orders-empty',
   filter: (status: string) => `filter-${slug(status)}`,
   loadError: 'load-error',
+  /** One line item on an order detail page. */
+  lineProduct: (id: string) => `line-product-${slug(id)}`,
   /** A zone URL with no matching route — the SPA's own 404, not the edge's. */
   notFound: 'zone-404',
 } as const;
@@ -334,6 +336,7 @@ export const TESTID_PATTERNS: readonly RegExp[] = Object.freeze([
   /^filter-[a-z0-9-]+$/,
   /^category-image-[a-z0-9-]+$/,
   /^recommended-[a-z0-9-]+$/,
+  /^line-product-[a-z0-9-]+$/,
 ]);
 
 /**

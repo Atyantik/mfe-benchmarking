@@ -15,7 +15,7 @@ export default defineConfig({
     exposes: {
       './routes': './src/routes.ts',
       // Contributed into the ACCOUNT host's overview — a second team on the same page.
-      './AccountRecommended': './src/AccountRecommended.svelte',
+      './AccountRecommended': './src/AccountRecommended.mount.ts',
       './AccountRecommendedPlaceholder': './src/AccountRecommendedPlaceholder.svelte',
     },
   }),

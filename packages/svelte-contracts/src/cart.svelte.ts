@@ -30,6 +30,17 @@ export class CartView {
   #store: CartStore;
   current = $state<CartState>(EMPTY_CART);
 
+  /**
+   * The underlying store, deliberately reachable.
+   *
+   * A host that renders another remote's widget must hand the STORE across the boundary, not
+   * this view: the view is reactive state owned by this runtime, and the remote has its own.
+   * Plain data and a DOM node cross; reactivity does not.
+   */
+  get store(): CartStore {
+    return this.#store;
+  }
+
   constructor(store: CartStore) {
     this.#store = store;
     this.current = store.getSnapshot();

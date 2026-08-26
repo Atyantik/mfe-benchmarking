@@ -76,22 +76,41 @@ export const SHARED_REACT: SharedMap = {
 };
 
 /**
- * The Svelte equivalent, and it is deliberately shorter than it looks like it should be.
+ * The Svelte equivalent, and Svelte itself is NOT in it.
  *
- * `svelte` is shared because it can be. `svelte/internal/client` — which is where Svelte 5's
- * reactivity actually lives, and therefore the only share that would pay for itself — is NOT,
- * because sharing it leaves the container's initialisation promise permanently unsettled: every
- * chunk returns 200, no error is raised anywhere, and the dynamic import never resolves.
+ * Two separate discoveries, both measured, both in docs/svelte-federation.md:
  *
- * The consequence is structural and belongs in the results, not in a comment: every Svelte
- * remote carries its own copy of the runtime, and each copy is its own reactive graph. Shared
- * state between remotes therefore travels through `@mf-eval/contracts` and a cookie, which is
- * framework-agnostic and works for both stacks. See docs/svelte-federation.md.
+ * `svelte/internal/client` — where Svelte 5's reactivity actually lives, and therefore the only
+ * share that would pay for itself — cannot be shared at all. Doing so leaves the container's
+ * initialisation promise permanently unsettled: every chunk returns 200, no error is raised
+ * anywhere, and the dynamic import never resolves.
+ *
+ * `svelte`, the public entry, CAN be shared, and sharing it is worse than useless. It
+ * re-exports `mount`, which closes over the sharer's copy of the runtime — so a remote that
+ * mounts its own component ends up calling the HOST's `mount` against components compiled by
+ * its own compiler. That fails as `Cannot read properties of null (reading 'nodes')` from
+ * inside the remote's chunk, naming neither the boundary nor the mismatch.
+ *
+ * `@mf-eval/svelte-contracts` cannot be shared either, for the same reason one layer up: it
+ * calls `setContext`/`getContext`, so a shared copy runs Svelte's lifecycle against the
+ * SHARER's runtime and throws `lifecycle_outside_component` in a remote that is very much
+ * inside a component. The React binding IS shared, and must be — a React context object has
+ * identity and two copies break `useCart`. Exactly opposite requirements, from the same
+ * architecture.
+ *
+ * The rule this leaves is simple and worth stating once: in the Svelte stack, ONLY plain data
+ * and DOM nodes cross a federation boundary. Anything that touches the framework — a component,
+ * a context, a lifecycle call, a rune — belongs to exactly one side.
+ *
+ * So every Svelte remote carries a complete, private runtime, and each copy is its own reactive
+ * graph. Cross-remote state travels through `@mf-eval/contracts` and a cookie — framework
+ * -agnostic, and the reason that store was written that way in the first place. This is the
+ * structural cost of the stack and belongs in the results rather than in a workaround.
  */
 export const SHARED_SVELTE: SharedMap = {
-  svelte: { singleton: true, requiredVersion: SVELTE_VERSION },
+  // Plain data and plain functions. No lifecycle, no reactivity, no framework — which is
+  // exactly why these CAN be shared when nothing Svelte-shaped can.
   '@mf-eval/contracts': { singleton: true, requiredVersion: false },
-  '@mf-eval/svelte-contracts': { singleton: true, requiredVersion: false },
   '@mf-eval/media': { singleton: true, requiredVersion: false },
 };
 
