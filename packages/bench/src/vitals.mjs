@@ -160,7 +160,18 @@ async function chromeMetrics(cdp) {
     scriptMs: get('ScriptDuration') * 1000,
     layoutMs: get('LayoutDuration') * 1000,
     styleMs: get('RecalcStyleDuration') * 1000,
+    /**
+     * Total main-thread busy time — the closest single number to "browser CPU".
+     *
+     * Script, layout and style are the three largest CATEGORIES of that work, but they do not
+     * sum to it: parsing, compositing, GC and event dispatch are all main-thread and in none of
+     * them. Reporting only the categories understates the total by whatever is left over, which
+     * is exactly the kind of quiet gap this repo exists to close.
+     */
     taskMs: get('TaskDuration') * 1000,
+    /** What the document is holding in the browser, not the server. */
+    jsHeapMb: get('JSHeapUsedSize') / (1024 * 1024),
+    domNodes: get('Nodes'),
   };
 }
 
@@ -203,6 +214,9 @@ async function measureDocument(browser, route) {
     scriptMs: { value: chrome.scriptMs },
     layoutMs: { value: chrome.layoutMs },
     styleMs: { value: chrome.styleMs },
+    taskMs: { value: chrome.taskMs },
+    jsHeapMb: { value: chrome.jsHeapMb },
+    domNodes: { value: chrome.domNodes },
   };
 }
 
@@ -247,7 +261,7 @@ for (const route of DOCUMENT_ROUTES) {
   const runs = [];
   for (let i = 0; i < RUNS; i += 1) runs.push(await measureDocument(browser, route));
   const merged = {};
-  for (const name of ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'scriptMs', 'layoutMs', 'styleMs', 'longTasks', 'longestTask']) {
+  for (const name of ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'taskMs', 'scriptMs', 'layoutMs', 'styleMs', 'jsHeapMb', 'domNodes', 'longTasks', 'longestTask']) {
     const values = runs.map((r) => r[name]?.value).filter((v) => typeof v === 'number');
     if (values.length) merged[name] = { value: median(values), samples: values.length };
   }
@@ -273,6 +287,37 @@ for (const metric of ['LCP', 'CLS', 'INP', 'TTFB']) {
       : `worst ${fmt(metric, worst)}`,
   );
 }
+{
+  /**
+   * Browser CPU, budgeted rather than merely printed.
+   *
+   * `taskMs` is TOTAL main-thread busy time for the navigation. TBT only counts the blocking
+   * portion of long tasks after first paint, so a stack can hold TBT at zero — as both of
+   * these do — while still asking the main thread to do materially different amounts of work.
+   * That difference is invisible in every Core Web Vital and is exactly what a framework
+   * comparison is about.
+   *
+   * Script, layout and style are its largest categories and do not sum to it: parsing,
+   * compositing, GC and event dispatch are main-thread work in none of them.
+   */
+  for (const [metric, limit] of Object.entries(VITALS_BUDGET.cpu)) {
+    const over = DOCUMENT_ROUTES.filter((r) => (documentResults[r.path][metric]?.value ?? 0) > limit);
+    const worst = Math.max(0, ...DOCUMENT_ROUTES.map((r) => documentResults[r.path][metric]?.value ?? 0));
+    check(
+      'cpu',
+      `${metric} under ${limit} on every route at ${CPU_THROTTLE}x throttling`,
+      over.length === 0,
+      over.length
+        ? over.map((r) => `${r.path} ${documentResults[r.path][metric].value.toFixed(1)}`).join(', ')
+        : `worst ${worst.toFixed(1)}`,
+    );
+  }
+  const busiest = DOCUMENT_ROUTES
+    .map((r) => [r.path, documentResults[r.path].taskMs?.value ?? 0])
+    .sort((a, b) => b[1] - a[1])[0];
+  note(`busiest main thread: ${busiest[0]} at ${busiest[1].toFixed(1)} ms of task time`);
+}
+
 {
   /**
    * TBT is the lab proxy Google uses for INP, and the only metric here that reflects how much

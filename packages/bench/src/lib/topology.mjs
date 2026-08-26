@@ -226,4 +226,18 @@ export const VITALS_BUDGET = {
   // JavaScript a stack asks the main thread to run.
   document: { LCP: 2500, CLS: 0.1, INP: 200, TBT: 300, TTFB: 800, FCP: 1800 },
   soft: { LCP: 1200, CLS: 0.02, INP: 200 },
+  /**
+   * Browser CPU, at the same 4x throttling.
+   *
+   * `taskMs` is TOTAL main-thread busy time for the navigation, not a Core Web Vital — but it
+   * is the number that decides whether a phone feels like it is coping, and it is the one a
+   * framework comparison is really about. Script, layout and style are its largest categories
+   * and deliberately do NOT sum to it: parsing, compositing, GC and event dispatch are all
+   * main-thread work in none of them.
+   *
+   * 600 ms is generous on purpose. It is a catastrophe detector — an order of magnitude out,
+   * not a regression of a few percent — for the same reason the dx thresholds are: this is
+   * hardware-sensitive, and a tight bound would fail in CI for code that is fine.
+   */
+  cpu: { taskMs: 600, jsHeapMb: 40 },
 };

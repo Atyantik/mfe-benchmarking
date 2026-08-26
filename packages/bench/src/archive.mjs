@@ -83,7 +83,23 @@ function headline() {
   const documents = {};
   for (const [route, metrics] of Object.entries(vitals?.documents ?? {})) {
     documents[route] = Object.fromEntries(
-      ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'longTasks'].map((key) => [
+      [
+        'LCP',
+        'CLS',
+        'INP',
+        'TBT',
+        'FCP',
+        'TTFB',
+        // Browser CPU. `taskMs` is total main-thread busy time; the other three are its
+        // largest categories and do not sum to it.
+        'taskMs',
+        'scriptMs',
+        'layoutMs',
+        'styleMs',
+        'jsHeapMb',
+        'domNodes',
+        'longTasks',
+      ].map((key) => [
         key,
         metrics[key]?.value ?? null,
       ]),
@@ -96,7 +112,16 @@ function headline() {
       rps: data.run?.rps ?? null,
       p50Ms: data.run?.p50 ?? null,
       p99Ms: data.run?.p99 ?? null,
+      // Server CPU, in full rather than one derived figure: user vs system time is how you
+      // tell rendering apart from socket and GC work.
       cpuPerRequestMs: data.metrics?.cpu?.perRequestMs ?? null,
+      cpuUserMs: data.metrics?.cpu?.userMs ?? null,
+      cpuSystemMs: data.metrics?.cpu?.systemMs ?? null,
+      coresUsed: data.metrics?.cpu?.coresUsed ?? null,
+      rssMb: data.metrics?.memory?.rssMb ?? null,
+      heapUsedMb: data.metrics?.memory?.heapUsedMb ?? null,
+      eventLoopUtilization: data.metrics?.eventLoop?.utilization ?? null,
+      gcPauseMs: data.metrics?.gc?.totalPauseMs ?? null,
     };
   }
 

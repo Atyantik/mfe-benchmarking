@@ -77,6 +77,11 @@ put 19.9 kB of cart CSS on every page of the site, measuring **0% used** on `/fa
 byte budgets did not catch it: they measure what an app builds, not what a page fetches.
 Making the badge self-contained took `/` from 29.1 to 9.24 kB gzip of CSS.
 
+**Throughput needs more than one run before it is a result.** Server request rate reversed
+sign between two runs of the same builds — Svelte +7…+11% in one, −11…−14% in the next. Byte
+counts and main-thread times reproduce exactly; SSR throughput does not, and an earlier
+version of the comparison reported that first run as a difference. It was not.
+
 **A framework's size is a property of how many times you pay for it.** Svelte's runtime is
 3.3× smaller than React's — and cannot be shared between remotes, while React's can. Measured
 across the same ten routes: content pages tie, a page with one interactive remote is ~36 kB
@@ -112,7 +117,7 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 16 suites, 366 checks, against the running stack
+pnpm bench          # 16 suites, 368 checks, against the running stack
 
 MF_STACK=rspack-svelte pnpm dev     # the Svelte implementation
 MF_STACK=rspack-svelte pnpm bench   # the same suites, unmodified
@@ -137,7 +142,7 @@ Sign in with any email and any password of four characters or more.
 | `css` | identical class names from two teams on one page, and CSS delivered only where it renders |
 | `media` | real photographs and video: weight, formats, dimensions, priority |
 | `behaviors` | client interactivity: size, timing, coverage, teardown, loading strategies |
-| `vitals` | Core Web Vitals, per document navigation and per soft navigation |
+| `vitals` | Core Web Vitals, browser CPU and JS heap, per document and per soft navigation |
 | `a11y` | axe-core, WCAG 2.1 A and AA, every route |
 | `dx` | build, startup and edit-to-browser time — what it costs an engineer |
 
