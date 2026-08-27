@@ -1,0 +1,606 @@
+{
+  "generatedAt": "2026-08-27T08:09:13.405Z",
+  "runs": 3,
+  "library": "web-vitals@6 (attribution build, reportSoftNavs)",
+  "budget": {
+    "document": {
+      "LCP": 2500,
+      "CLS": 0.1,
+      "INP": 200,
+      "TBT": 300,
+      "TTFB": 800,
+      "FCP": 1800
+    },
+    "soft": {
+      "LCP": 1200,
+      "CLS": 0.02,
+      "INP": 200
+    },
+    "cpu": {
+      "taskMs": 600,
+      "jsHeapMb": 40
+    }
+  },
+  "documents": {
+    "/": {
+      "LCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 3.100000023841858,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 339.92699999999996,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 42.967999999999996,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 31.79,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 42.9,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 3.2202072143554688,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 743,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 323,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 7,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 0,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 0,
+        "samples": 3
+      }
+    },
+    "/faq": {
+      "LCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 2.600000023841858,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 294.726,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 41.379,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 24.305,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 32.777,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 3.2000808715820312,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 538,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 245,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 8,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 77,
+        "samples": 3
+      }
+    },
+    "/faq/contact": {
+      "LCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 144,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 2.5,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 289.82599999999996,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 40.016999999999996,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 28.598,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 33.575,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 3.2943115234375,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 388,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 182,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 8,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 82,
+        "samples": 3
+      }
+    },
+    "/product": {
+      "LCP": {
+        "value": 180,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 180,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 9,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 347.02,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 47.484,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 35.249,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 39.887,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 3.505664825439453,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 904,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 486,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 10,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 93,
+        "samples": 3
+      }
+    },
+    "/product/p-0001": {
+      "LCP": {
+        "value": 168,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 168,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 4.799999952316284,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 384.43899999999996,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 58.613,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 35.952,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 39.847,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 4.1699371337890625,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 640,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 335,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 14,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 94,
+        "samples": 3
+      }
+    },
+    "/cart": {
+      "LCP": {
+        "value": 124,
+        "samples": 3
+      },
+      "CLS": {
+        "value": 0.007739325629340278,
+        "samples": 3
+      },
+      "INP": {
+        "value": 8,
+        "samples": 3
+      },
+      "TBT": {
+        "value": 0,
+        "samples": 3
+      },
+      "FCP": {
+        "value": 124,
+        "samples": 3
+      },
+      "TTFB": {
+        "value": 2.299999952316284,
+        "samples": 3
+      },
+      "taskMs": {
+        "value": 329.08700000000005,
+        "samples": 3
+      },
+      "scriptMs": {
+        "value": 55.297,
+        "samples": 3
+      },
+      "layoutMs": {
+        "value": 18.071,
+        "samples": 3
+      },
+      "styleMs": {
+        "value": 30.514,
+        "samples": 3
+      },
+      "jsHeapMb": {
+        "value": 4.2827911376953125,
+        "samples": 3
+      },
+      "domNodes": {
+        "value": 259,
+        "samples": 3
+      },
+      "domElements": {
+        "value": 120,
+        "samples": 3
+      },
+      "headLinks": {
+        "value": 10,
+        "samples": 3
+      },
+      "longTasks": {
+        "value": 1,
+        "samples": 3
+      },
+      "longestTask": {
+        "value": 68,
+        "samples": 3
+      }
+    }
+  },
+  "soft": [
+    {
+      "index": 0,
+      "label": "/my-account",
+      "type": "navigate",
+      "metrics": {
+        "LCP": {
+          "value": 332,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 40,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 1,
+      "label": "/my-account/orders",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 70.90000009536743,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 2,
+      "label": "/my-account/orders/o-0001",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 30,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 3,
+      "label": "/my-account/orders",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 22.100000023841858,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        },
+        "INP": {
+          "value": 8,
+          "samples": 3
+        }
+      }
+    },
+    {
+      "index": 4,
+      "label": "/my-account/profile",
+      "type": "soft-navigation",
+      "metrics": {
+        "LCP": {
+          "value": 31.199999928474426,
+          "samples": 3
+        },
+        "CLS": {
+          "value": 0,
+          "samples": 3
+        }
+      }
+    }
+  ],
+  "softNavEntriesPerRun": [
+    4,
+    4,
+    4
+  ],
+  "checks": [
+    {
+      "section": "document",
+      "label": "LCP within the good threshold (2500 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 180 ms"
+    },
+    {
+      "section": "document",
+      "label": "CLS within the good threshold (0.1000) on every indexed route",
+      "ok": true,
+      "detail": "worst 0.0077"
+    },
+    {
+      "section": "document",
+      "label": "INP within the good threshold (200 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 8 ms"
+    },
+    {
+      "section": "document",
+      "label": "TTFB within the good threshold (800 ms) on every indexed route",
+      "ok": true,
+      "detail": "worst 9 ms"
+    },
+    {
+      "section": "cpu",
+      "label": "taskMs under 600 on every route at 4x throttling",
+      "ok": true,
+      "detail": "worst 384.4"
+    },
+    {
+      "section": "cpu",
+      "label": "jsHeapMb under 40 on every route at 4x throttling",
+      "ok": true,
+      "detail": "worst 4.3"
+    },
+    {
+      "section": "document",
+      "label": "TBT stays under 300 ms at 4x CPU throttling",
+      "ok": true,
+      "detail": "worst 0 ms"
+    },
+    {
+      "section": "document",
+      "label": "INP was actually measured, not merely absent",
+      "ok": true,
+      "detail": "every route had a rated interaction"
+    },
+    {
+      "section": "soft",
+      "label": "every zone route change is recorded as a soft navigation",
+      "ok": true,
+      "detail": "4/4 — a step that paints nothing is invisible to Core Web Vitals"
+    },
+    {
+      "section": "soft",
+      "label": "web-vitals attributes metrics to each soft navigation separately",
+      "ok": true,
+      "detail": "4 navigation(s) reported independently"
+    },
+    {
+      "section": "soft",
+      "label": "LCP within 1200 ms on every soft navigation",
+      "ok": true,
+      "detail": "worst 71 ms"
+    },
+    {
+      "section": "soft",
+      "label": "CLS within 0.0200 on every soft navigation",
+      "ok": true,
+      "detail": "worst 0.0000"
+    },
+    {
+      "section": "soft",
+      "label": "INP within 200 ms on every soft navigation",
+      "ok": true,
+      "detail": "worst 8 ms"
+    },
+    {
+      "section": "reporting",
+      "label": "zone vitals are held to their own budget, not the document one",
+      "ok": true,
+      "detail": "document LCP 2500 ms vs soft 1200 ms"
+    }
+  ]
+}

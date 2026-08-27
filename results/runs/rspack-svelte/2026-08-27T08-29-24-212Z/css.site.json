@@ -1,0 +1,1153 @@
+{
+  "generatedAt": "2026-08-27T08:25:39.757Z",
+  "config": "site",
+  "arena": "/product/p-0001",
+  "limits": {
+    "moduleGzip": 2000,
+    "minCoveragePct": 25,
+    "minSheetUsePct": 5,
+    "routeCssGzip": 24000
+  },
+  "sources": [
+    {
+      "app": "product",
+      "file": "stacks/rspack-svelte/product/src/panel.module.scss",
+      "locals": [
+        "label",
+        "panel",
+        "row",
+        "value"
+      ],
+      "vars": [
+        "ink",
+        "pad",
+        "radius",
+        "surface"
+      ],
+      "mixins": [
+        "frame"
+      ],
+      "bytes": 1521
+    },
+    {
+      "app": "cart",
+      "file": "stacks/rspack-svelte/cart/src/panel.module.scss",
+      "locals": [
+        "label",
+        "panel",
+        "total",
+        "value"
+      ],
+      "vars": [
+        "ink",
+        "pad",
+        "radius",
+        "surface"
+      ],
+      "mixins": [
+        "frame"
+      ],
+      "bytes": 2124
+    }
+  ],
+  "collisions": {
+    "classes": [
+      {
+        "name": "label",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      },
+      {
+        "name": "panel",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      },
+      {
+        "name": "value",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      }
+    ],
+    "files": [
+      {
+        "name": "panel.module.scss",
+        "apps": [
+          "product",
+          "cart"
+        ]
+      }
+    ],
+    "vars": [
+      {
+        "name": "ink",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      },
+      {
+        "name": "pad",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      },
+      {
+        "name": "radius",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      },
+      {
+        "name": "surface",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      }
+    ],
+    "mixins": [
+      {
+        "name": "frame",
+        "apps": [
+          "cart",
+          "product"
+        ]
+      }
+    ]
+  },
+  "identifiers": [
+    {
+      "id": "product-panel-V0TX",
+      "app": "product",
+      "local": "panel",
+      "hash": "V0TX"
+    },
+    {
+      "id": "product-label-ldEi",
+      "app": "product",
+      "local": "label",
+      "hash": "ldEi"
+    },
+    {
+      "id": "product-value-sVMb",
+      "app": "product",
+      "local": "value",
+      "hash": "sVMb"
+    },
+    {
+      "id": "product-row-mleQ",
+      "app": "product",
+      "local": "row",
+      "hash": "mleQ"
+    },
+    {
+      "id": "cart-panel-V0TX",
+      "app": "cart",
+      "local": "panel",
+      "hash": "V0TX"
+    },
+    {
+      "id": "cart-label-ldEi",
+      "app": "cart",
+      "local": "label",
+      "hash": "ldEi"
+    },
+    {
+      "id": "cart-value-sVMb",
+      "app": "cart",
+      "local": "value",
+      "hash": "sVMb"
+    },
+    {
+      "id": "cart-total-HcAx",
+      "app": "cart",
+      "local": "total",
+      "hash": "HcAx"
+    }
+  ],
+  "wouldHaveCollidedWithoutAppName": [
+    {
+      "id": "panel-V0TX",
+      "apps": [
+        "cart",
+        "product"
+      ]
+    },
+    {
+      "id": "label-ldEi",
+      "apps": [
+        "cart",
+        "product"
+      ]
+    },
+    {
+      "id": "value-sVMb",
+      "apps": [
+        "cart",
+        "product"
+      ]
+    }
+  ],
+  "computed": {
+    "cart": {
+      "className": "cart-panel-V0TX",
+      "display": "inline-flex",
+      "borderRadius": "6px",
+      "backgroundColor": "rgb(255, 255, 255)",
+      "padding": "4px 12px",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "textTransform": "none",
+      "label": {
+        "className": "cart-label-ldEi",
+        "fontSize": "14px",
+        "textTransform": "none",
+        "display": "block"
+      },
+      "value": {
+        "className": "cart-value-sVMb",
+        "fontSize": "11px",
+        "textTransform": "none",
+        "display": "block"
+      }
+    },
+    "product": {
+      "className": "product-panel-V0TX",
+      "display": "block",
+      "borderRadius": "8px",
+      "backgroundColor": "rgb(238, 242, 240)",
+      "padding": "16px 20px",
+      "fontSize": "15px",
+      "fontWeight": "400",
+      "textTransform": "none",
+      "label": {
+        "className": "product-label-ldEi",
+        "fontSize": "12px",
+        "textTransform": "uppercase",
+        "display": "block"
+      },
+      "value": {
+        "className": "product-value-sVMb",
+        "fontSize": "21px",
+        "textTransform": "none",
+        "display": "block"
+      }
+    }
+  },
+  "cascade": [
+    {
+      "app": "cart",
+      "testid": "mini-cart",
+      "matched": []
+    },
+    {
+      "app": "product",
+      "testid": "stock-panel",
+      "matched": []
+    }
+  ],
+  "arrangement": {
+    "baseline": {
+      "cart": {
+        "className": "cart-panel-V0TX",
+        "borderRadius": "6px",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "padding": "4px 12px",
+        "borderColor": "rgb(129, 142, 137)",
+        "label": {
+          "className": "cart-label-ldEi",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "textTransform": "none",
+          "letterSpacing": "normal",
+          "color": "rgb(13, 106, 83)"
+        }
+      },
+      "product": {
+        "className": "product-panel-V0TX",
+        "borderRadius": "8px",
+        "backgroundColor": "rgb(238, 242, 240)",
+        "padding": "16px 20px",
+        "borderColor": "rgb(223, 229, 226)",
+        "label": {
+          "className": "product-label-ldEi",
+          "fontSize": "12px",
+          "fontWeight": "600",
+          "textTransform": "uppercase",
+          "letterSpacing": "1.92px",
+          "color": "rgb(100, 113, 108)"
+        }
+      }
+    },
+    "layouts": {
+      "siblings": {
+        "cart": {
+          "className": "cart-panel-V0TX",
+          "borderRadius": "6px",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "padding": "4px 12px",
+          "borderColor": "rgb(129, 142, 137)",
+          "label": {
+            "className": "cart-label-ldEi",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "textTransform": "none",
+            "letterSpacing": "normal",
+            "color": "rgb(13, 106, 83)"
+          }
+        },
+        "product": {
+          "className": "product-panel-V0TX",
+          "borderRadius": "8px",
+          "backgroundColor": "rgb(238, 242, 240)",
+          "padding": "16px 20px",
+          "borderColor": "rgb(223, 229, 226)",
+          "label": {
+            "className": "product-label-ldEi",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "textTransform": "uppercase",
+            "letterSpacing": "1.92px",
+            "color": "rgb(100, 113, 108)"
+          }
+        }
+      },
+      "firstInsideSecond": {
+        "product": {
+          "className": "product-panel-V0TX",
+          "borderRadius": "8px",
+          "backgroundColor": "rgb(238, 242, 240)",
+          "padding": "16px 20px",
+          "borderColor": "rgb(223, 229, 226)",
+          "label": {
+            "className": "product-label-ldEi",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "textTransform": "uppercase",
+            "letterSpacing": "1.92px",
+            "color": "rgb(100, 113, 108)"
+          }
+        },
+        "cart": {
+          "className": "cart-panel-V0TX",
+          "borderRadius": "6px",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "padding": "4px 12px",
+          "borderColor": "rgb(129, 142, 137)",
+          "label": {
+            "className": "cart-label-ldEi",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "textTransform": "none",
+            "letterSpacing": "normal",
+            "color": "rgb(13, 106, 83)"
+          }
+        }
+      },
+      "secondInsideFirst": {
+        "cart": {
+          "className": "cart-panel-V0TX",
+          "borderRadius": "6px",
+          "backgroundColor": "rgb(255, 255, 255)",
+          "padding": "4px 12px",
+          "borderColor": "rgb(129, 142, 137)",
+          "label": {
+            "className": "cart-label-ldEi",
+            "fontSize": "14px",
+            "fontWeight": "500",
+            "textTransform": "none",
+            "letterSpacing": "normal",
+            "color": "rgb(13, 106, 83)"
+          }
+        },
+        "product": {
+          "className": "product-panel-V0TX",
+          "borderRadius": "8px",
+          "backgroundColor": "rgb(238, 242, 240)",
+          "padding": "16px 20px",
+          "borderColor": "rgb(223, 229, 226)",
+          "label": {
+            "className": "product-label-ldEi",
+            "fontSize": "12px",
+            "fontWeight": "600",
+            "textTransform": "uppercase",
+            "letterSpacing": "1.92px",
+            "color": "rgb(100, 113, 108)"
+          }
+        }
+      }
+    }
+  },
+  "coverage": {
+    "rows": [
+      {
+        "url": "http://localhost:3102/static/css/async/__federation_expose_routes.93fe576e8f.css",
+        "owner": "product",
+        "total": 21565,
+        "used": 17620,
+        "ratio": 0.8170646881520983
+      },
+      {
+        "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+        "owner": "storefront",
+        "total": 21538,
+        "used": 17577,
+        "ratio": 0.8160924876961649
+      },
+      {
+        "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+        "owner": "chrome",
+        "total": 20990,
+        "used": 16978,
+        "ratio": 0.808861362553597
+      },
+      {
+        "url": "http://localhost:3103/static/css/async/356.6eedd826fc.css",
+        "owner": "cart",
+        "total": 19859,
+        "used": 15923,
+        "ratio": 0.801802709099149
+      },
+      {
+        "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+        "owner": "cart",
+        "total": 807,
+        "used": 748,
+        "ratio": 0.9268897149938042
+      },
+      {
+        "url": "http://localhost:3102/static/css/async/product-detail.b1d644678b.css",
+        "owner": "product",
+        "total": 748,
+        "used": 748,
+        "ratio": 1
+      }
+    ],
+    "usedBytes": 69594,
+    "totalBytes": 85507,
+    "ratio": 0.8138982773340194
+  },
+  "delivery": [
+    {
+      "route": "/",
+      "gzipTotal": 9486,
+      "sheets": [
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/faq",
+      "gzipTotal": 13254,
+      "sheets": [
+        {
+          "url": "http://localhost:3101/static/css/async/__federation_expose_routes.dc503edf29.css",
+          "owner": "faq",
+          "file": "__federation_expose_routes.dc503edf29.css",
+          "bytes": 19933,
+          "gzip": 3768,
+          "used": 16098,
+          "ratio": 0.808,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/faq/contact",
+      "gzipTotal": 13254,
+      "sheets": [
+        {
+          "url": "http://localhost:3101/static/css/async/__federation_expose_routes.dc503edf29.css",
+          "owner": "faq",
+          "file": "__federation_expose_routes.dc503edf29.css",
+          "bytes": 19933,
+          "gzip": 3768,
+          "used": 16098,
+          "ratio": 0.808,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        }
+      ]
+    },
+    {
+      "route": "/product",
+      "gzipTotal": 13341,
+      "sheets": [
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17681,
+          "ratio": 0.821,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3102/static/css/async/__federation_expose_routes.93fe576e8f.css",
+          "owner": "product",
+          "file": "__federation_expose_routes.93fe576e8f.css",
+          "bytes": 21565,
+          "gzip": 3855,
+          "used": 17745,
+          "ratio": 0.823,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        }
+      ]
+    },
+    {
+      "route": "/product/p-0001",
+      "gzipTotal": 17411,
+      "sheets": [
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3102/static/css/async/product-detail.b1d644678b.css",
+          "owner": "product",
+          "file": "product-detail.b1d644678b.css",
+          "bytes": 748,
+          "gzip": 349,
+          "used": 748,
+          "ratio": 1,
+          "defines": [
+            "product-panel-V0TX",
+            "product-label-ldEi",
+            "product-value-sVMb",
+            "product-row-mleQ"
+          ]
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        },
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3102/static/css/async/__federation_expose_routes.93fe576e8f.css",
+          "owner": "product",
+          "file": "__federation_expose_routes.93fe576e8f.css",
+          "bytes": 21565,
+          "gzip": 3855,
+          "used": 17620,
+          "ratio": 0.817,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/356.6eedd826fc.css",
+          "owner": "cart",
+          "file": "356.6eedd826fc.css",
+          "bytes": 19859,
+          "gzip": 3721,
+          "used": 15923,
+          "ratio": 0.802,
+          "defines": []
+        }
+      ]
+    },
+    {
+      "route": "/cart",
+      "gzipTotal": 13207,
+      "sheets": [
+        {
+          "url": "http://localhost:3104/static/css/async/372.dd7fb8b1f8.css",
+          "owner": "chrome",
+          "file": "372.dd7fb8b1f8.css",
+          "bytes": 20990,
+          "gzip": 3813,
+          "used": 16978,
+          "ratio": 0.809,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/356.6eedd826fc.css",
+          "owner": "cart",
+          "file": "356.6eedd826fc.css",
+          "bytes": 19859,
+          "gzip": 3721,
+          "used": 15923,
+          "ratio": 0.802,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3100/static/css/index.b68db6ffff.css",
+          "owner": "storefront",
+          "file": "index.b68db6ffff.css",
+          "bytes": 21538,
+          "gzip": 5290,
+          "used": 17577,
+          "ratio": 0.816,
+          "defines": []
+        },
+        {
+          "url": "http://localhost:3103/static/css/async/__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "owner": "cart",
+          "file": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css",
+          "bytes": 807,
+          "gzip": 383,
+          "used": 748,
+          "ratio": 0.927,
+          "defines": [
+            "cart-panel-V0TX",
+            "cart-label-ldEi",
+            "cart-value-sVMb",
+            "cart-total-HcAx"
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "section": "sources",
+      "label": "the workspace contains CSS Modules to measure",
+      "ok": true,
+      "detail": "2 module(s)"
+    },
+    {
+      "section": "sources",
+      "label": "two applications declare the same class names",
+      "ok": true,
+      "detail": ".label (cart + product), .panel (cart + product), .value (cart + product)"
+    },
+    {
+      "section": "sources",
+      "label": "two applications ship the same file name",
+      "ok": true,
+      "detail": "panel.module.scss (product + cart)"
+    },
+    {
+      "section": "sources",
+      "label": "two applications use the same Sass variable names",
+      "ok": true,
+      "detail": "$ink, $pad, $radius, $surface"
+    },
+    {
+      "section": "sources",
+      "label": "two applications define a mixin of the same name",
+      "ok": true,
+      "detail": "@mixin frame"
+    },
+    {
+      "section": "sources",
+      "label": "cart's .panel asks for display: inline-flex",
+      "ok": true,
+      "detail": "stacks/rspack-svelte/cart/src/panel.module.scss"
+    },
+    {
+      "section": "sources",
+      "label": "product's .panel asks for display: block",
+      "ok": true,
+      "detail": "stacks/rspack-svelte/product/src/panel.module.scss"
+    },
+    {
+      "section": "identifiers",
+      "label": "the build emitted hashed module identifiers",
+      "ok": true,
+      "detail": "8 identifier(s)"
+    },
+    {
+      "section": "identifiers",
+      "label": "each identifier appears only in its own application's stylesheets",
+      "ok": true,
+      "detail": "8 checked"
+    },
+    {
+      "section": "identifiers",
+      "label": ".label emits a distinct identifier per app",
+      "ok": true,
+      "detail": ".cart-label-ldEi  vs  .product-label-ldEi"
+    },
+    {
+      "section": "identifiers",
+      "label": ".panel emits a distinct identifier per app",
+      "ok": true,
+      "detail": ".cart-panel-V0TX  vs  .product-panel-V0TX"
+    },
+    {
+      "section": "identifiers",
+      "label": ".value emits a distinct identifier per app",
+      "ok": true,
+      "detail": ".cart-value-sVMb  vs  .product-value-sVMb"
+    },
+    {
+      "section": "identifiers",
+      "label": "the app name — not the hash — is what makes identifiers unique",
+      "ok": true,
+      "detail": "3 identifier(s) would be identical under [local]-[hash]: .panel-V0TX (cart + product), .label-ldEi (cart + product), .value-sVMb (cart + product)"
+    },
+    {
+      "section": "identifiers",
+      "label": "no Sass construct survives into the shipped CSS",
+      "ok": true,
+      "detail": "8 stylesheet(s) checked"
+    },
+    {
+      "section": "identifiers",
+      "label": "nested rules flatten into hashed selectors",
+      "ok": true,
+      "detail": "&:hover -> .cart-panel-<hash>:hover"
+    },
+    {
+      "section": "isolation",
+      "label": "cart's component is on the page",
+      "ok": true,
+      "detail": "[data-testid=\"mini-cart\"]"
+    },
+    {
+      "section": "isolation",
+      "label": "cart's .panel renders its own display: inline-flex",
+      "ok": true,
+      "detail": "computed inline-flex"
+    },
+    {
+      "section": "isolation",
+      "label": "cart's element carries only its own namespace",
+      "ok": true,
+      "detail": "cart-panel-V0TX"
+    },
+    {
+      "section": "isolation",
+      "label": "product's component is on the page",
+      "ok": true,
+      "detail": "[data-testid=\"stock-panel\"]"
+    },
+    {
+      "section": "isolation",
+      "label": "product's .panel renders its own display: block",
+      "ok": true,
+      "detail": "computed block"
+    },
+    {
+      "section": "isolation",
+      "label": "product's element carries only its own namespace",
+      "ok": true,
+      "detail": "product-panel-V0TX"
+    },
+    {
+      "section": "isolation",
+      "label": "the two .panel elements do not resolve to the same styles",
+      "ok": true,
+      "detail": "4/7 properties differ: display, borderRadius, backgroundColor, padding"
+    },
+    {
+      "section": "isolation",
+      "label": ".panel disagrees on display and both sides win their own",
+      "ok": true,
+      "detail": "cart inline-flex  ·  product block"
+    },
+    {
+      "section": "isolation",
+      "label": ".panel disagrees on borderRadius and both sides win their own",
+      "ok": true,
+      "detail": "cart 6px  ·  product 8px"
+    },
+    {
+      "section": "isolation",
+      "label": ".panel disagrees on backgroundColor and both sides win their own",
+      "ok": true,
+      "detail": "cart rgb(255, 255, 255)  ·  product rgb(238, 242, 240)"
+    },
+    {
+      "section": "isolation",
+      "label": ".panel disagrees on padding and both sides win their own",
+      "ok": true,
+      "detail": "cart 4px 12px  ·  product 16px 20px"
+    },
+    {
+      "section": "isolation",
+      "label": ".label resolves differently in each application",
+      "ok": true,
+      "detail": "cart 14px/none  ·  product 12px/uppercase"
+    },
+    {
+      "section": "isolation",
+      "label": ".value resolves differently in each application",
+      "ok": true,
+      "detail": "cart 11px/block  ·  product 21px/block"
+    },
+    {
+      "section": "cascade",
+      "label": "every stylesheet on the page is attributable to an application",
+      "ok": true,
+      "detail": "chrome:20990b, storefront:21538b, product:21565b, product:748b, cart:807b, cart:19859b"
+    },
+    {
+      "section": "cascade",
+      "label": "no stylesheet carries another application's identifiers",
+      "ok": true,
+      "detail": "6 stylesheet(s) clean"
+    },
+    {
+      "section": "cascade",
+      "label": "no other application's rule matches cart's element",
+      "ok": true,
+      "detail": "0 same-origin rule(s) matched, all its own"
+    },
+    {
+      "section": "cascade",
+      "label": "no other application's rule matches product's element",
+      "ok": true,
+      "detail": "0 same-origin rule(s) matched, all its own"
+    },
+    {
+      "section": "order",
+      "label": "cart's .panel is unchanged by stylesheet order",
+      "ok": true,
+      "detail": "7 properties identical"
+    },
+    {
+      "section": "order",
+      "label": "product's .panel is unchanged by stylesheet order",
+      "ok": true,
+      "detail": "7 properties identical"
+    },
+    {
+      "section": "containment",
+      "label": "no CSS Module emits an unhashed global selector",
+      "ok": true,
+      "detail": "8 stylesheet(s) checked"
+    },
+    {
+      "section": "containment",
+      "label": "every module identifier in the HTML came from a build",
+      "ok": true,
+      "detail": "8 identifier(s) in the server HTML, all accounted for"
+    },
+    {
+      "section": "containment",
+      "label": "cart's .panel is in the server HTML",
+      "ok": true,
+      "detail": "server-rendered, no flash of unstyled content"
+    },
+    {
+      "section": "containment",
+      "label": "product's .panel is in the server HTML",
+      "ok": true,
+      "detail": "server-rendered, no flash of unstyled content"
+    },
+    {
+      "section": "cost",
+      "label": "product's panel.module.scss stays under 1.95 kB gzip",
+      "ok": true,
+      "detail": "0.34 kB"
+    },
+    {
+      "section": "cost",
+      "label": "cart's panel.module.scss stays under 1.95 kB gzip",
+      "ok": true,
+      "detail": "0.37 kB"
+    },
+    {
+      "section": "cost",
+      "label": "the page uses at least 25% of the CSS it downloads",
+      "ok": true,
+      "detail": "67.96 kB of 83.50 kB — 81%"
+    },
+    {
+      "section": "delivery",
+      "label": "no route fetches a stylesheet it uses less than 5% of",
+      "ok": true,
+      "detail": "25 route/stylesheet pairs, all contributing"
+    },
+    {
+      "section": "delivery",
+      "label": "a component's CSS is fetched only on routes that render it",
+      "ok": true,
+      "detail": "2 module stylesheet(s) tracked across 6 routes"
+    },
+    {
+      "section": "delivery",
+      "label": "product's panel.module.scss is its own chunk, not merged into the app bundle",
+      "ok": true,
+      "detail": "product-detail.b1d644678b.css (0.73 kB)"
+    },
+    {
+      "section": "delivery",
+      "label": "cart's panel.module.scss is its own chunk, not merged into the app bundle",
+      "ok": true,
+      "detail": "__federation_expose_MiniCartPlaceholder.a0d1ff2947.css (0.79 kB)"
+    },
+    {
+      "section": "delivery",
+      "label": "/ stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "9.26 kB across 3 stylesheet(s)"
+    },
+    {
+      "section": "delivery",
+      "label": "/faq stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "12.94 kB across 4 stylesheet(s)"
+    },
+    {
+      "section": "delivery",
+      "label": "/faq/contact stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "12.94 kB across 4 stylesheet(s)"
+    },
+    {
+      "section": "delivery",
+      "label": "/product stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "13.03 kB across 4 stylesheet(s)"
+    },
+    {
+      "section": "delivery",
+      "label": "/product/p-0001 stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "17.00 kB across 6 stylesheet(s)"
+    },
+    {
+      "section": "delivery",
+      "label": "/cart stays under 23.44 kB gzip of CSS",
+      "ok": true,
+      "detail": "12.90 kB across 4 stylesheet(s)"
+    },
+    {
+      "section": "arrangement",
+      "label": "both components could be cloned into a shared container",
+      "ok": true,
+      "detail": "three arrangements built"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .panel is unchanged side by side under one parent",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .label keeps its own styling side by side under one parent",
+      "ok": true,
+      "detail": "none/normal/14px"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .panel is unchanged side by side under one parent",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .label keeps its own styling side by side under one parent",
+      "ok": true,
+      "detail": "uppercase/1.92px/12px"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .panel is unchanged cart nested inside product",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .label keeps its own styling cart nested inside product",
+      "ok": true,
+      "detail": "none/normal/14px"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .panel is unchanged cart nested inside product",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .label keeps its own styling cart nested inside product",
+      "ok": true,
+      "detail": "uppercase/1.92px/12px"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .panel is unchanged product nested inside cart",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "cart's .label keeps its own styling product nested inside cart",
+      "ok": true,
+      "detail": "none/normal/14px"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .panel is unchanged product nested inside cart",
+      "ok": true,
+      "detail": "identical to its natural position"
+    },
+    {
+      "section": "arrangement",
+      "label": "product's .label keeps its own styling product nested inside cart",
+      "ok": true,
+      "detail": "uppercase/1.92px/12px"
+    },
+    {
+      "section": "arrangement",
+      "label": "a descendant rule cannot escape its own component",
+      "ok": true,
+      "detail": "nested in one subtree, the two .label elements still differ on textTransform, letterSpacing, color"
+    }
+  ]
+}
