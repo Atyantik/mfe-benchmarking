@@ -1,0 +1,620 @@
+{
+  "generatedAt": "2026-08-27T10:24:51.353Z",
+  "stack": "rspack-svelte",
+  "specVersion": 4,
+  "catalogHash": "c3b6a5fafb68",
+  "git": {
+    "commit": "1feef071d7d415a45ec9ed1ca689fe953a542133",
+    "shortCommit": "1feef07",
+    "branch": "main",
+    "dirty": false
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "v8": "13.6.233.10-node.28",
+    "platform": "darwin-arm64"
+  },
+  "machine": {
+    "cpu": "Apple M4 Pro",
+    "cores": 14,
+    "memoryGb": 48,
+    "ci": false
+  },
+  "profile": {
+    "id": "constrained",
+    "label": "Constrained device on Slow 4G, reference viewport",
+    "describe": "Lighthouse mobile conditions at the reference viewport: 4x CPU slowdown, 1.6 Mbps down, 750 Kbps up, 150 ms RTT, four cores, 512 MB heap cap."
+  },
+  "benchEnv": {
+    "mfConfig": "site",
+    "optimize": false,
+    "esm": false
+  },
+  "suites": {
+    "a11y": {
+      "file": "a11y.json",
+      "generatedAt": "2026-08-27T10:22:37.058Z"
+    },
+    "auth": {
+      "file": "auth.json",
+      "generatedAt": "2026-08-27T10:19:15.544Z",
+      "passed": 40,
+      "total": 40,
+      "failed": 0
+    },
+    "behaviors": {
+      "file": "behaviors.site.json",
+      "generatedAt": "2026-08-27T10:20:43.869Z",
+      "passed": 117,
+      "total": 117,
+      "failed": 0
+    },
+    "contract": {
+      "file": "contract.json",
+      "generatedAt": "2026-08-27T10:19:11.816Z",
+      "passed": 22,
+      "total": 22,
+      "failed": 0
+    },
+    "css": {
+      "file": "css.site.json",
+      "generatedAt": "2026-08-27T10:19:32.541Z",
+      "passed": 65,
+      "total": 65,
+      "failed": 0
+    },
+    "dx": {
+      "file": "dx.json",
+      "generatedAt": "2026-08-27T10:24:50.965Z",
+      "passed": 12,
+      "total": 12,
+      "failed": 0
+    },
+    "hosts": {
+      "file": "hosts.json",
+      "generatedAt": "2026-08-27T10:18:03.132Z",
+      "passed": 43,
+      "total": 43,
+      "failed": 0
+    },
+    "leakage": {
+      "file": "leakage.json",
+      "generatedAt": "2026-08-27T10:18:56.380Z"
+    },
+    "media": {
+      "file": "media.json",
+      "generatedAt": "2026-08-27T10:19:45.690Z",
+      "passed": 27,
+      "total": 27,
+      "failed": 0
+    },
+    "ssr": {
+      "file": "ssr.json",
+      "generatedAt": "2026-08-27T10:23:54.565Z",
+      "passed": 11,
+      "total": 11,
+      "failed": 0
+    },
+    "vitals": {
+      "file": "vitals.json",
+      "generatedAt": "2026-08-27T10:22:22.788Z",
+      "passed": 14,
+      "total": 14,
+      "failed": 0
+    },
+    "waste-audit": {
+      "file": "waste-audit.baseline.json",
+      "generatedAt": "2026-08-27T10:22:37.431Z"
+    },
+    "widgets": {
+      "file": "widgets.json",
+      "generatedAt": "2026-08-27T10:19:25.157Z",
+      "passed": 17,
+      "total": 17,
+      "failed": 0
+    }
+  },
+  "headline": {
+    "perRoute": {
+      "/": {
+        "requests": 23,
+        "totalKbGzip": 889.43,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "cart": 16.99,
+          "media": 812.6
+        },
+        "cssKbGzip": 9.26,
+        "cssSheets": 3
+      },
+      "/faq": {
+        "requests": 13,
+        "totalKbGzip": 80.52,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "faq": 3.68,
+          "cart": 16.99
+        },
+        "cssKbGzip": 12.94,
+        "cssSheets": 4
+      },
+      "/faq/contact": {
+        "requests": 13,
+        "totalKbGzip": 80.52,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "faq": 3.68,
+          "cart": 16.99
+        },
+        "cssKbGzip": 12.94,
+        "cssSheets": 4
+      },
+      "/product": {
+        "requests": 20,
+        "totalKbGzip": 154.81,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "product": 20.03,
+          "cart": 16.99,
+          "media": 57.95
+        },
+        "cssKbGzip": 13.03,
+        "cssSheets": 4
+      },
+      "/product/p-0001": {
+        "requests": 32,
+        "totalKbGzip": 218.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.54,
+          "chrome": 19.73,
+          "product": 20.59,
+          "cart": 59.92,
+          "media": 77.85
+        },
+        "cssKbGzip": 17,
+        "cssSheets": 6
+      },
+      "/cart": {
+        "requests": 19,
+        "totalKbGzip": 126.13,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.54,
+          "chrome": 19.73,
+          "cart": 65.87
+        },
+        "cssKbGzip": 12.9,
+        "cssSheets": 4
+      },
+      "/login": {
+        "requests": 14,
+        "totalKbGzip": 130.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 93.92,
+          "chrome": 19.73,
+          "cart": 16.99
+        }
+      },
+      "/my-account": {
+        "requests": 32,
+        "totalKbGzip": 282.01,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 104.13,
+          "chrome": 3.72,
+          "cart": 45.84,
+          "product": 65.16,
+          "faq": 48.02,
+          "media": 15.13
+        }
+      },
+      "/my-account/orders": {
+        "requests": 14,
+        "totalKbGzip": 124.74,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 104.03,
+          "chrome": 3.72,
+          "cart": 16.99
+        }
+      },
+      "/my-account/profile": {
+        "requests": 13,
+        "totalKbGzip": 116.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 95.92,
+          "chrome": 3.72,
+          "cart": 16.99
+        }
+      }
+    },
+    "documents": {
+      "/": {
+        "LCP": 2636,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1000,
+        "TTFB": 7.600000023841858,
+        "taskMs": 387.061,
+        "scriptMs": 42.443000000000005,
+        "layoutMs": 31.040000000000003,
+        "styleMs": 41.417,
+        "jsHeapMb": 2.620319366455078,
+        "domNodes": 1005,
+        "domElements": 323,
+        "headLinks": 7,
+        "longTasks": 0
+      },
+      "/faq": {
+        "LCP": 820,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 820,
+        "TTFB": 6.700000047683716,
+        "taskMs": 282.343,
+        "scriptMs": 40.54,
+        "layoutMs": 20.943,
+        "styleMs": 32.625,
+        "jsHeapMb": 2.9220733642578125,
+        "domNodes": 734,
+        "domElements": 245,
+        "headLinks": 8,
+        "longTasks": 0
+      },
+      "/faq/contact": {
+        "LCP": 848,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 848,
+        "TTFB": 2.399999976158142,
+        "taskMs": 286.75,
+        "scriptMs": 39.193,
+        "layoutMs": 26.987000000000002,
+        "styleMs": 32.921,
+        "jsHeapMb": 3.015491485595703,
+        "domNodes": 573,
+        "domElements": 182,
+        "headLinks": 8,
+        "longTasks": 0
+      },
+      "/product": {
+        "LCP": 1120,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1120,
+        "TTFB": 7.799999952316284,
+        "taskMs": 340.96500000000003,
+        "scriptMs": 42.923,
+        "layoutMs": 35.761,
+        "styleMs": 38.843,
+        "jsHeapMb": 3.1488494873046875,
+        "domNodes": 1339,
+        "domElements": 486,
+        "headLinks": 10,
+        "longTasks": 0
+      },
+      "/product/p-0001": {
+        "LCP": 1136,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1136,
+        "TTFB": 3.100000023841858,
+        "taskMs": 369.391,
+        "scriptMs": 48.338,
+        "layoutMs": 34.429,
+        "styleMs": 38.188,
+        "jsHeapMb": 3.658740997314453,
+        "domNodes": 912,
+        "domElements": 335,
+        "headLinks": 15,
+        "longTasks": 0
+      },
+      "/cart": {
+        "LCP": 1008,
+        "CLS": 0.007739325629340278,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1008,
+        "TTFB": 7.100000023841858,
+        "taskMs": 310.73,
+        "scriptMs": 41.032,
+        "layoutMs": 17.334,
+        "styleMs": 31.477999999999998,
+        "jsHeapMb": 3.832050323486328,
+        "domNodes": 456,
+        "domElements": 120,
+        "headLinks": 11,
+        "longTasks": 0
+      }
+    },
+    "softNavigations": [
+      {
+        "index": 0,
+        "label": "/my-account",
+        "type": "navigate",
+        "metrics": {
+          "LCP": {
+            "value": 2444,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 40,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 1,
+        "label": "/my-account/orders",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 407.60000002384186,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 2,
+        "label": "/my-account/orders/o-0001",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 349,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 3,
+        "label": "/my-account/orders",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 23.40000009536743,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 4,
+        "label": "/my-account/profile",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 350.7000000476837,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          }
+        }
+      }
+    ],
+    "server": {
+      "/": {
+        "rps": 1774.25,
+        "p50Ms": 4,
+        "p99Ms": 6,
+        "cpuPerRequestMs": 0.826,
+        "cpuUserMs": 11248.62,
+        "cpuSystemMs": 489.14,
+        "coresUsed": 1.465,
+        "rssMb": 383.75,
+        "heapUsedMb": 69.4,
+        "eventLoopUtilization": 0.8678,
+        "gcPauseMs": 137.74
+      },
+      "/product": {
+        "rps": 1205.75,
+        "p50Ms": 6,
+        "p99Ms": 14,
+        "cpuPerRequestMs": 1.113,
+        "cpuUserMs": 10005.07,
+        "cpuSystemMs": 737.02,
+        "coresUsed": 1.341,
+        "rssMb": 433.39,
+        "heapUsedMb": 77.54,
+        "eventLoopUtilization": 0.8728,
+        "gcPauseMs": 205.69
+      },
+      "/product/p-0001": {
+        "rps": 1877.88,
+        "p50Ms": 4,
+        "p99Ms": 6,
+        "cpuPerRequestMs": 0.741,
+        "cpuUserMs": 10638.49,
+        "cpuSystemMs": 501.59,
+        "coresUsed": 1.391,
+        "rssMb": 411.25,
+        "heapUsedMb": 41.83,
+        "eventLoopUtilization": 0.8648,
+        "gcPauseMs": 138.09
+      },
+      "/my-account": {
+        "rps": 4420,
+        "p50Ms": 1,
+        "p99Ms": 2,
+        "cpuPerRequestMs": 0.325,
+        "cpuUserMs": 10466.2,
+        "cpuSystemMs": 1036.09,
+        "coresUsed": 1.436,
+        "rssMb": 305.47,
+        "heapUsedMb": 107.44,
+        "eventLoopUtilization": 0.9627,
+        "gcPauseMs": 124.62
+      }
+    },
+    "sustainedHeap": {
+      "perRequestKb": 0.038,
+      "monotonic": true,
+      "samples": [
+        {
+          "block": 1,
+          "heapUsedMb": 25.65,
+          "rssMb": 415.41,
+          "requests": 4747,
+          "collected": true
+        },
+        {
+          "block": 2,
+          "heapUsedMb": 25.62,
+          "rssMb": 421.72,
+          "requests": 8582,
+          "collected": true
+        },
+        {
+          "block": 3,
+          "heapUsedMb": 25.63,
+          "rssMb": 421.8,
+          "requests": 12749,
+          "collected": true
+        },
+        {
+          "block": 4,
+          "heapUsedMb": 25.94,
+          "rssMb": 421.98,
+          "requests": 17276,
+          "collected": true
+        }
+      ]
+    },
+    "behaviors": {
+      "chrome.account": {
+        "gzip": 572,
+        "brotli": 460
+      },
+      "product.autosubmit": {
+        "gzip": 541,
+        "brotli": 437
+      },
+      "product.gallery": {
+        "gzip": 770,
+        "brotli": 641
+      },
+      "cart.mini": {
+        "gzip": 662,
+        "brotli": 567
+      }
+    },
+    "widgets": [
+      {
+        "slot": "account.cart",
+        "owner": "cart",
+        "testid": "widget-account-cart",
+        "placeholder": "placeholder-account-cart"
+      },
+      {
+        "slot": "account.recommended",
+        "owner": "product",
+        "testid": "widget-account-recommended",
+        "placeholder": "placeholder-account-recommended"
+      },
+      {
+        "slot": "account.support",
+        "owner": "faq",
+        "testid": "widget-account-support",
+        "placeholder": "placeholder-account-support"
+      }
+    ],
+    "cssModules": {
+      "modules": 2,
+      "identifiers": 8,
+      "wouldHaveCollided": 3,
+      "coverageRatio": 0.8138982773340194
+    },
+    "testIds": {
+      "routes": null
+    },
+    "dx": {
+      "coldBuildMs": 7838,
+      "warmBuildMs": 5010,
+      "cacheSaving": 0.361,
+      "incrementalMs": 906,
+      "startupMs": 3367,
+      "unblockedMs": 11205,
+      "editToBrowserMs": 5389,
+      "hasHotUpdate": false,
+      "lintMs": 10038,
+      "typecheckMs": 8064,
+      "testMs": 5319,
+      "perApp": {
+        "chrome": {
+          "coldMs": 1251,
+          "ok": true,
+          "warmMs": 826
+        },
+        "faq": {
+          "coldMs": 1214,
+          "ok": true,
+          "warmMs": 831
+        },
+        "product": {
+          "coldMs": 1552,
+          "ok": true,
+          "warmMs": 845
+        },
+        "cart": {
+          "coldMs": 1368,
+          "ok": true,
+          "warmMs": 848
+        },
+        "storefront": {
+          "coldMs": 1140,
+          "ok": true,
+          "warmMs": 827
+        },
+        "my-account": {
+          "coldMs": 1313,
+          "ok": true,
+          "warmMs": 833
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,2053 @@
+{
+  "generatedAt": "2026-08-27T09:57:46.005Z",
+  "config": "site",
+  "limits": {
+    "behaviorGzip": 3000,
+    "pageBehaviorGzip": 8000,
+    "attachMs": 64,
+    "longTaskMs": 50,
+    "runtimeMs": 240,
+    "coveragePct": 20
+  },
+  "inventory": {
+    "chrome.account": {
+      "key": "chrome.account",
+      "app": "chrome",
+      "file": "account",
+      "sourcePath": "stacks/rspack-react/chrome/src/behaviors/account.ts",
+      "sourceBytes": 2453,
+      "sourceLines": 55,
+      "chunks": [
+        {
+          "url": "http://localhost:3104/static/js/async/__federation_expose_behaviors__account.4660d729.js",
+          "file": "static/js/async/__federation_expose_behaviors__account.4660d729.js",
+          "raw": 996,
+          "gzip": 572,
+          "brotli": 460,
+          "missing": false
+        }
+      ],
+      "raw": 996,
+      "gzip": 572,
+      "brotli": 460
+    },
+    "product.autosubmit": {
+      "key": "product.autosubmit",
+      "app": "product",
+      "file": "autosubmit",
+      "sourcePath": "stacks/rspack-react/product/src/behaviors/autosubmit.ts",
+      "sourceBytes": 1480,
+      "sourceLines": 37,
+      "chunks": [
+        {
+          "url": "http://localhost:3102/static/js/async/__federation_expose_behaviors__autosubmit.4d15e1f4.js",
+          "file": "static/js/async/__federation_expose_behaviors__autosubmit.4d15e1f4.js",
+          "raw": 902,
+          "gzip": 541,
+          "brotli": 437,
+          "missing": false
+        }
+      ],
+      "raw": 902,
+      "gzip": 541,
+      "brotli": 437
+    },
+    "product.gallery": {
+      "key": "product.gallery",
+      "app": "product",
+      "file": "gallery",
+      "sourcePath": "stacks/rspack-react/product/src/behaviors/gallery.ts",
+      "sourceBytes": 2544,
+      "sourceLines": 59,
+      "chunks": [
+        {
+          "url": "http://localhost:3102/static/js/async/__federation_expose_behaviors__gallery.272da521.js",
+          "file": "static/js/async/__federation_expose_behaviors__gallery.272da521.js",
+          "raw": 1417,
+          "gzip": 770,
+          "brotli": 641,
+          "missing": false
+        }
+      ],
+      "raw": 1417,
+      "gzip": 770,
+      "brotli": 641
+    },
+    "cart.mini": {
+      "key": "cart.mini",
+      "app": "cart",
+      "file": "mini",
+      "sourcePath": "stacks/rspack-react/cart/src/behaviors/mini.ts",
+      "sourceBytes": 2865,
+      "sourceLines": 61,
+      "chunks": [
+        {
+          "url": "http://localhost:3103/static/js/async/__federation_expose_behaviors__mini.c89d9cb3.js",
+          "file": "static/js/async/__federation_expose_behaviors__mini.c89d9cb3.js",
+          "raw": 1110,
+          "gzip": 662,
+          "brotli": 567,
+          "missing": false
+        }
+      ],
+      "raw": 1110,
+      "gzip": 662,
+      "brotli": 567
+    }
+  },
+  "inventoryProblems": [],
+  "declarations": {
+    "/": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/faq": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/faq/contact": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/product": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        },
+        {
+          "key": "product.autosubmit",
+          "strategy": "immediate",
+          "testid": "filter-form"
+        },
+        {
+          "key": "product.autosubmit",
+          "strategy": "immediate",
+          "testid": "sort-form"
+        }
+      ],
+      "fallbackCount": 2
+    },
+    "/product/p-0001": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        },
+        {
+          "key": "product.gallery",
+          "strategy": "visible",
+          "testid": "gallery"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/cart": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/login": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/my-account": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/my-account/orders": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    },
+    "/my-account/profile": {
+      "declared": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "testid": "account-link"
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "testid": "mini-cart"
+        }
+      ],
+      "fallbackCount": 0
+    }
+  },
+  "delivery": {
+    "/": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/faq": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/faq/contact": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/product": {
+      "declared": 3,
+      "chunks": 3,
+      "gzip": 1775,
+      "preloaded": 3,
+      "duplicates": 0
+    },
+    "/product/p-0001": {
+      "declared": 3,
+      "chunks": 3,
+      "gzip": 2004,
+      "preloaded": 3,
+      "duplicates": 0
+    },
+    "/cart": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/login": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/my-account": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/my-account/orders": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    },
+    "/my-account/profile": {
+      "declared": 2,
+      "chunks": 2,
+      "gzip": 1234,
+      "preloaded": 2,
+      "duplicates": 0
+    }
+  },
+  "timing": [
+    {
+      "route": "/",
+      "key": "chrome.account#0",
+      "wait": 5.699999928474426,
+      "fetch": 238.40000009536743,
+      "attach": 1.0999999046325684,
+      "total": 245.19999992847443,
+      "attachedAt": 3378,
+      "fcp": 1004,
+      "lcp": 2648,
+      "afterFcp": 2374
+    },
+    {
+      "route": "/",
+      "key": "cart.mini#0",
+      "wait": 0,
+      "fetch": 194.89999997615814,
+      "attach": 29.300000071525574,
+      "total": 224.20000004768372,
+      "attachedAt": 3357.8000000715256,
+      "fcp": 1004,
+      "lcp": 2648,
+      "afterFcp": 2353.8000000715256
+    },
+    {
+      "route": "/faq",
+      "key": "chrome.account#0",
+      "wait": 5,
+      "fetch": 237.20000004768372,
+      "attach": 0.09999990463256836,
+      "total": 242.29999995231628,
+      "attachedAt": 1711.2999999523163,
+      "fcp": 824,
+      "lcp": 824,
+      "afterFcp": 887.2999999523163
+    },
+    {
+      "route": "/faq",
+      "key": "cart.mini#0",
+      "wait": 0,
+      "fetch": 194.19999992847443,
+      "attach": 29,
+      "total": 223.19999992847443,
+      "attachedAt": 1692.2999999523163,
+      "fcp": 824,
+      "lcp": 824,
+      "afterFcp": 868.2999999523163
+    },
+    {
+      "route": "/faq/contact",
+      "key": "chrome.account#0",
+      "wait": 4.899999976158142,
+      "fetch": 236,
+      "attach": 0.8000000715255737,
+      "total": 241.70000004768372,
+      "attachedAt": 1695.6000000238419,
+      "fcp": 820,
+      "lcp": 820,
+      "afterFcp": 875.6000000238419
+    },
+    {
+      "route": "/faq/contact",
+      "key": "cart.mini#0",
+      "wait": 0,
+      "fetch": 191.60000002384186,
+      "attach": 29.600000023841858,
+      "total": 221.20000004768372,
+      "attachedAt": 1675.8999999761581,
+      "fcp": 820,
+      "lcp": 820,
+      "afterFcp": 855.8999999761581
+    },
+    {
+      "route": "/product",
+      "key": "chrome.account#0",
+      "wait": 6.5,
+      "fetch": 245.70000004768372,
+      "attach": 0,
+      "total": 252.20000004768372,
+      "attachedAt": 2412.600000023842,
+      "fcp": 1116,
+      "lcp": 1116,
+      "afterFcp": 1296.6000000238419
+    },
+    {
+      "route": "/product",
+      "key": "cart.mini#0",
+      "wait": 0.10000002384185791,
+      "fetch": 188.80000007152557,
+      "attach": 29.699999928474426,
+      "total": 218.60000002384186,
+      "attachedAt": 2379.7999999523163,
+      "fcp": 1116,
+      "lcp": 1116,
+      "afterFcp": 1263.7999999523163
+    },
+    {
+      "route": "/product",
+      "key": "product.autosubmit#0",
+      "wait": 0.8000000715255737,
+      "fetch": 237.29999995231628,
+      "attach": 0.10000002384185791,
+      "total": 238.20000004768372,
+      "attachedAt": 2399.5,
+      "fcp": 1116,
+      "lcp": 1116,
+      "afterFcp": 1283.5
+    },
+    {
+      "route": "/product",
+      "key": "product.autosubmit#1",
+      "wait": 0.8999999761581421,
+      "fetch": 237.30000007152557,
+      "attach": 0.10000002384185791,
+      "total": 238.30000007152557,
+      "attachedAt": 2399.600000023842,
+      "fcp": 1116,
+      "lcp": 1116,
+      "afterFcp": 1283.6000000238419
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "chrome.account#0",
+      "wait": 8.799999952316284,
+      "fetch": 202.60000002384186,
+      "attach": 1.5,
+      "total": 212.89999997615814,
+      "attachedAt": 2290.399999976158,
+      "fcp": 1012,
+      "lcp": 1012,
+      "afterFcp": 1278.3999999761581
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "cart.mini#0",
+      "wait": 2.0999999046325684,
+      "fetch": 241.10000002384186,
+      "attach": 28.600000023841858,
+      "total": 271.7999999523163,
+      "attachedAt": 2349.7999999523163,
+      "fcp": 1012,
+      "lcp": 1012,
+      "afterFcp": 1337.7999999523163
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "product.gallery#0",
+      "wait": 8.100000023841858,
+      "fetch": 232.80000007152557,
+      "attach": 1,
+      "total": 241.90000009536743,
+      "attachedAt": 2320,
+      "fcp": 1012,
+      "lcp": 1012,
+      "afterFcp": 1308
+    },
+    {
+      "route": "/cart",
+      "key": "chrome.account#0",
+      "wait": 7.399999976158142,
+      "fetch": 197.40000009536743,
+      "attach": 1.1999999284744263,
+      "total": 206,
+      "attachedAt": 1731.6999999284744,
+      "fcp": 884,
+      "lcp": 884,
+      "afterFcp": 847.6999999284744
+    },
+    {
+      "route": "/cart",
+      "key": "cart.mini#0",
+      "wait": 1.100000023841858,
+      "fetch": 220.5,
+      "attach": 28.300000071525574,
+      "total": 249.90000009536743,
+      "attachedAt": 1777,
+      "fcp": 884,
+      "lcp": 884,
+      "afterFcp": 893
+    },
+    {
+      "route": "/login",
+      "key": "chrome.account#0",
+      "wait": 10.599999904632568,
+      "fetch": 226.90000009536743,
+      "attach": 0.19999992847442627,
+      "total": 237.69999992847443,
+      "attachedAt": 1575.7999999523163,
+      "fcp": 524,
+      "lcp": 524,
+      "afterFcp": 1051.7999999523163
+    },
+    {
+      "route": "/login",
+      "key": "cart.mini#0",
+      "wait": 0.19999992847442627,
+      "fetch": 191.5,
+      "attach": 28.300000071525574,
+      "total": 220,
+      "attachedAt": 1559.1000000238419,
+      "fcp": 524,
+      "lcp": 524,
+      "afterFcp": 1035.1000000238419
+    },
+    {
+      "route": "/my-account",
+      "key": "chrome.account#0",
+      "wait": 9.5,
+      "fetch": 228,
+      "attach": 0.10000002384185791,
+      "total": 237.60000002384186,
+      "attachedAt": 1739.8999999761581,
+      "fcp": 688,
+      "lcp": 688,
+      "afterFcp": 1051.8999999761581
+    },
+    {
+      "route": "/my-account",
+      "key": "cart.mini#0",
+      "wait": 0.09999990463256836,
+      "fetch": 193.70000004768372,
+      "attach": 27.5,
+      "total": 221.29999995231628,
+      "attachedAt": 1724,
+      "fcp": 688,
+      "lcp": 688,
+      "afterFcp": 1036
+    },
+    {
+      "route": "/my-account/orders",
+      "key": "chrome.account#0",
+      "wait": 11.300000071525574,
+      "fetch": 224.5,
+      "attach": 1.0999999046325684,
+      "total": 236.89999997615814,
+      "attachedAt": 1737.8999999761581,
+      "fcp": 688,
+      "lcp": 688,
+      "afterFcp": 1049.8999999761581
+    },
+    {
+      "route": "/my-account/orders",
+      "key": "cart.mini#0",
+      "wait": 0.5,
+      "fetch": 190.90000009536743,
+      "attach": 28.09999990463257,
+      "total": 219.5,
+      "attachedAt": 1721.3999999761581,
+      "fcp": 688,
+      "lcp": 688,
+      "afterFcp": 1033.3999999761581
+    },
+    {
+      "route": "/my-account/profile",
+      "key": "chrome.account#0",
+      "wait": 10.899999976158142,
+      "fetch": 223.60000002384186,
+      "attach": 0.6999999284744263,
+      "total": 235.19999992847443,
+      "attachedAt": 1731.3999999761581,
+      "fcp": 676,
+      "lcp": 676,
+      "afterFcp": 1055.3999999761581
+    },
+    {
+      "route": "/my-account/profile",
+      "key": "cart.mini#0",
+      "wait": 0.6000000238418579,
+      "fetch": 189.79999995231628,
+      "attach": 27.800000071525574,
+      "total": 218.20000004768372,
+      "attachedAt": 1714.7000000476837,
+      "fcp": 676,
+      "lcp": 676,
+      "afterFcp": 1038.7000000476837
+    }
+  ],
+  "coverage": [
+    {
+      "route": "/",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/faq",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/faq",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/faq/contact",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/faq/contact",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/product",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/product",
+      "key": "product.autosubmit",
+      "total": 902,
+      "used": 580,
+      "ratio": 0.6430155210643016
+    },
+    {
+      "route": "/product",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "product.gallery",
+      "total": 1417,
+      "used": 778,
+      "ratio": 0.5490472829922372
+    },
+    {
+      "route": "/product/p-0001",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/cart",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/cart",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/login",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/login",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/my-account",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account/orders",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    },
+    {
+      "route": "/my-account/orders",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account/profile",
+      "key": "cart.mini",
+      "total": 1110,
+      "used": 833,
+      "ratio": 0.7504504504504504
+    },
+    {
+      "route": "/my-account/profile",
+      "key": "chrome.account",
+      "total": 996,
+      "used": 504,
+      "ratio": 0.5060240963855421
+    }
+  ],
+  "strategies": {
+    "immediate": {
+      "before": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ]
+      },
+      "after": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ],
+        "url": "http://localhost:3100/product"
+      },
+      "acted": null
+    },
+    "idle": {
+      "before": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ]
+      },
+      "after": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ],
+        "url": "http://localhost:3100/product"
+      },
+      "acted": null
+    },
+    "visible": {
+      "before": {
+        "requests": 0,
+        "states": [
+          "waiting",
+          "waiting",
+          "waiting",
+          "waiting"
+        ]
+      },
+      "after": {
+        "requests": 3,
+        "states": [
+          "loading",
+          "loading",
+          "ready",
+          "ready"
+        ],
+        "url": "http://localhost:3100/product"
+      },
+      "acted": "scrolled"
+    },
+    "interaction": {
+      "before": {
+        "requests": 0,
+        "states": [
+          "waiting",
+          "waiting",
+          "waiting",
+          "waiting"
+        ]
+      },
+      "after": {
+        "requests": 4,
+        "states": [
+          "loading",
+          "ready",
+          "loading",
+          "loading"
+        ],
+        "url": "http://localhost:3100/product?category=circuit-protection"
+      },
+      "acted": {
+        "value": "circuit-protection",
+        "url": "http://localhost:3100/product?category=circuit-protection"
+      }
+    },
+    "mediaNoMatch": {
+      "before": {
+        "requests": 0,
+        "states": [
+          "waiting",
+          "waiting",
+          "waiting",
+          "waiting"
+        ]
+      },
+      "after": {
+        "requests": 0,
+        "states": [
+          "waiting",
+          "waiting",
+          "waiting",
+          "waiting"
+        ],
+        "url": "http://localhost:3100/product"
+      },
+      "acted": null
+    },
+    "mediaMatch": {
+      "before": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ]
+      },
+      "after": {
+        "requests": 3,
+        "states": [
+          "ready",
+          "ready",
+          "ready",
+          "ready"
+        ],
+        "url": "http://localhost:3100/product"
+      },
+      "acted": null
+    }
+  },
+  "perRoute": {
+    "/": {
+      "heap": {
+        "afterAttach": 2257280,
+        "afterTeardown": 2272472
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 2894.4000000953674,
+        "load": 2894.5,
+        "fcp": 1004,
+        "lcp": 2648
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/faq": {
+      "heap": {
+        "afterAttach": 2253956,
+        "afterTeardown": 2263156
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 1258.8999999761581,
+        "load": 1259,
+        "fcp": 824,
+        "lcp": 824
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/faq/contact": {
+      "heap": {
+        "afterAttach": 2337912,
+        "afterTeardown": 2347112
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 1244.5,
+        "load": 1244.5,
+        "fcp": 820,
+        "lcp": 820
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/product": {
+      "heap": {
+        "afterAttach": 2471380,
+        "afterTeardown": 2487300
+      },
+      "teardown": {
+        "torn": 4,
+        "roots": 4
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 1953,
+        "load": 1953.1000000238419,
+        "fcp": 1116,
+        "lcp": 1116
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        },
+        {
+          "key": "product.autosubmit",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "filter-form",
+          "hasTeardown": true,
+          "contentLength": 441,
+          "childCount": 5
+        },
+        {
+          "key": "product.autosubmit",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 1,
+          "testid": "sort-form",
+          "hasTeardown": true,
+          "contentLength": 76,
+          "childCount": 2
+        }
+      ]
+    },
+    "/product/p-0001": {
+      "heap": {
+        "afterAttach": 3299844,
+        "afterTeardown": 3309300
+      },
+      "teardown": {
+        "torn": 3,
+        "roots": 3
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 1867,
+        "load": 1867,
+        "fcp": 1012,
+        "lcp": 1012
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        },
+        {
+          "key": "product.gallery",
+          "strategy": "visible",
+          "state": "ready",
+          "instance": 0,
+          "testid": "gallery",
+          "hasTeardown": true,
+          "contentLength": 74,
+          "childCount": 4
+        }
+      ]
+    },
+    "/cart": {
+      "heap": {
+        "afterAttach": 3352756,
+        "afterTeardown": 3361968
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [
+        {
+          "at": 3061.899999976158,
+          "value": 0.007739325629340278,
+          "roots": [
+            null
+          ]
+        }
+      ],
+      "timings": {
+        "domContentLoaded": 1315.7999999523163,
+        "load": 1315.7999999523163,
+        "fcp": 884,
+        "lcp": 884
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/login": {
+      "heap": {
+        "afterAttach": 2796592,
+        "afterTeardown": 2811840
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 766.8999999761581,
+        "load": 767,
+        "fcp": 524,
+        "lcp": 524
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/my-account": {
+      "heap": {
+        "afterAttach": 2796592,
+        "afterTeardown": 2811840
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 931.6000000238419,
+        "load": 931.6000000238419,
+        "fcp": 688,
+        "lcp": 688
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/my-account/orders": {
+      "heap": {
+        "afterAttach": 2796580,
+        "afterTeardown": 2811828
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 930.3999999761581,
+        "load": 930.5,
+        "fcp": 688,
+        "lcp": 688
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    },
+    "/my-account/profile": {
+      "heap": {
+        "afterAttach": 2798496,
+        "afterTeardown": 2813744
+      },
+      "teardown": {
+        "torn": 2,
+        "roots": 2
+      },
+      "longTasks": [],
+      "shifts": [],
+      "timings": {
+        "domContentLoaded": 916.8000000715256,
+        "load": 916.8000000715256,
+        "fcp": 676,
+        "lcp": 676
+      },
+      "roots": [
+        {
+          "key": "chrome.account",
+          "strategy": "idle",
+          "state": "ready",
+          "instance": 0,
+          "testid": "account-link",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 2
+        },
+        {
+          "key": "cart.mini",
+          "strategy": "immediate",
+          "state": "ready",
+          "instance": 0,
+          "testid": "mini-cart",
+          "hasTeardown": true,
+          "contentLength": 10,
+          "childCount": 3
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "section": "inventory",
+      "label": "every behaviour source has a built chunk",
+      "ok": true,
+      "detail": "4 behaviour(s), all built"
+    },
+    {
+      "section": "inventory",
+      "label": "every behaviour is under 2.93 kB gzip",
+      "ok": true,
+      "detail": "largest is 0.75 kB"
+    },
+    {
+      "section": "declarations",
+      "label": "every declared behaviour exists in the workspace",
+      "ok": true,
+      "detail": "4 distinct behaviour(s) declared"
+    },
+    {
+      "section": "declarations",
+      "label": "every behaviour that exists is used by some page",
+      "ok": true,
+      "detail": "no orphans"
+    },
+    {
+      "section": "declarations",
+      "label": "every behaviour root carries a data-testid",
+      "ok": true,
+      "detail": "all addressable"
+    },
+    {
+      "section": "delivery",
+      "label": "no behaviour chunk is downloaded twice",
+      "ok": true,
+      "detail": "preload hints match how the loader fetches"
+    },
+    {
+      "section": "delivery",
+      "label": "every behaviour a page needs is preloaded in its head",
+      "ok": true,
+      "detail": "no behaviour costs an extra round trip"
+    },
+    {
+      "section": "delivery",
+      "label": "behaviours cost under 7.81 kB gzip on any one page",
+      "ok": true,
+      "detail": "worst page 1.96 kB"
+    },
+    {
+      "section": "isolation",
+      "label": "/                  fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [cart, chrome]"
+    },
+    {
+      "section": "isolation",
+      "label": "/faq               fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [cart, chrome]"
+    },
+    {
+      "section": "isolation",
+      "label": "/faq/contact       fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [chrome, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/product           fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "3 fetched from [chrome, product, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/product/p-0001    fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "3 fetched from [chrome, product, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/cart              fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [chrome, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/login             fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [chrome, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/my-account        fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [chrome, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/my-account/orders fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [chrome, cart]"
+    },
+    {
+      "section": "isolation",
+      "label": "/my-account/profile fetches only its own declared behaviours",
+      "ok": true,
+      "detail": "2 fetched from [cart, chrome]"
+    },
+    {
+      "section": "isolation",
+      "label": "pages that declare no behaviour fetch no behaviour code",
+      "ok": true,
+      "detail": "0 page(s) pay nothing: -"
+    },
+    {
+      "section": "timing",
+      "label": "no behaviour's setup blocks for a long task (50 ms)",
+      "ok": true,
+      "detail": "slowest 29.7 ms"
+    },
+    {
+      "section": "timing",
+      "label": "no behaviour attaches before first contentful paint",
+      "ok": true,
+      "detail": "the page is painted before any enhancement runs"
+    },
+    {
+      "section": "timing",
+      "label": "no behaviour blocks the main thread before LCP",
+      "ok": true,
+      "detail": "0 behaviour(s) attach before LCP without a long task"
+    },
+    {
+      "section": "timing",
+      "label": "the behaviour chunk itself loads in under 10 ms",
+      "ok": true,
+      "detail": "slowest chunk 0.0 ms"
+    },
+    {
+      "section": "timing",
+      "label": "a remote container is downloaded once per page, however many behaviours use it",
+      "ok": true,
+      "detail": "one remoteEntry per contributing remote — the 15 kB cost does not scale"
+    },
+    {
+      "section": "timing",
+      "label": "manifest fetches stay bounded when several paths load the same remote",
+      "ok": true,
+      "detail": "at most one duplicate from a concurrent first load"
+    },
+    {
+      "section": "timing",
+      "label": "federation runtime overhead per behaviour stays under 240 ms",
+      "ok": true,
+      "detail": "worst 77.6 ms — container init and share-scope setup, not the behaviour"
+    },
+    {
+      "section": "execution",
+      "label": "no behaviour is downloaded and never executed",
+      "ok": true,
+      "detail": "every fetched behaviour ran"
+    },
+    {
+      "section": "execution",
+      "label": "each behaviour executes at least 20% of its bytes",
+      "ok": true,
+      "detail": "lowest 51%"
+    },
+    {
+      "section": "cost",
+      "label": "/                  no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/                  no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/faq               no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/faq               no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/faq/contact       no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/faq/contact       no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/product           no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/product           no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/product/p-0001    no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/product/p-0001    no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/cart              no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/cart              no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/login             no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/login             no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account        no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account        no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account/orders no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account/orders no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account/profile no long task during behaviour attach",
+      "ok": true,
+      "detail": "main thread stayed responsive"
+    },
+    {
+      "section": "cost",
+      "label": "/my-account/profile no layout shift inside a behaviour root",
+      "ok": true,
+      "detail": "the enhancement moved nothing"
+    },
+    {
+      "section": "hygiene",
+      "label": "/                  every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/                  every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/                  teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq               every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq               every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq               teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq/contact       every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq/contact       every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/faq/contact       teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product           every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "4/4"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product           every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product           teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product/p-0001    every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "3/3"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product/p-0001    every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/product/p-0001    teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/cart              every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/cart              every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/cart              teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/login             every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/login             every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/login             teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account        every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account        every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account        teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/orders every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/orders every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/orders teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/profile every behaviour exposes a teardown",
+      "ok": true,
+      "detail": "2/2"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/profile every listener setup added carries an abort signal",
+      "ok": true,
+      "detail": "nothing can outlive its behaviour"
+    },
+    {
+      "section": "hygiene",
+      "label": "/my-account/profile teardown aborts every one of them",
+      "ok": true,
+      "detail": "no listener survives"
+    },
+    {
+      "section": "resilience",
+      "label": "/                  renders without JavaScript",
+      "ok": true,
+      "detail": "3718 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/                  every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/faq               renders without JavaScript",
+      "ok": true,
+      "detail": "5732 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/faq               every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/faq/contact       renders without JavaScript",
+      "ok": true,
+      "detail": "2443 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/faq/contact       every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/product           renders without JavaScript",
+      "ok": true,
+      "detail": "3152 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/product           every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "4 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/product           fallback controls are usable",
+      "ok": true,
+      "detail": "visible and laid out"
+    },
+    {
+      "section": "resilience",
+      "label": "/product/p-0001    renders without JavaScript",
+      "ok": true,
+      "detail": "2955 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/product/p-0001    every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "3 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/cart              renders without JavaScript",
+      "ok": true,
+      "detail": "1399 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/cart              every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/login             renders without JavaScript",
+      "ok": true,
+      "detail": "1604 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/login             every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account        renders without JavaScript",
+      "ok": true,
+      "detail": "1604 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account        every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account/orders renders without JavaScript",
+      "ok": true,
+      "detail": "1604 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account/orders every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account/profile renders without JavaScript",
+      "ok": true,
+      "detail": "1604 characters of content"
+    },
+    {
+      "section": "resilience",
+      "label": "/my-account/profile every behaviour root has server markup under it",
+      "ok": true,
+      "detail": "2 root(s), all populated"
+    },
+    {
+      "section": "strategy",
+      "label": "immediate - attaches without waiting for anything",
+      "ok": true,
+      "detail": "states at load: ready"
+    },
+    {
+      "section": "strategy",
+      "label": "idle - attaches on its own, once the page is quiet",
+      "ok": true,
+      "detail": "3 chunk request(s)"
+    },
+    {
+      "section": "strategy",
+      "label": "visible - fetches nothing while the element is off-screen",
+      "ok": true,
+      "detail": "0 request(s) before scrolling"
+    },
+    {
+      "section": "strategy",
+      "label": "visible - attaches once it scrolls into view",
+      "ok": true,
+      "detail": "3 request(s) after scrolling"
+    },
+    {
+      "section": "strategy",
+      "label": "interaction - fetches nothing until the visitor reaches for the control",
+      "ok": true,
+      "detail": "0 request(s) before the click"
+    },
+    {
+      "section": "strategy",
+      "label": "interaction - the click that triggered the load is replayed, not swallowed",
+      "ok": true,
+      "detail": "?category=circuit-protection"
+    },
+    {
+      "section": "strategy",
+      "label": "media - does not attach when the query does not match",
+      "ok": true,
+      "detail": "0 request(s) at 1280px for a 5000px query"
+    },
+    {
+      "section": "strategy",
+      "label": "media - attaches when the query matches",
+      "ok": true,
+      "detail": "3 request(s) at 1280px for a 400px query"
+    },
+    {
+      "section": "errors",
+      "label": "/                  clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/faq               clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/faq/contact       clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/product           clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/product/p-0001    clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/cart              clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/login             clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/my-account        clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/my-account/orders clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    },
+    {
+      "section": "errors",
+      "label": "/my-account/profile clean console",
+      "ok": true,
+      "detail": "nothing logged"
+    }
+  ]
+}

@@ -25,6 +25,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { provenance } from './lib/provenance.mjs';
+import { parameters } from './lib/parameters.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const RESULTS = join(ROOT, 'results');
@@ -198,7 +199,31 @@ for (const file of reports) {
   };
 }
 
-const manifest = { ...meta, suites, headline: headline() };
+/**
+ * Each suite's own budgets, lifted from the report it wrote.
+ *
+ * Read back rather than restated: a suite is the authority on its own thresholds, and a second
+ * copy here would describe whatever the thresholds were when someone last updated this file.
+ */
+const suiteLimits = {};
+for (const [name, entry] of Object.entries(suites)) {
+  const report = read(entry.file);
+  const limits = report?.limits ?? report?.budget ?? report?.LIMITS;
+  if (limits) suiteLimits[name] = limits;
+}
+
+const manifest = {
+  ...meta,
+  /**
+   * Everything that shaped this run, so the report can declare its own conditions.
+   *
+   * A report which does not say what connection it measured over cannot be reproduced and
+   * cannot be argued with — "LCP 2.6 s" means nothing without it.
+   */
+  parameters: parameters(meta.stack, suiteLimits),
+  suites,
+  headline: headline(),
+};
 writeFileSync(join(runDir, 'manifest.json'), `${JSON.stringify(manifest, null, 2)}\n`);
 
 // ---------------------------------------------------------------------------

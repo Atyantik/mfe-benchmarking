@@ -10,6 +10,7 @@
  * skimming should be unable to mistake an unstable metric for a settled one.
  */
 import { describe } from './dictionary.mjs';
+import { CHART_STYLE, groupedBars } from './charts.mjs';
 
 const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -45,6 +46,32 @@ const SECTIONS = [
     blurb: 'What the architecture itself costs: behaviours, contributed widgets, and CSS isolation.' },
 ];
 
+/** Routes in the order a visitor meets them, so every chart reads the same way. */
+const ROUTE_ORDER = ['/', '/faq', '/faq/contact', '/product', '/product/p-0001', '/cart'];
+
+/**
+ * Which metrics get a chart, and what each is measured against.
+ *
+ * Thresholds are Google's "good" boundaries where one exists. `taskMs` and `jsHeapMb` have no
+ * external standard, so they are drawn without a line rather than against one this repo made up.
+ */
+const CHARTS = {
+  vitals: [
+    { metric: 'LCP', title: 'Largest Contentful Paint', subtitle: 'lower is better · whiskers show min–max across runs', unit: 'ms', threshold: 2500 },
+    { metric: 'FCP', title: 'First Contentful Paint', subtitle: 'lower is better', unit: 'ms', threshold: 1800 },
+    { metric: 'CLS', title: 'Cumulative Layout Shift', subtitle: 'lower is better · unitless', unit: 'score', threshold: 0.1 },
+    { metric: 'INP', title: 'Interaction to Next Paint', subtitle: 'lower is better', unit: 'ms', threshold: 200 },
+    { metric: 'TBT', title: 'Total Blocking Time', subtitle: 'blocking portion of long tasks after first paint', unit: 'ms', threshold: 300 },
+    { metric: 'TTFB', title: 'Time to First Byte', subtitle: 'server render time — localhost, no network', unit: 'ms', threshold: 800 },
+  ],
+  browsercpu: [
+    { metric: 'taskMs', title: 'Main-thread busy time', subtitle: 'total work for the navigation — no external threshold exists', unit: 'ms' },
+    { metric: 'scriptMs', title: 'Script execution', subtitle: 'compile and run, the largest category of main-thread work', unit: 'ms' },
+    { metric: 'jsHeapMb', title: 'JS heap after settle', subtitle: 'what the document holds in the renderer', unit: 'MB' },
+    { metric: 'domElements', title: 'DOM elements (conformance)', subtitle: 'the frozen spec holds this constant — a difference means the stacks stopped rendering the same document', unit: 'count' },
+  ],
+};
+
 const CLASS_HELP = {
   deterministic: 'Reproduces exactly. Any difference is real.',
   stable: 'Spread under 3%. A difference larger than the spread is real.',
@@ -66,6 +93,7 @@ export function renderHtml(data) {
 
   w(`<title>Federation Under Two Frameworks</title>`);
   w(STYLE);
+  w(`<style>${CHART_STYLE}</style>`);
   w(FONTS);
   w('<div class="wrap">');
 
@@ -116,8 +144,90 @@ export function renderHtml(data) {
       runs.map((r) => `<code>${esc(r.dir)}</code>`).join('<br>') + '</p>');
   }
 
-  // ---- 3 method ----
-  w(section('3', 'Method'));
+  // ---- 3 parameters ----
+  w(section('3', 'Parameters'));
+  w('<p>Everything that shaped these numbers, read from the objects that shaped them rather than restated here — a hand-maintained list drifts from the run it claims to describe, which is worse than no list.</p>');
+
+  const par = data.stacks[BASE].parameters;
+  if (par) {
+    w('<h3>3.1 Measurement profile</h3>');
+    w('<p>The conditions the browser measurements were taken under. <strong>The most consequential entry in this report</strong>: on an unthrottled localhost bytes are free, and every route reports the same Largest Contentful Paint regardless of what it transfers.</p>');
+    w('<div class="scroll"><table><tbody>');
+    const n = par.profile.network;
+    for (const [k, v] of [
+      ['Profile', `${par.profile.id} — ${par.profile.label}`],
+      ['CPU throttling', par.profile.cpuThrottleRate > 1 ? `${par.profile.cpuThrottleRate}× slowdown` : 'none'],
+      ['Network — download', n ? `${n.downloadKbps} Kbps` : 'unthrottled'],
+      ['Network — upload', n ? `${n.uploadKbps} Kbps` : 'unthrottled'],
+      ['Network — round trip', n ? `${n.latencyMs} ms` : 'none'],
+      ['navigator.hardwareConcurrency', par.profile.hardwareConcurrency ?? 'host default'],
+      ['V8 heap ceiling', par.profile.v8HeapCapMb ? `${par.profile.v8HeapCapMb} MB` : 'host default'],
+      ['Viewport', typeof par.profile.viewport === 'string' ? par.profile.viewport : `${par.profile.viewport.width}×${par.profile.viewport.height} @ ${par.profile.viewport.deviceScaleFactor}×`],
+      ['Profiles available', par.profile.available.join(', ')],
+    ]) w(`<tr><th>${esc(k)}</th><td><code>${esc(v)}</code></td></tr>`);
+    w('</tbody></table></div>');
+
+    w('<h3>3.2 Toolchain</h3>');
+    w('<div class="scroll"><table><tbody>');
+    for (const [k, v] of Object.entries(par.toolchain)) w(`<tr><th>${esc(k)}</th><td><code>${esc(v ?? 'unresolved')}</code></td></tr>`);
+    w('</tbody></table></div>');
+
+    if (Object.keys(par.environment).length) {
+      w('<h3>3.3 Environment</h3>');
+      w('<p>Every <code>MF_*</code> variable in effect, so a run started with an unusual flag says so rather than looking like every other run.</p>');
+      w('<div class="scroll"><table><tbody>');
+      for (const [k, v] of Object.entries(par.environment)) w(`<tr><th><code>${esc(k)}</code></th><td><code>${esc(v)}</code></td></tr>`);
+      w('</tbody></table></div>');
+    }
+
+    w('<h3>3.4 Topology</h3>');
+    w(`<p>${par.topology.hosts.length} host applications, ${par.topology.remotes.length} federated remotes, ${par.topology.routeCount} routes behind one origin.</p>`);
+    w('<div class="scroll"><table><thead><tr><th>application</th><th>role</th><th class="num">port</th><th>serves</th></tr></thead><tbody>');
+    for (const h of par.topology.hosts) w(`<tr><th>${esc(h.name)}</th><td>host — ${esc(h.navigation)} navigation</td><td class="num">${h.port}</td><td><code>${esc(h.prefix)}</code></td></tr>`);
+    for (const r of par.topology.remotes) w(`<tr><th>${esc(r.name)}</th><td>remote — ${esc(r.kind)}</td><td class="num">${r.port}</td><td>—</td></tr>`);
+    w('</tbody></table></div>');
+
+    const sharedNames = Object.keys(par.sharedDependencies);
+    if (sharedNames.length) {
+      w('<h3>3.5 Shared dependencies</h3>');
+      w('<p>Read from the manifests the build emitted, so this is what was actually shared rather than what the configuration asked for.</p>');
+      w('<div class="scroll"><table><thead><tr><th>module</th><th class="num">version</th><th>singleton</th><th class="num">requiredVersion</th></tr></thead><tbody>');
+      for (const [name, d] of Object.entries(par.sharedDependencies))
+        w(`<tr><th><code>${esc(name)}</code></th><td class="num">${esc(d.version ?? '—')}</td><td>${d.singleton ? 'yes' : 'no'}</td><td class="num">${esc(d.requiredVersion ?? 'false')}</td></tr>`);
+      w('</tbody></table></div>');
+      if (OTHER && data.stacks[OTHER].parameters) {
+        const otherShared = Object.keys(data.stacks[OTHER].parameters.sharedDependencies ?? {});
+        w(`<p><strong>${esc(OTHER)}</strong> shares: ${otherShared.map((x) => `<code>${esc(x)}</code>`).join(', ') || '—'}. The two lists differ on purpose and the difference is a result: see the framework asymmetry in §4.</p>`);
+      }
+    }
+
+    w('<h3>3.6 Budgets</h3>');
+    const vb = par.budgets.vitals ?? {};
+    w('<div class="scroll"><table><thead><tr><th>metric</th><th class="num">document</th><th class="num">soft navigation</th></tr></thead><tbody>');
+    for (const k of Object.keys(vb.document ?? {}))
+      w(`<tr><th>${esc(k)}</th><td class="num">${vb.document[k]}</td><td class="num">${vb.soft?.[k] ?? '—'}</td></tr>`);
+    for (const k of Object.keys(vb.cpu ?? {})) w(`<tr><th>${esc(k)}</th><td class="num">${vb.cpu[k]}</td><td class="num">—</td></tr>`);
+    w('</tbody></table></div>');
+
+    const waivers = vb.waivers ?? {};
+    if (Object.keys(waivers).length) {
+      w('<div class="callout"><span class="callout-label">Waivers in effect — a waiver is not a pass</span>');
+      for (const [route, metrics] of Object.entries(waivers))
+        for (const [metric, waiver] of Object.entries(metrics))
+          w(`<p><code>${esc(route)}</code> <strong>${esc(metric)}</strong> is over the ${esc(vb.document?.[metric] ?? '')} threshold and raised to ${waiver.limit}. ${esc(waiver.reason)}</p>`);
+      w('</div>');
+    }
+
+    if (Object.keys(par.budgets.suites ?? {}).length) {
+      w('<details><summary><strong>Per-suite budgets</strong> — read back from each suite\'s own report</summary><div class="scroll"><table><thead><tr><th>suite</th><th>budget</th><th class="num">value</th></tr></thead><tbody>');
+      for (const [suite, limits] of Object.entries(par.budgets.suites))
+        for (const [k, v] of Object.entries(limits))
+          if (typeof v === 'number' || typeof v === 'string')
+            w(`<tr><th>${esc(suite)}</th><td><code>${esc(k)}</code></td><td class="num">${esc(v)}</td></tr>`);
+      w('</tbody></table></div></details>');
+    }
+  }
+  w('</section><section><div class="rule"><span class="num-badge">4</span><h2>Method</h2></div>');
   w('<p>Each run performs, in order:</p><ol>');
   for (const step of [
     '<strong>Build</strong> every application from a clean <code>dist</code>, in the measured configuration. A stale artefact is a wrong measurement wearing the right name.',
@@ -129,7 +239,7 @@ export function renderHtml(data) {
   w('</ol>');
   w('<p>Browser measurements run in headless Chromium at <strong>4× CPU throttling</strong>, matching Lighthouse\'s mid-range-mobile simulation. Without it every stack reports a Total Blocking Time of zero on a modern workstation and the metric stops discriminating. Core Web Vitals are collected with the <code>web-vitals</code> library itself, injected into the page, so the laboratory and the field cannot disagree about what counts. Server figures are collected in-process by each host, because they do not exist anywhere else.</p>');
 
-  w('<h3>Stability classes</h3>');
+  w('<h3>4.1 Stability classes</h3>');
   w('<p>Each metric is classified from its own dispersion rather than by assertion. <strong>This is the column to read first</strong> — it decides whether a difference between two stacks is something you may act on.</p>');
   w('<div class="scroll"><table><thead><tr><th>class</th><th>spread</th><th>what it licenses</th></tr></thead><tbody>');
   for (const [cls, spread] of [['deterministic', 'under 0.5%'], ['stable', 'under 3%'], ['variable', 'under 10%'], ['unstable', '10% or more']])
@@ -138,7 +248,7 @@ export function renderHtml(data) {
 
   // ---- 4 findings ----
   if (OTHER) {
-    w(section('4', 'Findings'));
+    w(section('5', 'Findings'));
     w(`<p>Of <strong>${Object.keys(rows).length}</strong> metrics measured on both stacks, <strong>${resolvable.length}</strong> show a difference larger than the measurement spread. The rest are either identical by construction or too noisy to separate at this sample size.</p>`);
     const notable = resolvable
       .filter(([p]) => describe(p).label)
@@ -160,14 +270,48 @@ export function renderHtml(data) {
   }
 
   // ---- 5 results ----
-  w(section('5', 'Results'));
+  w(section('6', 'Results'));
   w('<p>Every table prints each run, the mean, the standard deviation, the coefficient of variation and the stability class. Sections open on demand; the raw suite reports are archived beside the dataset.</p>');
 
   SECTIONS.forEach((sec, i) => {
     const paths = allPaths.filter((p) => sectionOf(p) === sec.id);
     if (!paths.length) return;
-    w(`<h3>5.${i + 1} ${esc(sec.title)}</h3>`);
+    w(`<h3>6.${i + 1} ${esc(sec.title)}</h3>`);
     w(`<p>${esc(sec.blurb)}</p>`);
+
+    /**
+     * Charts before tables, for the sections where a shape reads faster than a column.
+     *
+     * Each bar is a mean; each whisker is the min and max across runs. A metric whose whisker is
+     * invisible is one a reader may trust, and one whose whisker is wide is saying so before
+     * anybody reads a coefficient of variation.
+     */
+    const chartsFor = CHARTS[sec.id];
+    if (chartsFor) {
+      w('<div class="charts">');
+      for (const spec of chartsFor) {
+        const rows = ROUTE_ORDER.map((route) => {
+          const path = `documents.${route}.${spec.metric}`;
+          const series = stacks
+            .filter((st) => data.stacks[st].metrics[path])
+            .map((st) => {
+              const m = data.stacks[st].metrics[path];
+              return { stack: st, mean: m.mean, min: m.min, max: m.max };
+            });
+          return series.length ? { label: route, series } : null;
+        }).filter(Boolean);
+        if (!rows.length) continue;
+        w(groupedBars({
+          title: spec.title,
+          subtitle: spec.subtitle,
+          rows,
+          unit: spec.unit,
+          threshold: spec.threshold ?? null,
+          lowerIsBetter: spec.lowerIsBetter !== false,
+        }));
+      }
+      w('</div>');
+    }
 
     const seen = new Map();
     for (const p of paths) {
@@ -230,7 +374,7 @@ export function renderHtml(data) {
   });
 
   // ---- 6 threats ----
-  w(section('6', 'Threats to validity'));
+  w(section('7', 'Threats to validity'));
   w('<p>Stated plainly, because a report that hides its limits is marketing.</p><ul>');
   for (const t of [
     `<strong>Sample size.</strong> ${data.runsPerStack} runs. Standard deviations from ${data.runsPerStack} samples are coarse, and the <span class="chip chip-unstable">unstable</span> class exists precisely because some metrics need more.`,
@@ -243,7 +387,7 @@ export function renderHtml(data) {
   w('</ul>');
 
   // ---- 7 reproduce ----
-  w(section('7', 'Reproducing this'));
+  w(section('8', 'Reproducing this'));
   w(`<pre><code>pnpm install
 pnpm media                 # fetch the image and video fixtures once
 MF_RUNS=${data.runsPerStack} pnpm research      # every stack, every suite, ${data.runsPerStack} times, then this report</code></pre>`);
@@ -324,6 +468,7 @@ details{border:1px solid var(--line);border-radius:3px;background:var(--surface)
 summary{cursor:pointer;padding:.7rem 1rem;font-family:Archivo,sans-serif;font-size:.88rem;color:var(--ink-900)}
 details[open] summary{border-bottom:1px solid var(--line)}
 details .scroll{margin:0;padding:0 .4rem .4rem}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(20rem,1fr));gap:1.2rem 1.6rem;margin:0 0 1.6rem;background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:1rem 1.1rem;box-shadow:var(--shadow)}
 .instruments{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:.9rem;margin:0 0 1.4rem}
 .instrument{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:.85rem .95rem}
 .instrument p{font-size:.82rem;margin:0 0 .4rem;color:var(--ink-500)}

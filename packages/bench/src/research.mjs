@@ -246,6 +246,7 @@ for (const stack of STACKS) {
         { passed: 0, total: 0 },
       ),
     })),
+    parameters: manifests[0].parameters,
     provenance: {
       profile: manifests[0].profile,
       specVersion: manifests[0].specVersion,

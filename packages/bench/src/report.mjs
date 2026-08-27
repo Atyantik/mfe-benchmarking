@@ -119,8 +119,100 @@ for (const stack of STACKS) {
   w('');
 }
 
-// ---- 3. method ------------------------------------------------------------
-w('## 3. Method');
+// ---- 3. parameters --------------------------------------------------------
+w('## 3. Parameters');
+w('');
+w('Everything that shaped these numbers, read from the objects that shaped them rather than');
+w('restated here — a hand-maintained list drifts from the run it claims to describe.');
+w('');
+{
+  const par = data.stacks[BASE].parameters;
+  if (par) {
+    const n = par.profile.network;
+    w('### 3.1 Measurement profile');
+    w('');
+    w('The conditions the browser measurements were taken under. **The most consequential entry');
+    w('in this report**: on an unthrottled localhost bytes are free, and every route reports the');
+    w('same Largest Contentful Paint regardless of what it transfers.');
+    w('');
+    w('| | |');
+    w('|---|---|');
+    w(`| Profile | \`${par.profile.id}\` — ${par.profile.label} |`);
+    w(`| CPU throttling | ${par.profile.cpuThrottleRate > 1 ? `${par.profile.cpuThrottleRate}x slowdown` : 'none'} |`);
+    w(`| Network — download | ${n ? `${n.downloadKbps} Kbps` : 'unthrottled'} |`);
+    w(`| Network — upload | ${n ? `${n.uploadKbps} Kbps` : 'unthrottled'} |`);
+    w(`| Network — round trip | ${n ? `${n.latencyMs} ms` : 'none'} |`);
+    w(`| navigator.hardwareConcurrency | ${par.profile.hardwareConcurrency ?? 'host default'} |`);
+    w(`| V8 heap ceiling | ${par.profile.v8HeapCapMb ? `${par.profile.v8HeapCapMb} MB` : 'host default'} |`);
+    w(`| Viewport | ${typeof par.profile.viewport === 'string' ? par.profile.viewport : `${par.profile.viewport.width}x${par.profile.viewport.height}`} |`);
+    w(`| Profiles available | ${par.profile.available.join(', ')} |`);
+    w('');
+
+    w('### 3.2 Toolchain');
+    w('');
+    w('| | |');
+    w('|---|---|');
+    for (const [k, v] of Object.entries(par.toolchain)) w(`| ${k} | \`${v ?? 'unresolved'}\` |`);
+    w('');
+
+    if (Object.keys(par.environment).length) {
+      w('### 3.3 Environment');
+      w('');
+      w('Every `MF_*` variable in effect, so a run started with an unusual flag says so.');
+      w('');
+      w('| | |');
+      w('|---|---|');
+      for (const [k, v] of Object.entries(par.environment)) w(`| \`${k}\` | \`${v}\` |`);
+      w('');
+    }
+
+    w('### 3.4 Topology');
+    w('');
+    w(`${par.topology.hosts.length} host applications, ${par.topology.remotes.length} federated remotes, ${par.topology.routeCount} routes behind one origin.`);
+    w('');
+    w('| application | role | port |');
+    w('|---|---|---:|');
+    for (const h of par.topology.hosts) w(`| ${h.name} | host, ${h.navigation} navigation, serves \`${h.prefix}\` | ${h.port} |`);
+    for (const r of par.topology.remotes) w(`| ${r.name} | remote, ${r.kind} | ${r.port} |`);
+    w('');
+
+    if (Object.keys(par.sharedDependencies).length) {
+      w('### 3.5 Shared dependencies');
+      w('');
+      w('Read from the manifests the build emitted, so this is what was actually shared rather');
+      w('than what the configuration asked for.');
+      w('');
+      w('| module | version | singleton | requiredVersion |');
+      w('|---|---:|---|---:|');
+      for (const [name, d] of Object.entries(par.sharedDependencies))
+        w(`| \`${name}\` | ${d.version ?? '—'} | ${d.singleton ? 'yes' : 'no'} | ${d.requiredVersion ?? 'false'} |`);
+      w('');
+      if (OTHER && data.stacks[OTHER].parameters) {
+        w(`**${OTHER}** shares: ${Object.keys(data.stacks[OTHER].parameters.sharedDependencies ?? {}).map((x) => `\`${x}\``).join(', ') || '—'}.`);
+        w('The two lists differ on purpose, and the difference is itself a result.');
+        w('');
+      }
+    }
+
+    w('### 3.6 Budgets');
+    w('');
+    const vb = par.budgets.vitals ?? {};
+    w('| metric | document | soft navigation |');
+    w('|---|---:|---:|');
+    for (const k of Object.keys(vb.document ?? {})) w(`| ${k} | ${vb.document[k]} | ${vb.soft?.[k] ?? '—'} |`);
+    for (const k of Object.keys(vb.cpu ?? {})) w(`| ${k} | ${vb.cpu[k]} | — |`);
+    w('');
+    for (const [route, metrics] of Object.entries(vb.waivers ?? {}))
+      for (const [metric, waiver] of Object.entries(metrics)) {
+        w(`> **Waiver — a waiver is not a pass.** \`${route}\` **${metric}** is over the`);
+        w(`> ${vb.document?.[metric]} threshold and raised to ${waiver.limit}. ${waiver.reason}`);
+        w('');
+      }
+  }
+}
+
+// ---- 4. method ------------------------------------------------------------
+w('## 4. Method');
 w('');
 w('Each run performs, in order:');
 w('');
@@ -146,7 +238,7 @@ w('they do not exist anywhere else.');
 w('');
 
 // ---- 4. summary of findings ----------------------------------------------
-w('## 4. Findings');
+w('## 5. Findings');
 w('');
 if (OTHER) {
   const rows = data.comparisons[`${BASE} vs ${OTHER}`] ?? {};
@@ -181,7 +273,7 @@ if (OTHER) {
 }
 
 // ---- 5. results -----------------------------------------------------------
-w('## 5. Results');
+w('## 6. Results');
 w('');
 w('Every table below prints each run, the mean, the standard deviation, the coefficient of');
 w('variation, and a stability class. **The stability class is the one to read first**: it is');
@@ -200,7 +292,7 @@ for (const section of SECTIONS) {
   const paths = allPaths.filter((p) => sectionOf(p) === section.id);
   if (paths.length === 0) continue;
 
-  w(`### 5.${SECTIONS.indexOf(section) + 1} ${section.title}`);
+  w(`### 6.${SECTIONS.indexOf(section) + 1} ${section.title}`);
   w('');
 
   // Describe the instruments used in this section once, rather than per row.
@@ -257,7 +349,7 @@ for (const section of SECTIONS) {
 }
 
 // ---- 6. threats -----------------------------------------------------------
-w('## 6. Threats to validity');
+w('## 7. Threats to validity');
 w('');
 w('Stated plainly, because a report that hides its limits is marketing.');
 w('');
@@ -277,7 +369,7 @@ w('  A real session would produce a different distribution.');
 w('');
 
 // ---- 7. reproduce ---------------------------------------------------------
-w('## 7. Reproducing this');
+w('## 8. Reproducing this');
 w('');
 w('```bash');
 w('pnpm install');
