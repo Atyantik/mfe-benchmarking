@@ -1,0 +1,125 @@
+{
+  "generatedAt": "2026-08-27T10:42:01.662Z",
+  "perRoute": {
+    "/": {
+      "requests": 23,
+      "totalBytesGzip": 911518,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 41397,
+        "chrome": 20414,
+        "cart": 17608,
+        "media": 832099
+      }
+    },
+    "/faq": {
+      "requests": 13,
+      "totalBytesGzip": 83187,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 41397,
+        "chrome": 20414,
+        "faq": 3768,
+        "cart": 17608
+      }
+    },
+    "/faq/contact": {
+      "requests": 13,
+      "totalBytesGzip": 83187,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 41397,
+        "chrome": 20414,
+        "faq": 3768,
+        "cart": 17608
+      }
+    },
+    "/product": {
+      "requests": 20,
+      "totalBytesGzip": 159480,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 41397,
+        "chrome": 20414,
+        "product": 20723,
+        "cart": 17608,
+        "media": 59338
+      }
+    },
+    "/product/p-0001": {
+      "requests": 35,
+      "totalBytesGzip": 261025,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 103287,
+        "chrome": 20414,
+        "product": 31047,
+        "cart": 26561,
+        "media": 79716
+      }
+    },
+    "/cart": {
+      "requests": 22,
+      "totalBytesGzip": 165790,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "storefront": 103287,
+        "chrome": 30160,
+        "cart": 32343
+      }
+    },
+    "/login": {
+      "requests": 17,
+      "totalBytesGzip": 155225,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "my-account": 117203,
+        "chrome": 20414,
+        "cart": 17608
+      }
+    },
+    "/my-account": {
+      "requests": 32,
+      "totalBytesGzip": 219394,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "my-account": 126572,
+        "chrome": 3813,
+        "cart": 21921,
+        "product": 26977,
+        "faq": 24623,
+        "media": 15488
+      }
+    },
+    "/my-account/orders": {
+      "requests": 17,
+      "totalBytesGzip": 148096,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "my-account": 126675,
+        "chrome": 3813,
+        "cart": 17608
+      }
+    },
+    "/my-account/profile": {
+      "requests": 17,
+      "totalBytesGzip": 146687,
+      "leakedRequests": 0,
+      "leakedBytesGzip": 0,
+      "byOwner": {
+        "my-account": 125266,
+        "chrome": 3813,
+        "cart": 17608
+      }
+    }
+  }
+}

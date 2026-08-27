@@ -16,6 +16,7 @@ import { dirname, join } from 'node:path';
 
 import { describe } from './lib/dictionary.mjs';
 import { renderHtml } from './lib/report-html.mjs';
+import { renderPlain } from './lib/report-plain.mjs';
 
 const datasetPath = process.argv[2];
 if (!datasetPath) {
@@ -396,3 +397,14 @@ console.log(`\nwrote ${join(outDir, 'report.md')} (${(md.length / 1024).toFixed(
 const html = renderHtml(data);
 writeFileSync(join(outDir, 'report.html'), `${html}\n`);
 console.log(`wrote ${join(outDir, 'report.html')} (${(html.length / 1024).toFixed(1)} kB)`);
+
+/**
+ * And a third rendering, for a reader who does not have the vocabulary.
+ *
+ * Not a summary and not simplified numbers — the same dataset with every metric given a plain
+ * title, a sentence on what it is, a sentence on why it matters, what a good value looks like,
+ * and its own chart. The audience for a benchmark is rarely only the people who built it.
+ */
+const plain = renderPlain(data);
+writeFileSync(join(outDir, 'report-plain.html'), `${plain}\n`);
+console.log(`wrote ${join(outDir, 'report-plain.html')} (${(plain.length / 1024).toFixed(1)} kB)`);

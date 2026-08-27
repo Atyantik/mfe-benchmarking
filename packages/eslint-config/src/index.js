@@ -183,7 +183,12 @@ export function defineAppLint({ tsconfigRootDir }) {
      * everywhere except inside the application it is reporting on.
      */
     {
-      files: ['packages/bench/src/lib/report-html.mjs', 'packages/bench/src/report.mjs'],
+      files: [
+        'packages/bench/src/lib/report-html.mjs',
+        'packages/bench/src/lib/report-plain.mjs',
+        'packages/bench/src/lib/charts.mjs',
+        'packages/bench/src/report.mjs',
+      ],
       rules: { 'mf/no-raw-color': 'off' },
     },
     // Build configuration is not application code.
