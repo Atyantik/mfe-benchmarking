@@ -226,8 +226,27 @@ async function strategyRun(browser, { strategy, offscreen = false, viewport, act
     if (/__federation_expose_behaviors__/.test(r.url())) requested.push(r.url());
   });
 
+  /**
+   * A route handler must never throw.
+   *
+   * An unhandled rejection in here does not fail a check — it kills the process, and Node
+   * reports it from `node:internal/process/promises` with no suite name attached. This one
+   * surfaced as `route.fetch: socket hang up` and took down two separate 45-minute research
+   * runs, each time leaving the suite with two sections of output and no verdict, which reads
+   * exactly like a hang rather than a crash.
+   *
+   * The fetch can legitimately fail: the page may navigate or close while a request is in
+   * flight, and the server is under load from the suite that ran before this one. Letting the
+   * route continue unmodified degrades this one measurement instead of the whole run.
+   */
   await page.route(`${BASE}/product`, async (route) => {
-    const response = await route.fetch();
+    let response;
+    try {
+      response = await route.fetch();
+    } catch {
+      await route.continue().catch(() => {});
+      return;
+    }
     let html = await response.text();
     html = html.replaceAll(/data-behavior-when="[^"]*"/g, `data-behavior-when="${strategy}"`);
     if (offscreen) {
@@ -240,7 +259,10 @@ async function strategyRun(browser, { strategy, offscreen = false, viewport, act
       /<link rel="(?:module)?preload"[^>]*__federation_expose_behaviors__[^>]*>/g,
       '',
     );
-    await route.fulfill({ response, body: html });
+    await route.fulfill({ response, body: html }).catch(() => {
+      // The page went away between fetching and fulfilling. Nothing to report and nothing to
+      // fix — but an uncaught rejection here would end the run.
+    });
   });
 
   await page.goto(`${BASE}/product`, { waitUntil: 'networkidle' });

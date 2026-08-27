@@ -69,20 +69,45 @@ const results = [];
 for (const suite of selected) {
   console.log(`\n${'='.repeat(78)}\n${suite.id.toUpperCase()} — ${suite.what}\n${'='.repeat(78)}`);
   const started = Date.now();
+  /**
+   * Output is streamed AND captured, so the runner can tell a failed check from a crash.
+   *
+   * With `stdio: 'inherit'` a suite that dies mid-run is indistinguishable from one that failed
+   * an assertion: both are a red line in the summary saying "scroll up for the failing checks",
+   * and scrolling up shows two sections of output and no verdict. That reads like a hang. It
+   * cost two 45-minute research runs before the difference was worth encoding.
+   *
+   * A suite that reached its own verdict prints `N/M passed`. One that did not, crashed.
+   */
   const run = spawnSync(process.execPath, [...(suite.node ?? []), join(HERE, suite.file)], {
-    stdio: 'inherit',
+    stdio: ['inherit', 'pipe', 'pipe'],
     env: process.env,
+    encoding: 'utf8',
+    maxBuffer: 64 * 1024 * 1024,
   });
+  const output = `${run.stdout ?? ''}${run.stderr ?? ''}`;
+  process.stdout.write(run.stdout ?? '');
+  process.stderr.write(run.stderr ?? '');
+
+  const reachedVerdict = /\d+\/\d+ passed/.test(output);
+  const crashed = run.status !== 0 && !reachedVerdict;
+  if (crashed) {
+    const lines = output.trimEnd().split('\n');
+    console.error(`\n  ${suite.id} CRASHED before reporting a verdict. Last output:`);
+    for (const l of lines.slice(-6)) console.error(`    ${l}`);
+  }
   results.push({
     ...suite,
     ok: run.status === 0,
+    crashed,
     seconds: Math.round((Date.now() - started) / 100) / 10,
   });
 }
 
 console.log(`\n${'='.repeat(78)}\nSUMMARY\n${'='.repeat(78)}`);
 for (const r of results) {
-  console.log(`  ${r.ok ? 'ok  ' : 'FAIL'}  ${r.id.padEnd(15)} ${String(r.seconds).padStart(6)}s   ${r.what}`);
+  const state = r.ok ? 'ok  ' : r.crashed ? 'CRSH' : 'FAIL';
+  console.log(`  ${state}  ${r.id.padEnd(15)} ${String(r.seconds).padStart(6)}s   ${r.what}`);
 }
 
 /**
@@ -102,7 +127,12 @@ if (!failed.length && selected.length === SUITES.length) {
 }
 console.log('');
 if (failed.length) {
+  const crashes = failed.filter((f) => f.crashed);
   console.log(`${failed.length} of ${results.length} suite(s) failed: ${failed.map((f) => f.id).join(', ')}`);
+  if (crashes.length) {
+    console.log(`${crashes.map((c) => c.id).join(', ')} CRASHED rather than failing a check —`);
+    console.log('that is a bug in the suite or the environment, not a regression in the app.');
+  }
   console.log('Scroll up for the failing checks — each one names what broke and where.');
   process.exitCode = 1;
 } else {

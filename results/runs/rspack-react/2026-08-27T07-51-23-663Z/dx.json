@@ -1,0 +1,158 @@
+{
+  "generatedAt": "2026-08-27T07:51:23.271Z",
+  "stack": "rspack-react",
+  "specVersion": 4,
+  "catalogHash": "c3b6a5fafb68",
+  "git": {
+    "commit": "ef52beee5748dc9f2a13bd42e08f9d3519a90a4d",
+    "shortCommit": "ef52bee",
+    "branch": "main",
+    "dirty": false
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "v8": "13.6.233.10-node.28",
+    "platform": "darwin-arm64"
+  },
+  "machine": {
+    "cpu": "Apple M4 Pro",
+    "cores": 14,
+    "memoryGb": 48,
+    "ci": false
+  },
+  "benchEnv": {
+    "mfConfig": "site",
+    "optimize": false,
+    "esm": false
+  },
+  "limits": {
+    "coldBuildS": 600,
+    "warmBuildS": 300,
+    "incrementalS": 120,
+    "startupS": 120,
+    "unblockedS": 900
+  },
+  "apps": {
+    "chrome": {
+      "coldMs": 2879,
+      "ok": true,
+      "warmMs": 2772
+    },
+    "faq": {
+      "coldMs": 2810,
+      "ok": true,
+      "warmMs": 2772
+    },
+    "product": {
+      "coldMs": 3225,
+      "ok": true,
+      "warmMs": 2858
+    },
+    "cart": {
+      "coldMs": 3031,
+      "ok": true,
+      "warmMs": 2805
+    },
+    "storefront": {
+      "coldMs": 1165,
+      "ok": true,
+      "warmMs": 1111
+    },
+    "my-account": {
+      "coldMs": 1192,
+      "ok": true,
+      "warmMs": 1070
+    }
+  },
+  "coldMs": 14303,
+  "warmMs": 13388,
+  "cacheSaving": 0.064,
+  "incrementalMs": 2943,
+  "startupMs": 3371,
+  "unblockedMs": 17674,
+  "firstPageMs": 728,
+  "loop": {
+    "totalMs": 7312,
+    "rebuildMs": 2994,
+    "restartMs": 3370,
+    "seen": true
+  },
+  "lintMs": 9734,
+  "typecheckMs": 7790,
+  "testMs": 5363,
+  "gatesMs": 22887,
+  "checks": [
+    {
+      "section": "cold",
+      "label": "every app builds from a clean tree",
+      "ok": true,
+      "detail": "6 apps"
+    },
+    {
+      "section": "cold",
+      "label": "a cold build finishes inside 600s",
+      "ok": true,
+      "detail": "14.30s for 6 apps, sequential"
+    },
+    {
+      "section": "warm",
+      "label": "a warm build finishes inside 300s",
+      "ok": true,
+      "detail": "13.39s"
+    },
+    {
+      "section": "incremental",
+      "label": "one app rebuilds inside 120s",
+      "ok": true,
+      "detail": "2.94s median of 3, product"
+    },
+    {
+      "section": "startup",
+      "label": "the stack is healthy inside 120s",
+      "ok": true,
+      "detail": "3.37s for 9 processes"
+    },
+    {
+      "section": "unblocked",
+      "label": "the first page renders once the stack is up",
+      "ok": true,
+      "detail": "0.73s"
+    },
+    {
+      "section": "unblocked",
+      "label": "a developer is unblocked inside 900s from a clean tree",
+      "ok": true,
+      "detail": "18.40s"
+    },
+    {
+      "section": "loop",
+      "label": "an edit reaches the browser",
+      "ok": true,
+      "detail": "7.31s end to end"
+    },
+    {
+      "section": "loop",
+      "label": "the edit-to-browser loop is a full rebuild and restart",
+      "ok": true,
+      "detail": "no watch mode or HMR in this stack — 7.31s per edit"
+    },
+    {
+      "section": "gates",
+      "label": "lint passes",
+      "ok": true,
+      "detail": "9.73s"
+    },
+    {
+      "section": "gates",
+      "label": "typecheck passes",
+      "ok": true,
+      "detail": "7.79s"
+    },
+    {
+      "section": "gates",
+      "label": "test passes",
+      "ok": true,
+      "detail": "5.36s"
+    }
+  ]
+}

@@ -227,7 +227,11 @@ heading('4. isolation - one team failing costs one region');
   const ctx = await signedInContext(browser, { viewport: { width: 1440, height: 1200 } });
   const page = await ctx.newPage();
   // Break exactly one team's widget on the wire.
-  await page.route('**/*AccountRecommended*', (route) => route.abort());
+  // Guarded for the same reason as behaviors.mjs: an unhandled rejection in a route handler
+  // ends the process rather than failing a check.
+  await page.route('**/*AccountRecommended*', (route) => {
+    void route.abort().catch(() => {});
+  });
   await page.goto(`${EDGE}/my-account`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(1_200);
   const cart = await page.locator(`[data-testid="${WIDGET.cart}"]`).count();
