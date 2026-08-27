@@ -199,6 +199,31 @@ export function renderHtml(data) {
       }
       w('</tbody></table></div></details>');
     }
+
+    // The comparison for this section, with the resolvability verdict stated per row rather
+    // than left for the reader to infer from two means and a standard deviation.
+    if (OTHER) {
+      const here = paths.filter((p) => rows[p]);
+      if (here.length) {
+        w('<details><summary><strong>Comparison</strong> — ' +
+          `${esc(BASE)} vs ${esc(OTHER)}, ${here.filter((p) => rows[p].resolvable).length} of ${here.length} resolvable</summary>`);
+        w('<div class="scroll"><table><thead><tr><th>metric</th>' +
+          `<th class="num">${esc(BASE)}</th><th class="num">${esc(OTHER)}</th><th class="num">change</th><th>verdict</th></tr></thead><tbody>`);
+        for (const p of here) {
+          const r = rows[p];
+          const d = describe(p);
+          const better = d.lowerIsBetter === (r.deltaPct < 0) ? OTHER : BASE;
+          const cls = r.resolvable ? (better === OTHER ? 'win-other' : 'win-base') : '';
+          const verdict = r.resolvable
+            ? `<span class="${cls}">${esc(better)} better</span>`
+            : '<span class="chip chip-unstable">within noise</span>';
+          w(`<tr><td><code>${esc(p)}</code></td><td class="num">${fmt(r.base.mean, d.unit)}</td>` +
+            `<td class="num">${fmt(r.other.mean, d.unit)}</td>` +
+            `<td class="num ${cls}">${r.deltaPct > 0 ? '+' : ''}${r.deltaPct.toFixed(1)}%</td><td>${verdict}</td></tr>`);
+        }
+        w('</tbody></table></div></details>');
+      }
+    }
   });
 
   // ---- 6 threats ----
