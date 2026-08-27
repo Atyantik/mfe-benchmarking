@@ -977,16 +977,20 @@
       "height": 720,
       "aspectRatio": 1.7778,
       "poster": {
-        "path": "video/hero-poster.jpg",
+        "path": "video/hero-poster.avif",
         "width": 1280,
-        "height": 960,
-        "bytes": 180671
+        "height": 720,
+        "bytes": 112719,
+        "fallback": {
+          "path": "video/hero-poster.jpg",
+          "bytes": 143408
+        }
       },
       "sources": [
         {
           "path": "video/hero.mp4",
           "type": "video/mp4",
-          "bytes": 643869
+          "bytes": 644951
         },
         {
           "path": "video/hero.webm",
@@ -1007,5 +1011,5 @@
       }
     }
   },
-  "generatedAt": "2026-08-24T11:50:28.921Z"
+  "generatedAt": "2026-08-27T09:43:54.156Z"
 }

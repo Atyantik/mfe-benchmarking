@@ -240,4 +240,28 @@ export const VITALS_BUDGET = {
    * hardware-sensitive, and a tight bound would fail in CI for code that is fine.
    */
   cpu: { taskMs: 600, jsHeapMb: 40 },
+  /**
+   * Per-route exceptions, each with a reason it can be argued with.
+   *
+   * A budget nobody may exceed becomes a budget somebody quietly lowers. This is the other
+   * option: the route stays over the threshold, the number stays visible, and the reason is
+   * committed beside it — so the next person can disagree with the reason rather than discover
+   * a threshold that was moved.
+   *
+   * An override is not a pass. The check reports the route as `over budget (waived)` and names
+   * the reason every run, which is uncomfortable on purpose.
+   */
+  waivers: {
+    '/': {
+      LCP: {
+        limit: 3000,
+        reason:
+          "the LCP element is the hero video's poster (110 kB AVIF) on a media-heavy page. " +
+          'Cropping it to the video ratio and moving it off JPEG took it from 180 kB to 110 kB ' +
+          'and LCP from 2964 ms to 2644 ms; a high-priority preload measured as a no-op because ' +
+          'the page is bandwidth-bound rather than discovery-bound. Affects both stacks equally. ' +
+          'See docs/media.md.',
+      },
+    },
+  },
 };

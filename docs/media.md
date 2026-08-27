@@ -57,3 +57,47 @@ benchmark repository. `pnpm media` rebuilds the whole set from `sources.json`.
 
 The subject matter is incidental. What the benchmark needs is real photographic entropy at
 realistic weights and dimensions, and any real photograph provides that.
+
+
+---
+
+## The hero poster, and a preload that did nothing
+
+Two findings, both produced by adding network throttling to the bench and neither visible
+before it. On localhost bytes are free, so every route reported the same LCP no matter what it
+transferred.
+
+**The one image that is an LCP element was the only one skipping the pipeline.** Every
+photograph here ships as five widths across three formats. The hero video's poster shipped as a
+single JPEG, and it is the largest contentful paint on the busiest page. Worse, `scale`
+preserves the SOURCE aspect ratio, so a 4:3 photograph became a 1280×960 poster behind a
+1280×720 video — a third of every downloaded pixel cropped away by `object-fit: cover` and
+never seen.
+
+| | bytes |
+|---|---:|
+| Original: 1280×960 JPEG | 180 kB |
+| Cropped to 16:9 | 140 kB |
+| AVIF at q45 | **110 kB** |
+
+**AVIF, and not WebP, because it was measured.** Against the 140 kB cropped JPEG, WebP is
+*larger* at every quality tried — 149 kB at q40, 166 kB at q50, 201 kB at q70. Re-encoding an
+already-crushed JPEG of a noisy zoomed photograph spends bytes preserving its artefacts. AVIF
+handles that content properly and takes a further 21%.
+
+Net effect on the home page: LCP fell from **2964 ms to 2644 ms** on Slow 4G.
+
+**And a preload that did nothing.** The poster is the `poster` of a `<video preload="none">` —
+exactly the shape a preload scanner deprioritises — so `<link rel="preload" as="image"
+fetchpriority="high">` looked like the obvious next move. Measured over three runs it moved LCP
+from 2644 ms to 2636 ms: nothing.
+
+The reason is worth keeping. On a 200 kB/s connection the page is **bandwidth-bound, not
+discovery-bound**. Reordering the queue cannot help when the queue itself is the constraint.
+The preload was reverted rather than shipped, because code that measures as a no-op is code
+nobody can later justify removing.
+
+`/` still exceeds Google's 2500 ms "good" threshold at ~2.64 s on Slow 4G. That is a true
+property of a hero built around a video on a media-heavy page, it affects both stacks equally,
+and it is tracked rather than tuned away — see `VITALS_BUDGET` in
+`packages/bench/src/lib/topology.mjs`.

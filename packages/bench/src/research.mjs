@@ -224,6 +224,19 @@ for (const stack of STACKS) {
     if (summary) metrics[path] = summary;
   }
 
+  /**
+   * Every run in an aggregate must share a measurement profile.
+   *
+   * Averaging a throttled run with an unthrottled one produces a mean that describes no device
+   * anyone owns. Cheap to check, and the alternative is a number nobody can trace.
+   */
+  const profiles = new Set(manifests.map((m) => m.profile?.id ?? 'unknown'));
+  if (profiles.size > 1) {
+    console.error(`${stack}: runs span more than one profile (${[...profiles].join(', ')}).`);
+    console.error('Those describe different conditions and cannot be averaged.');
+    process.exit(1);
+  }
+
   stacks[stack] = {
     runs: fresh.map((dir, i) => ({
       dir: dir.replace(`${ROOT}/`, ''),
@@ -234,6 +247,7 @@ for (const stack of STACKS) {
       ),
     })),
     provenance: {
+      profile: manifests[0].profile,
       specVersion: manifests[0].specVersion,
       catalogHash: manifests[0].catalogHash,
       git: manifests[0].git,

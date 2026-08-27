@@ -58,6 +58,9 @@ estimate a distribution; the `unstable` class exists to say so out loud.
 | Domain | Instrument | Notes |
 |---|---|---|
 | Core Web Vitals | `web-vitals` v6, injected into the page | The library RUM actually uses, so lab and field cannot disagree about what counts |
+| Network emulation | CDP `Network.emulateNetworkConditions` | Applied per page, since emulation attaches to a session |
+| Core count | CDP `Emulation.setHardwareConcurrencyOverride` | So code adapting to `navigator.hardwareConcurrency` adapts to the profile |
+| Heap ceiling | `--js-flags=--max-old-space-size` at launch | V8 reads it at startup; a running isolate's ceiling cannot be lowered |
 | Browser CPU and memory | CDP `Performance.getMetrics` | `TaskDuration`, `ScriptDuration`, `LayoutDuration`, `RecalcStyleDuration`, `JSHeapUsedSize` |
 | Long tasks / TBT | `PerformanceObserver`, Lighthouse's TBT definition | Blocking portion over 50 ms of tasks after FCP |
 | Transfer size | Playwright response interception, gzip level 9 | Cold cache, one navigation |
@@ -70,12 +73,40 @@ estimate a distribution; the `unstable` class exists to say so out loud.
 | Accessibility | `axe-core`, WCAG 2.1 A and AA | Every route |
 | Build and loop time | Wall clock, change verified in a real browser | |
 
-### CPU throttling
+### Measurement profiles
 
-Browser measurements run in headless Chromium at **4× CPU throttling**, matching Lighthouse's
-mid-range-mobile simulation. Without it every stack reports a Total Blocking Time of zero on a
-modern workstation and the metric stops discriminating. Set `MF_CPU_THROTTLE=1` for unthrottled
-desktop; the two are not comparable and are labelled as such.
+Browser measurements are taken under a **device profile**, not on the machine running the bench.
+`MF_PROFILE` selects it and every archived run records which one produced its numbers.
+
+| profile | CPU | network | cores | heap | viewport |
+|---|---|---|---|---|---|
+| `desktop` | none | none | host | host | reference |
+| `constrained` *(default)* | 4× | Slow 4G — 1.6 Mbps ↓, 750 Kbps ↑, 150 ms RTT | 4 | 512 MB | reference |
+| `mobile` | 4× | Slow 4G | 4 | 512 MB | 412×823, DPR 2.625 |
+
+**Why network throttling matters more than it looks.** On localhost bytes are free. The first
+research dataset had one stack transferring 31.6% more on its heaviest page than the other, and
+both reported the same Largest Contentful Paint *to the millisecond* — because a difference in
+transfer size is never paid for when there is no connection to pay it over. Under Slow 4G the
+same routes range from 832 ms to 2.6 s and the byte difference has somewhere to appear. A
+benchmark that measures bytes carefully and then measures their consequences where bytes are
+free is measuring half a story.
+
+**Why `constrained` and `mobile` are separate.** A narrower viewport changes which markup
+renders — the header's search field is `hidden lg:block`, so at 412 px it is absent, not
+smaller. Measuring cost and measuring layout are different questions, and answering both in one
+profile would mean the DOM-conformance check was comparing two different documents. `mobile` is
+offered for looking at the phone layout; it is not comparable to the other two.
+
+**Time budgets scale with the profile; byte budgets do not.** A 60 ms ceiling measured on an
+unthrottled workstation is not a 60 ms ceiling at 4×, and carrying it across is how a budget
+starts failing for reasons unrelated to the code. `longTaskMs` is deliberately not scaled: 50 ms
+is the specification's definition of a long task, not a local judgement.
+
+**Which suites are throttled.** The ones whose measurement *is* timing or loading — `vitals` and
+`behaviors`. Correctness suites (`contract`, `a11y`, `contamination`, `css`, `verify`, `hosts`,
+`auth`) run unthrottled, because throttling changes only how long they take, not what they
+assert.
 
 ---
 
@@ -97,6 +128,8 @@ rendered the same document.
 
 ## Comparability rules
 
+- **Never compare across measurement profiles.** A throttled run and an unthrottled one describe
+  different conditions; the aggregator refuses to average them.
 - **Never compare across `SPEC_VERSION`.** A different spec is a different application.
 - **Never compare across catalog hashes.** A different dependency set may be measuring an
   upgrade rather than the thing under test.

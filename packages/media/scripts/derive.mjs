@@ -151,6 +151,7 @@ console.log('\ncomposing hero video');
   const mp4 = join(DIST, 'video', 'hero.mp4');
   const webm = join(DIST, 'video', 'hero.webm');
   const poster = join(DIST, 'video', 'hero-poster.jpg');
+  const posterAvif = join(DIST, 'video', 'hero-poster.avif');
 
   /**
    * Six seconds at 1280x720, encoded to land near 900 kB.
@@ -173,10 +174,33 @@ console.log('\ncomposing hero video');
    *
    * It is the largest contentful paint on the home page, it is on screen for a fraction of a
    * second before the video replaces it, and at gallery quality it was 385 kB — bigger than
-   * the reference profile's worst image and bigger than the video it introduces. Quality that nobody has
-   * time to see is bytes in front of the LCP.
+   * the reference profile's worst image and bigger than the video it introduces. Quality that
+   * nobody has time to see is bytes in front of the LCP.
+   *
+   * CROPPED to the video's aspect ratio, which it previously was not. `scale` preserves the
+   * SOURCE ratio, so a 4:3 photograph became a 1280x960 poster behind a 1280x720 video: a third
+   * of every downloaded pixel was cropped away by `object-fit: cover` and never seen. Found by
+   * measuring on a throttled connection, where the poster is the LCP element and those pixels
+   * cost about a quarter of a second.
    */
-  resizeJpeg(still, poster, 1280, 12);
+  run('ffmpeg', [
+    '-y', '-loglevel', 'error', '-i', still,
+    '-vf', 'scale=1280:-2:flags=lanczos,crop=1280:720',
+    '-q:v', '12', poster,
+  ]);
+  /**
+   * And an AVIF beside it, which is what the browser will actually take.
+   *
+   * `<video poster>` accepts any image the browser can decode. The photographs have had AVIF
+   * and WebP derivatives since the pipeline was written; the one image that is an LCP element
+   * on the busiest page was the only one still shipping as JPEG alone.
+   *
+   * AVIF and not WebP, because it was measured rather than assumed. Against the 140 kB cropped
+   * JPEG: WebP is LARGER at every quality tried (149 kB at q40, 201 kB at q70) — re-encoding an
+   * already-crushed JPEG of a noisy zoomed photograph spends bytes preserving its artefacts.
+   * AVIF handles that content properly: 110 kB at q45, a further 21%.
+   */
+  run('avifenc', ['--min', '0', '--max', '63', '-q', String(QUALITY.avif), '-s', '6', poster, posterAvif]);
 
   const posterDims = probe(poster);
   manifest.video.hero = {
@@ -184,7 +208,15 @@ console.log('\ncomposing hero video');
     width: 1280,
     height: 720,
     aspectRatio: Number((1280 / 720).toFixed(4)),
-    poster: { path: 'video/hero-poster.jpg', width: posterDims.width, height: posterDims.height, bytes: size(poster) },
+    poster: {
+      // AVIF first: it is what a browser takes, and what the LCP is paid in.
+      path: 'video/hero-poster.avif',
+      width: posterDims.width,
+      height: posterDims.height,
+      bytes: size(posterAvif),
+      /** Kept for anything that cannot decode AVIF, and as the record of what it replaced. */
+      fallback: { path: 'video/hero-poster.jpg', bytes: size(poster) },
+    },
     // Ordered by MEASURED weight, not by the usual assumption that VP9 wins. On this
     // content it does not — a slow zoom over a noisy photograph encodes badly in VP9 — and
     // a browser takes the first source it supports, so a wrong order ships the heavier file
@@ -195,7 +227,10 @@ console.log('\ncomposing hero video');
     ].sort((a, b) => a.bytes - b.bytes),
     credit: creditOf('hero-02') ?? null,
   };
-  console.log(`  mp4 ${kb(size(mp4))}   webm ${kb(size(webm))}   poster ${kb(size(poster))}`);
+  console.log(
+    `  mp4 ${kb(size(mp4))}   webm ${kb(size(webm))}   ` +
+      `poster ${kb(size(posterAvif))} avif (jpeg fallback ${kb(size(poster))})`,
+  );
 }
 
 manifest.generatedAt = new Date().toISOString();

@@ -76,6 +76,7 @@ export function renderHtml(data) {
   w('<p class="lede">One application, implemented twice against a frozen specification and measured by the same sixteen suites — with every figure printed alongside its dispersion.</p>');
   w('<dl class="facts">');
   for (const [k, v] of [
+    ['Profile', prov.profile?.id ?? 'unknown'],
     ['Runs per stack', String(data.runsPerStack)],
     ['Metrics', String(allPaths.length)],
     ['Spec version', String(prov.specVersion)],
@@ -97,6 +98,8 @@ export function renderHtml(data) {
   w(section('2', 'Environment and provenance'));
   w('<div class="scroll"><table><tbody>');
   for (const [k, v] of [
+    ['Measurement profile', prov.profile?.label ?? 'unknown'],
+    ['Profile detail', prov.profile?.describe ?? '—'],
     ['Machine', `${data.machine.cpu}, ${data.machine.cores} cores, ${data.machine.memoryGb} GB`],
     ['Platform', data.runtime.platform],
     ['Node', `${data.runtime.node} (V8 ${data.runtime.v8})`],

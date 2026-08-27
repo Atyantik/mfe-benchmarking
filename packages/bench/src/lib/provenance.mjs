@@ -27,6 +27,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { STACK } from './topology.mjs';
+import { PROFILE } from './profile.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../../..');
 
@@ -96,6 +97,15 @@ export function provenance() {
       memoryGb: Math.round(totalmem() / 1024 ** 3),
       ci: Boolean(process.env.CI),
     },
+    /**
+     * The device and network the browser measurements were taken under.
+     *
+     * Recorded because it decides what the numbers mean. On an unthrottled localhost bytes are
+     * free, and every route reports the same LCP regardless of what it transfers; under Slow 4G
+     * the same pages range from 832 ms to 2.6 s. Results from different profiles describe
+     * different conditions and must never be compared.
+     */
+    profile: { id: PROFILE.id, label: PROFILE.label, describe: PROFILE.describe },
     /**
      * The environment of the BENCH process, which is not necessarily the environment of the
      * build it is measuring — the artefacts in `dist/` were produced by an earlier command.

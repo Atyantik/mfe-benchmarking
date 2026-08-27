@@ -34,6 +34,7 @@ import { chunkIndex, inventory } from './lib/inventory.mjs';
 import { EDGE, ROUTES as TOPOLOGY_ROUTES, ownerOf } from './lib/topology.mjs';
 import { COLLECT, INSTRUMENT } from './lib/instrument.mjs';
 import { usedJsBytes } from './lib/coverage.mjs';
+import { PROFILE, applyProfile, contextOptions, launchOptions, profileBanner } from './lib/profile.mjs';
 import { CATALOGUE } from '../../contracts/src/testids.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
@@ -45,11 +46,26 @@ const ROUTES = TOPOLOGY_ROUTES.map((r) => r.path);
 const appOf = ownerOf;
 
 /** Budgets specific to this layer. Sizes are gzip bytes; times are milliseconds. */
+/**
+ * Byte budgets are absolute; TIME budgets scale with the CPU profile.
+ *
+ * A threshold measured on an unthrottled workstation is not a threshold on a throttled one, and
+ * carrying it across is how a budget starts failing for a reason that has nothing to do with
+ * the code. The federation-runtime ceiling was set at 60 ms unthrottled and measured 76.6 ms the
+ * first time the bench ran at 4x — the runtime had not changed, the machine had.
+ *
+ * `longTaskMs` is deliberately NOT scaled: 50 ms is the specification's definition of a long
+ * task, not a local judgement, and a task that blocks the main thread for 50 ms blocks it for
+ * 50 ms whatever the machine.
+ */
+const cpuMs = (ms) => Math.round(ms * PROFILE.cpuThrottle);
+
 const LIMITS = {
   behaviorGzip: 3_000,
   pageBehaviorGzip: 8_000,
-  attachMs: 16,
+  attachMs: cpuMs(16),
   longTaskMs: 50,
+  runtimeMs: cpuMs(60),
   coveragePct: 20,
 };
 
@@ -102,8 +118,9 @@ function declarationsFrom(html) {
 // ---------------------------------------------------------------------------
 
 async function profile(browser, route) {
-  const ctx = await browser.newContext();
+  const ctx = await browser.newContext(contextOptions());
   const page = await ctx.newPage();
+  await applyProfile(ctx, page);
   await page.addInitScript(INSTRUMENT);
 
   const responses = [];
@@ -217,8 +234,10 @@ const STRATEGY_BROWSER_ARGS = [
 ];
 
 async function strategyRun(browser, { strategy, offscreen = false, viewport, act }) {
-  const ctx = await browser.newContext(viewport ? { viewport } : {});
+  // An explicit viewport wins: the media-query strategy cases exist to test a specific width.
+  const ctx = await browser.newContext(viewport ? { viewport } : contextOptions());
   const page = await ctx.newPage();
+  await applyProfile(ctx, page);
   await page.addInitScript(INSTRUMENT);
 
   const requested = [];
@@ -298,7 +317,8 @@ async function strategyRun(browser, { strategy, offscreen = false, viewport, act
 // run
 // ---------------------------------------------------------------------------
 
-console.log('\nbehaviour bench - client interactivity, measured\n');
+console.log('\nbehaviour bench - client interactivity, measured');
+console.log(`        ${profileBanner()}\n`);
 
 const { behaviors, problems } = inventory(ROOT);
 const byUrl = chunkIndex(behaviors);
@@ -384,7 +404,7 @@ console.log('');
 }
 
 // -- 3-8: profile every route once, then read the same run from every angle --
-const browser = await chromium.launch();
+const browser = await chromium.launch(launchOptions());
 const profiles = {};
 for (const route of ROUTES) profiles[route] = await profile(browser, route);
 
@@ -661,8 +681,8 @@ if (timingRows.length === 0) {
   const worstRuntime = Math.max(0, ...fetchBreakdown.map((r) => r.runtimeMs));
   check(
     'timing',
-    'federation runtime overhead per behaviour stays under 60 ms',
-    worstRuntime < 60,
+    `federation runtime overhead per behaviour stays under ${LIMITS.runtimeMs} ms`,
+    worstRuntime < LIMITS.runtimeMs,
     `worst ${ms(worstRuntime)} — container init and share-scope setup, not the behaviour`,
   );
 }

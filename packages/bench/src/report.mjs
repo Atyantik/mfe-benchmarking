@@ -96,6 +96,8 @@ w('## 2. Environment and provenance');
 w('');
 w('| | |');
 w('|---|---|');
+w(`| **Measurement profile** | **${prov.profile?.label ?? 'unknown'}** |`);
+w(`| Profile detail | ${prov.profile?.describe ?? '—'} |`);
 w(`| Machine | ${data.machine.cpu}, ${data.machine.cores} cores, ${data.machine.memoryGb} GB |`);
 w(`| Platform | ${data.runtime.platform} |`);
 w(`| Node | ${data.runtime.node} (V8 ${data.runtime.v8}) |`);

@@ -19,11 +19,17 @@
  * `reportAllChanges: true` because this is a lab: CLS and INP would otherwise only report
  * when the page is hidden, and the last report is the final value either way.
  *
- * **CPU is throttled 4x by default.** Without it every stack reports TBT of zero on a
+ * **Measured under a device profile, not on the machine running the bench.** Lighthouse mobile
+ * by default: 4x CPU slowdown, Slow 4G, four cores, a 512 MB heap cap. Without CPU throttling
+ * every stack reports a TBT of zero on a modern workstation; without NETWORK throttling a
+ * difference in transfer size costs nothing at all, which is how two stacks whose heaviest page
+ * differs by 31.6% both reported the same LCP to the millisecond. See lib/profile.mjs.
+ *
+ * **CPU was throttled 4x by default.** Without it every stack reports TBT of zero on a
  * developer machine, every long task disappears, and the comparison that matters most —
  * which stack blocks the main thread — produces identical numbers for all of them.
- * Lighthouse simulates a mid-range mobile for exactly this reason. Set MF_CPU_THROTTLE=1 to
- * measure unthrottled desktop instead; the two are not comparable and are labelled as such.
+ * Lighthouse simulates a mid-range mobile for exactly this reason. `MF_PROFILE=desktop`
+ * measures an unthrottled machine instead; the two are not comparable and are labelled as such.
  */
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -33,6 +39,7 @@ import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 
 import { DOCUMENT_ROUTES, EDGE, VITALS_BUDGET, ZONE_WALK } from './lib/topology.mjs';
+import { PROFILE, applyProfile, contextOptions, launchOptions, profileBanner } from './lib/profile.mjs';
 import { signedInContext } from './lib/signin.mjs';
 import { CHROME } from '../../contracts/src/testids.ts';
 
@@ -40,8 +47,8 @@ const require = createRequire(import.meta.url);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../../..');
 const OUT = join(ROOT, 'results');
 const RUNS = Number(process.env.MF_RUNS ?? 3);
-/** 4x matches Lighthouse's mid-range mobile simulation. 1 = unthrottled desktop. */
-const CPU_THROTTLE = Number(process.env.MF_CPU_THROTTLE ?? 4);
+/** Kept as the label the checks and report use; the value now comes from the profile. */
+const CPU_THROTTLE = PROFILE.cpuThrottle;
 
 /**
  * The real library, inlined so the page needs no network to be measured.
@@ -126,15 +133,18 @@ function finalise(raw) {
 async function newPage(browser, { signedIn = false } = {}) {
   // The account area is gated. Measuring it means arriving with a session, or measuring the
   // login page by accident and calling it a dashboard.
-  const ctx = signedIn ? await signedInContext(browser) : await browser.newContext();
+  const ctx = signedIn
+    ? await signedInContext(browser, contextOptions())
+    : await browser.newContext(contextOptions());
   const page = await ctx.newPage();
   await page.addInitScript(`${WEB_VITALS_IIFE}\n${COLLECT}`);
 
-  const cdp = await ctx.newCDPSession(page);
+  // CPU, network and core count, all through one session. Applied per page rather than per
+  // browser: emulation attaches to a session, so a page opened later would measure an
+  // unthrottled machine while reporting the profile's name.
+  const cdp = await applyProfile(ctx, page);
   // Chrome's own performance counters: script evaluation, layout and style recalculation.
-  // `jsExecMs` is the number that separates "we shipped fewer bytes" from "we ship less work".
   await cdp.send('Performance.enable');
-  if (CPU_THROTTLE > 1) await cdp.send('Emulation.setCPUThrottlingRate', { rate: CPU_THROTTLE });
   return { ctx, page, cdp };
 }
 
@@ -281,10 +291,10 @@ async function measureZone(browser) {
 // ---------------------------------------------------------------------------
 
 console.log(`\ncore web vitals - measured with web-vitals, ${RUNS} runs, median reported\n`);
-const browser = await chromium.launch();
+const browser = await chromium.launch(launchOptions());
 
 heading('1. document navigations - the indexed half of the site');
-console.log(`        (CPU throttled ${CPU_THROTTLE}x — ${CPU_THROTTLE > 1 ? 'mid-range mobile, comparable to Lighthouse' : 'unthrottled desktop'})`);
+console.log(`        ${profileBanner()}`);
 console.log('        route                    LCP        CLS       INP       TBT     script      FCP');
 const documentResults = {};
 for (const route of DOCUMENT_ROUTES) {
@@ -306,7 +316,15 @@ for (const route of DOCUMENT_ROUTES) {
 console.log('');
 for (const metric of ['LCP', 'CLS', 'INP', 'TTFB']) {
   const limit = VITALS_BUDGET.document[metric];
-  const over = DOCUMENT_ROUTES.filter((r) => (documentResults[r.path][metric]?.value ?? 0) > limit);
+  /** A waiver raises the bar for one route and names why, in the output, every run. */
+  const limitFor = (route) => VITALS_BUDGET.waivers?.[route.path]?.[metric]?.limit ?? limit;
+  const over = DOCUMENT_ROUTES.filter(
+    (r) => (documentResults[r.path][metric]?.value ?? 0) > limitFor(r),
+  );
+  const waived = DOCUMENT_ROUTES.filter((r) => {
+    const value = documentResults[r.path][metric]?.value ?? 0;
+    return value > limit && value <= limitFor(r);
+  });
   const worst = Math.max(0, ...DOCUMENT_ROUTES.map((r) => documentResults[r.path][metric]?.value ?? 0));
   check(
     'document',
@@ -316,6 +334,13 @@ for (const metric of ['LCP', 'CLS', 'INP', 'TTFB']) {
       ? over.map((r) => `${r.path} ${fmt(metric, documentResults[r.path][metric].value)}`).join(', ')
       : `worst ${fmt(metric, worst)}`,
   );
+  // Said out loud whether or not anything failed: a waived route is over the threshold, and a
+  // reader who only sees a green line has been told the wrong thing.
+  for (const r of waived) {
+    const w = VITALS_BUDGET.waivers[r.path][metric];
+    note(`${r.path} ${metric} ${fmt(metric, documentResults[r.path][metric].value)} is OVER ${fmt(metric, limit)}, waived to ${fmt(metric, w.limit)}`);
+    note(`  reason: ${w.reason}`);
+  }
 }
 {
   /**
@@ -481,6 +506,7 @@ writeFileSync(
       runs: RUNS,
       library: 'web-vitals@6 (attribution build, reportSoftNavs)',
       budget: VITALS_BUDGET,
+      profile: PROFILE.id,
       documents: documentResults,
       soft: softRows,
       softNavEntriesPerRun: zoneRuns.map((r) => r.softNavCount),
