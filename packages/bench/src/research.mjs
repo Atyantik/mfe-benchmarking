@@ -23,6 +23,7 @@ import { fileURLToPath } from 'node:url';
 
 import { provenance } from './lib/provenance.mjs';
 import { compare, flatten, summarise } from './lib/stats.mjs';
+import { EDGE, HOSTS, REMOTES } from './lib/topology.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '../../..');
@@ -43,6 +44,87 @@ const rule = (text) => {
   line(text);
   line('='.repeat(78));
 };
+
+/**
+ * Assert that what is SERVING is what was just built.
+ *
+ * This repo has been bitten twice by a server that outlived its stack and went on answering on
+ * the same port with a previous build. Both times everything looked healthy — probes passed,
+ * pages rendered — and the numbers were quietly wrong. The second time cost most of an
+ * afternoon, and produced a `CHROME is not defined` that reproduced nowhere.
+ *
+ * A health probe cannot catch that, because something IS listening. The manifest can: it names
+ * the package that built it, and lists the exposes that build produced. Comparing the served
+ * manifest to the one on disk is the difference between "a server answered" and "the server I
+ * built is answering".
+ *
+ * @returns {Promise<string[]>} problems, empty when the stack is serving what it should
+ */
+async function verifyServing(stack) {
+  const problems = [];
+  // REMOTES only: a host serves documents, not a container manifest, so there is nothing at its
+  // root to compare. If every remote is the right build the stack is the right stack, and the
+  // hosts are checked below by the document they actually produce.
+  for (const app of REMOTES) {
+    /**
+     * Resolved from the stack being MEASURED, not from this process's own topology.
+     *
+     * `app.dir` reads MF_STACK at import time, and this runner is a parent that loops over
+     * several stacks — so trusting it compared each remote against whichever stack the parent
+     * happened to default to. The guard then reported every remote as mismatched while the
+     * stack was in fact correct: the same class of bug it exists to catch, in the catcher.
+     */
+    const diskPath = join(ROOT, 'stacks', stack, app.dir.split('/').pop(), 'dist/web/mf-manifest.json');
+    if (!existsSync(diskPath)) continue;
+    const disk = JSON.parse(readFileSync(diskPath, 'utf8'));
+
+    let served;
+    try {
+      const res = await fetch(`http://localhost:${app.port}/mf-manifest.json`);
+      if (!res.ok) {
+        problems.push(`${app.name}: manifest returned ${res.status}`);
+        continue;
+      }
+      served = await res.json();
+    } catch (error) {
+      problems.push(`${app.name}: manifest unreachable — ${String(error).slice(0, 60)}`);
+      continue;
+    }
+
+    const servedName = served?.metaData?.buildInfo?.buildName ?? '(none)';
+    const diskName = disk?.metaData?.buildInfo?.buildName ?? '(none)';
+    if (servedName !== diskName) {
+      problems.push(`${app.name}: serving "${servedName}" but "${diskName}" was built — a previous stack's server is still on port ${app.port}`);
+      continue;
+    }
+    if (!servedName.includes(stack)) {
+      problems.push(`${app.name}: serving "${servedName}", which is not part of ${stack}`);
+      continue;
+    }
+    const servedExposes = (served.exposes ?? []).map((e) => e.name).sort().join(',');
+    const diskExposes = (disk.exposes ?? []).map((e) => e.name).sort().join(',');
+    if (servedExposes !== diskExposes) {
+      problems.push(`${app.name}: serving a stale build — exposes differ from the one on disk`);
+    }
+  }
+
+  // And the hosts: a document that renders is the only evidence that matters for them.
+  for (const host of HOSTS) {
+    try {
+      const res = await fetch(`http://localhost:${host.port}/__health`);
+      if (!res.ok) problems.push(`${host.name}: health returned ${res.status}`);
+    } catch (error) {
+      problems.push(`${host.name}: unreachable — ${String(error).slice(0, 60)}`);
+    }
+  }
+  try {
+    const res = await fetch(`${EDGE}/__edge`);
+    if (!res.ok) problems.push(`edge: returned ${res.status}`);
+  } catch (error) {
+    problems.push(`edge: unreachable — ${String(error).slice(0, 60)}`);
+  }
+  return problems;
+}
 
 /** Runs archived for a stack, newest first. */
 function archivedRuns(stack) {
@@ -89,6 +171,24 @@ for (const stack of STACKS) {
       console.error(`\n${stack} did not start — stopping.`);
       process.exit(1);
     }
+
+    // What is listening is not necessarily what was built. Checked before every run rather than
+    // once, because a server can be replaced between runs and the failure is silent.
+    let problems = await verifyServing(stack);
+    if (problems.length) {
+      line('\nThe running stack does not match the build. Restarting once:');
+      for (const p of problems) line(`  ${p}`);
+      quiet('node', ['scripts/stack.mjs', 'stop'], { MF_STACK: stack });
+      run('node', ['scripts/stack.mjs', 'start'], { MF_STACK: stack });
+      problems = await verifyServing(stack);
+    }
+    if (problems.length) {
+      console.error(`\n${stack} is not serving the build under test. Refusing to measure it.`);
+      for (const p of problems) console.error(`  ${p}`);
+      process.exit(1);
+    }
+    line(`  serving ${stack} — every manifest matches the build on disk`);
+
     const bench = run(process.execPath, [join(HERE, 'all.mjs')], { MF_STACK: stack });
     if (bench.status !== 0) {
       console.error(`\n${stack} run ${i} had failing checks. Not archived, and not averaged.`);

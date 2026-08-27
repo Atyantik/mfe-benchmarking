@@ -1,0 +1,3483 @@
+{
+  "generatedAt": "2026-08-27T07:06:57.931Z",
+  "runsPerStack": 1,
+  "stacks": {
+    "rspack-svelte": {
+      "runs": [
+        {
+          "dir": "results/runs/rspack-svelte/2026-08-27T07-06-56-940Z",
+          "generatedAt": "2026-08-27T07:06:56.940Z",
+          "checks": {
+            "passed": 368,
+            "total": 368
+          }
+        }
+      ],
+      "provenance": {
+        "specVersion": 4,
+        "catalogHash": "c3b6a5fafb68",
+        "git": {
+          "commit": "6c945ac92835942c3fbfd258214e847ada2a2fa0",
+          "shortCommit": "6c945ac",
+          "branch": "main",
+          "dirty": true
+        },
+        "runtime": {
+          "node": "v24.11.1",
+          "v8": "13.6.233.10-node.28",
+          "platform": "darwin-arm64"
+        },
+        "machine": {
+          "cpu": "Apple M4 Pro",
+          "cores": 14,
+          "memoryGb": 48,
+          "ci": false
+        }
+      },
+      "metrics": {
+        "behaviors.cart.mini.brotli": {
+          "runs": [
+            567
+          ],
+          "n": 1,
+          "mean": 567,
+          "median": 567,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 567,
+          "max": 567,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.cart.mini.gzip": {
+          "runs": [
+            662
+          ],
+          "n": 1,
+          "mean": 662,
+          "median": 662,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 662,
+          "max": 662,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.chrome.account.brotli": {
+          "runs": [
+            460
+          ],
+          "n": 1,
+          "mean": 460,
+          "median": 460,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 460,
+          "max": 460,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.chrome.account.gzip": {
+          "runs": [
+            572
+          ],
+          "n": 1,
+          "mean": 572,
+          "median": 572,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 572,
+          "max": 572,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.product.autosubmit.brotli": {
+          "runs": [
+            437
+          ],
+          "n": 1,
+          "mean": 437,
+          "median": 437,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 437,
+          "max": 437,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.product.autosubmit.gzip": {
+          "runs": [
+            541
+          ],
+          "n": 1,
+          "mean": 541,
+          "median": 541,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 541,
+          "max": 541,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.product.gallery.brotli": {
+          "runs": [
+            641
+          ],
+          "n": 1,
+          "mean": 641,
+          "median": 641,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 641,
+          "max": 641,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "behaviors.product.gallery.gzip": {
+          "runs": [
+            770
+          ],
+          "n": 1,
+          "mean": 770,
+          "median": 770,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 770,
+          "max": 770,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "cssModules.coverageRatio": {
+          "runs": [
+            0.8138982773340194
+          ],
+          "n": 1,
+          "mean": 0.8138982773340194,
+          "median": 0.8138982773340194,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.8138982773340194,
+          "max": 0.8138982773340194,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "cssModules.identifiers": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "cssModules.modules": {
+          "runs": [
+            2
+          ],
+          "n": 1,
+          "mean": 2,
+          "median": 2,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2,
+          "max": 2,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "cssModules.wouldHaveCollided": {
+          "runs": [
+            3
+          ],
+          "n": 1,
+          "mean": 3,
+          "median": 3,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3,
+          "max": 3,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.CLS": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.FCP": {
+          "runs": [
+            148
+          ],
+          "n": 1,
+          "mean": 148,
+          "median": 148,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 148,
+          "max": 148,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.INP": {
+          "runs": [
+            40
+          ],
+          "n": 1,
+          "mean": 40,
+          "median": 40,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40,
+          "max": 40,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.LCP": {
+          "runs": [
+            148
+          ],
+          "n": 1,
+          "mean": 148,
+          "median": 148,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 148,
+          "max": 148,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.TTFB": {
+          "runs": [
+            3.1999999284744263
+          ],
+          "n": 1,
+          "mean": 3.1999999284744263,
+          "median": 3.1999999284744263,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.1999999284744263,
+          "max": 3.1999999284744263,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.domElements": {
+          "runs": [
+            336
+          ],
+          "n": 1,
+          "mean": 336,
+          "median": 336,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 336,
+          "max": 336,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.domNodes": {
+          "runs": [
+            1060
+          ],
+          "n": 1,
+          "mean": 1060,
+          "median": 1060,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1060,
+          "max": 1060,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.jsHeapMb": {
+          "runs": [
+            2.9614830017089844
+          ],
+          "n": 1,
+          "mean": 2.9614830017089844,
+          "median": 2.9614830017089844,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2.9614830017089844,
+          "max": 2.9614830017089844,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.layoutMs": {
+          "runs": [
+            33.192
+          ],
+          "n": 1,
+          "mean": 33.192,
+          "median": 33.192,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 33.192,
+          "max": 33.192,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.longTasks": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.scriptMs": {
+          "runs": [
+            42.118
+          ],
+          "n": 1,
+          "mean": 42.118,
+          "median": 42.118,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 42.118,
+          "max": 42.118,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.styleMs": {
+          "runs": [
+            44.174
+          ],
+          "n": 1,
+          "mean": 44.174,
+          "median": 44.174,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 44.174,
+          "max": 44.174,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./.taskMs": {
+          "runs": [
+            354.459
+          ],
+          "n": 1,
+          "mean": 354.459,
+          "median": 354.459,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 354.459,
+          "max": 354.459,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.CLS": {
+          "runs": [
+            0.007739325629340278
+          ],
+          "n": 1,
+          "mean": 0.007739325629340278,
+          "median": 0.007739325629340278,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.007739325629340278,
+          "max": 0.007739325629340278,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.FCP": {
+          "runs": [
+            124
+          ],
+          "n": 1,
+          "mean": 124,
+          "median": 124,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 124,
+          "max": 124,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.INP": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.LCP": {
+          "runs": [
+            124
+          ],
+          "n": 1,
+          "mean": 124,
+          "median": 124,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 124,
+          "max": 124,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.TTFB": {
+          "runs": [
+            2.100000023841858
+          ],
+          "n": 1,
+          "mean": 2.100000023841858,
+          "median": 2.100000023841858,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2.100000023841858,
+          "max": 2.100000023841858,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.domElements": {
+          "runs": [
+            137
+          ],
+          "n": 1,
+          "mean": 137,
+          "median": 137,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 137,
+          "max": 137,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.domNodes": {
+          "runs": [
+            456
+          ],
+          "n": 1,
+          "mean": 456,
+          "median": 456,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 456,
+          "max": 456,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.jsHeapMb": {
+          "runs": [
+            3.827930450439453
+          ],
+          "n": 1,
+          "mean": 3.827930450439453,
+          "median": 3.827930450439453,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.827930450439453,
+          "max": 3.827930450439453,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.layoutMs": {
+          "runs": [
+            18.441
+          ],
+          "n": 1,
+          "mean": 18.441,
+          "median": 18.441,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 18.441,
+          "max": 18.441,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.longTasks": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.scriptMs": {
+          "runs": [
+            43.574
+          ],
+          "n": 1,
+          "mean": 43.574,
+          "median": 43.574,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 43.574,
+          "max": 43.574,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.styleMs": {
+          "runs": [
+            33.385999999999996
+          ],
+          "n": 1,
+          "mean": 33.385999999999996,
+          "median": 33.385999999999996,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 33.385999999999996,
+          "max": 33.385999999999996,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./cart.taskMs": {
+          "runs": [
+            312.461
+          ],
+          "n": 1,
+          "mean": 312.461,
+          "median": 312.461,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 312.461,
+          "max": 312.461,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.CLS": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.FCP": {
+          "runs": [
+            144
+          ],
+          "n": 1,
+          "mean": 144,
+          "median": 144,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 144,
+          "max": 144,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.INP": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.LCP": {
+          "runs": [
+            144
+          ],
+          "n": 1,
+          "mean": 144,
+          "median": 144,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 144,
+          "max": 144,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.TTFB": {
+          "runs": [
+            4.199999928474426
+          ],
+          "n": 1,
+          "mean": 4.199999928474426,
+          "median": 4.199999928474426,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4.199999928474426,
+          "max": 4.199999928474426,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.domElements": {
+          "runs": [
+            259
+          ],
+          "n": 1,
+          "mean": 259,
+          "median": 259,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 259,
+          "max": 259,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.domNodes": {
+          "runs": [
+            734
+          ],
+          "n": 1,
+          "mean": 734,
+          "median": 734,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 734,
+          "max": 734,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.jsHeapMb": {
+          "runs": [
+            2.9196319580078125
+          ],
+          "n": 1,
+          "mean": 2.9196319580078125,
+          "median": 2.9196319580078125,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2.9196319580078125,
+          "max": 2.9196319580078125,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.layoutMs": {
+          "runs": [
+            22.285
+          ],
+          "n": 1,
+          "mean": 22.285,
+          "median": 22.285,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 22.285,
+          "max": 22.285,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.longTasks": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.scriptMs": {
+          "runs": [
+            42.269
+          ],
+          "n": 1,
+          "mean": 42.269,
+          "median": 42.269,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 42.269,
+          "max": 42.269,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.styleMs": {
+          "runs": [
+            34.909000000000006
+          ],
+          "n": 1,
+          "mean": 34.909000000000006,
+          "median": 34.909000000000006,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 34.909000000000006,
+          "max": 34.909000000000006,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq.taskMs": {
+          "runs": [
+            289.764
+          ],
+          "n": 1,
+          "mean": 289.764,
+          "median": 289.764,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 289.764,
+          "max": 289.764,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.CLS": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.FCP": {
+          "runs": [
+            144
+          ],
+          "n": 1,
+          "mean": 144,
+          "median": 144,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 144,
+          "max": 144,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.INP": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.LCP": {
+          "runs": [
+            144
+          ],
+          "n": 1,
+          "mean": 144,
+          "median": 144,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 144,
+          "max": 144,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.TTFB": {
+          "runs": [
+            2.100000023841858
+          ],
+          "n": 1,
+          "mean": 2.100000023841858,
+          "median": 2.100000023841858,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2.100000023841858,
+          "max": 2.100000023841858,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.domElements": {
+          "runs": [
+            196
+          ],
+          "n": 1,
+          "mean": 196,
+          "median": 196,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 196,
+          "max": 196,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.domNodes": {
+          "runs": [
+            572
+          ],
+          "n": 1,
+          "mean": 572,
+          "median": 572,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 572,
+          "max": 572,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.jsHeapMb": {
+          "runs": [
+            3.0082130432128906
+          ],
+          "n": 1,
+          "mean": 3.0082130432128906,
+          "median": 3.0082130432128906,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.0082130432128906,
+          "max": 3.0082130432128906,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.layoutMs": {
+          "runs": [
+            29.956
+          ],
+          "n": 1,
+          "mean": 29.956,
+          "median": 29.956,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 29.956,
+          "max": 29.956,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.longTasks": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.scriptMs": {
+          "runs": [
+            40.682
+          ],
+          "n": 1,
+          "mean": 40.682,
+          "median": 40.682,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.682,
+          "max": 40.682,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.styleMs": {
+          "runs": [
+            31.627000000000002
+          ],
+          "n": 1,
+          "mean": 31.627000000000002,
+          "median": 31.627000000000002,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 31.627000000000002,
+          "max": 31.627000000000002,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./faq/contact.taskMs": {
+          "runs": [
+            291.96
+          ],
+          "n": 1,
+          "mean": 291.96,
+          "median": 291.96,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 291.96,
+          "max": 291.96,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.CLS": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.FCP": {
+          "runs": [
+            172
+          ],
+          "n": 1,
+          "mean": 172,
+          "median": 172,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 172,
+          "max": 172,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.INP": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.LCP": {
+          "runs": [
+            172
+          ],
+          "n": 1,
+          "mean": 172,
+          "median": 172,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 172,
+          "max": 172,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.TTFB": {
+          "runs": [
+            7.899999976158142
+          ],
+          "n": 1,
+          "mean": 7.899999976158142,
+          "median": 7.899999976158142,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 7.899999976158142,
+          "max": 7.899999976158142,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.domElements": {
+          "runs": [
+            502
+          ],
+          "n": 1,
+          "mean": 502,
+          "median": 502,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 502,
+          "max": 502,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.domNodes": {
+          "runs": [
+            1337
+          ],
+          "n": 1,
+          "mean": 1337,
+          "median": 1337,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1337,
+          "max": 1337,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.jsHeapMb": {
+          "runs": [
+            3.146728515625
+          ],
+          "n": 1,
+          "mean": 3.146728515625,
+          "median": 3.146728515625,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.146728515625,
+          "max": 3.146728515625,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.layoutMs": {
+          "runs": [
+            33.388
+          ],
+          "n": 1,
+          "mean": 33.388,
+          "median": 33.388,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 33.388,
+          "max": 33.388,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.longTasks": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.scriptMs": {
+          "runs": [
+            48.344
+          ],
+          "n": 1,
+          "mean": 48.344,
+          "median": 48.344,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 48.344,
+          "max": 48.344,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.styleMs": {
+          "runs": [
+            41.029999999999994
+          ],
+          "n": 1,
+          "mean": 41.029999999999994,
+          "median": 41.029999999999994,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 41.029999999999994,
+          "max": 41.029999999999994,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product.taskMs": {
+          "runs": [
+            335.78799999999995
+          ],
+          "n": 1,
+          "mean": 335.78799999999995,
+          "median": 335.78799999999995,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 335.78799999999995,
+          "max": 335.78799999999995,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.CLS": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.FCP": {
+          "runs": [
+            168
+          ],
+          "n": 1,
+          "mean": 168,
+          "median": 168,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 168,
+          "max": 168,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.INP": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.LCP": {
+          "runs": [
+            168
+          ],
+          "n": 1,
+          "mean": 168,
+          "median": 168,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 168,
+          "max": 168,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.TBT": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.TTFB": {
+          "runs": [
+            2.5999999046325684
+          ],
+          "n": 1,
+          "mean": 2.5999999046325684,
+          "median": 2.5999999046325684,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 2.5999999046325684,
+          "max": 2.5999999046325684,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.domElements": {
+          "runs": [
+            356
+          ],
+          "n": 1,
+          "mean": 356,
+          "median": 356,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 356,
+          "max": 356,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.domNodes": {
+          "runs": [
+            911
+          ],
+          "n": 1,
+          "mean": 911,
+          "median": 911,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 911,
+          "max": 911,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.jsHeapMb": {
+          "runs": [
+            3.7297210693359375
+          ],
+          "n": 1,
+          "mean": 3.7297210693359375,
+          "median": 3.7297210693359375,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.7297210693359375,
+          "max": 3.7297210693359375,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.layoutMs": {
+          "runs": [
+            36.027
+          ],
+          "n": 1,
+          "mean": 36.027,
+          "median": 36.027,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 36.027,
+          "max": 36.027,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.longTasks": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.scriptMs": {
+          "runs": [
+            49.305
+          ],
+          "n": 1,
+          "mean": 49.305,
+          "median": 49.305,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 49.305,
+          "max": 49.305,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.styleMs": {
+          "runs": [
+            38.827
+          ],
+          "n": 1,
+          "mean": 38.827,
+          "median": 38.827,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 38.827,
+          "max": 38.827,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "documents./product/p-0001.taskMs": {
+          "runs": [
+            361.998
+          ],
+          "n": 1,
+          "mean": 361.998,
+          "median": 361.998,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 361.998,
+          "max": 361.998,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.cacheSaving": {
+          "runs": [
+            0.35
+          ],
+          "n": 1,
+          "mean": 0.35,
+          "median": 0.35,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.35,
+          "max": 0.35,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.coldBuildMs": {
+          "runs": [
+            7960
+          ],
+          "n": 1,
+          "mean": 7960,
+          "median": 7960,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 7960,
+          "max": 7960,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.editToBrowserMs": {
+          "runs": [
+            5514
+          ],
+          "n": 1,
+          "mean": 5514,
+          "median": 5514,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 5514,
+          "max": 5514,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.incrementalMs": {
+          "runs": [
+            912
+          ],
+          "n": 1,
+          "mean": 912,
+          "median": 912,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 912,
+          "max": 912,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.lintMs": {
+          "runs": [
+            9854
+          ],
+          "n": 1,
+          "mean": 9854,
+          "median": 9854,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 9854,
+          "max": 9854,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.cart.coldMs": {
+          "runs": [
+            1378
+          ],
+          "n": 1,
+          "mean": 1378,
+          "median": 1378,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1378,
+          "max": 1378,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.cart.warmMs": {
+          "runs": [
+            861
+          ],
+          "n": 1,
+          "mean": 861,
+          "median": 861,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 861,
+          "max": 861,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.chrome.coldMs": {
+          "runs": [
+            1298
+          ],
+          "n": 1,
+          "mean": 1298,
+          "median": 1298,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1298,
+          "max": 1298,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.chrome.warmMs": {
+          "runs": [
+            859
+          ],
+          "n": 1,
+          "mean": 859,
+          "median": 859,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 859,
+          "max": 859,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.faq.coldMs": {
+          "runs": [
+            1231
+          ],
+          "n": 1,
+          "mean": 1231,
+          "median": 1231,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1231,
+          "max": 1231,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.faq.warmMs": {
+          "runs": [
+            850
+          ],
+          "n": 1,
+          "mean": 850,
+          "median": 850,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 850,
+          "max": 850,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.my-account.coldMs": {
+          "runs": [
+            1333
+          ],
+          "n": 1,
+          "mean": 1333,
+          "median": 1333,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1333,
+          "max": 1333,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.my-account.warmMs": {
+          "runs": [
+            840
+          ],
+          "n": 1,
+          "mean": 840,
+          "median": 840,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 840,
+          "max": 840,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.product.coldMs": {
+          "runs": [
+            1575
+          ],
+          "n": 1,
+          "mean": 1575,
+          "median": 1575,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1575,
+          "max": 1575,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.product.warmMs": {
+          "runs": [
+            898
+          ],
+          "n": 1,
+          "mean": 898,
+          "median": 898,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 898,
+          "max": 898,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.storefront.coldMs": {
+          "runs": [
+            1146
+          ],
+          "n": 1,
+          "mean": 1146,
+          "median": 1146,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1146,
+          "max": 1146,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.perApp.storefront.warmMs": {
+          "runs": [
+            867
+          ],
+          "n": 1,
+          "mean": 867,
+          "median": 867,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 867,
+          "max": 867,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.startupMs": {
+          "runs": [
+            3369
+          ],
+          "n": 1,
+          "mean": 3369,
+          "median": 3369,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3369,
+          "max": 3369,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.testMs": {
+          "runs": [
+            5375
+          ],
+          "n": 1,
+          "mean": 5375,
+          "median": 5375,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 5375,
+          "max": 5375,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.typecheckMs": {
+          "runs": [
+            8684
+          ],
+          "n": 1,
+          "mean": 8684,
+          "median": 8684,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8684,
+          "max": 8684,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.unblockedMs": {
+          "runs": [
+            11330
+          ],
+          "n": 1,
+          "mean": 11330,
+          "median": 11330,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 11330,
+          "max": 11330,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "dx.warmBuildMs": {
+          "runs": [
+            5174
+          ],
+          "n": 1,
+          "mean": 5174,
+          "median": 5174,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 5174,
+          "max": 5174,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.byOwnerKbGzip.media": {
+          "runs": [
+            877.93
+          ],
+          "n": 1,
+          "mean": 877.93,
+          "median": 877.93,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 877.93,
+          "max": 877.93,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.12
+          ],
+          "n": 1,
+          "mean": 40.12,
+          "median": 40.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.12,
+          "max": 40.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.cssKbGzip": {
+          "runs": [
+            9.26
+          ],
+          "n": 1,
+          "mean": 9.26,
+          "median": 9.26,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 9.26,
+          "max": 9.26,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.cssSheets": {
+          "runs": [
+            3
+          ],
+          "n": 1,
+          "mean": 3,
+          "median": 3,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3,
+          "max": 3,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.requests": {
+          "runs": [
+            23
+          ],
+          "n": 1,
+          "mean": 23,
+          "median": 23,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 23,
+          "max": 23,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./.totalKbGzip": {
+          "runs": [
+            954.77
+          ],
+          "n": 1,
+          "mean": 954.77,
+          "median": 954.77,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 954.77,
+          "max": 954.77,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.byOwnerKbGzip.cart": {
+          "runs": [
+            65.85
+          ],
+          "n": 1,
+          "mean": 65.85,
+          "median": 65.85,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 65.85,
+          "max": 65.85,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.54
+          ],
+          "n": 1,
+          "mean": 40.54,
+          "median": 40.54,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.54,
+          "max": 40.54,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.cssKbGzip": {
+          "runs": [
+            12.9
+          ],
+          "n": 1,
+          "mean": 12.9,
+          "median": 12.9,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 12.9,
+          "max": 12.9,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.cssSheets": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.requests": {
+          "runs": [
+            19
+          ],
+          "n": 1,
+          "mean": 19,
+          "median": 19,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19,
+          "max": 19,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./cart.totalKbGzip": {
+          "runs": [
+            126.12
+          ],
+          "n": 1,
+          "mean": 126.12,
+          "median": 126.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 126.12,
+          "max": 126.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.byOwnerKbGzip.faq": {
+          "runs": [
+            3.68
+          ],
+          "n": 1,
+          "mean": 3.68,
+          "median": 3.68,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.68,
+          "max": 3.68,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.12
+          ],
+          "n": 1,
+          "mean": 40.12,
+          "median": 40.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.12,
+          "max": 40.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.cssKbGzip": {
+          "runs": [
+            12.94
+          ],
+          "n": 1,
+          "mean": 12.94,
+          "median": 12.94,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 12.94,
+          "max": 12.94,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.cssSheets": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.requests": {
+          "runs": [
+            13
+          ],
+          "n": 1,
+          "mean": 13,
+          "median": 13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 13,
+          "max": 13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq.totalKbGzip": {
+          "runs": [
+            80.51
+          ],
+          "n": 1,
+          "mean": 80.51,
+          "median": 80.51,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 80.51,
+          "max": 80.51,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.byOwnerKbGzip.faq": {
+          "runs": [
+            3.68
+          ],
+          "n": 1,
+          "mean": 3.68,
+          "median": 3.68,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.68,
+          "max": 3.68,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.12
+          ],
+          "n": 1,
+          "mean": 40.12,
+          "median": 40.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.12,
+          "max": 40.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.cssKbGzip": {
+          "runs": [
+            12.94
+          ],
+          "n": 1,
+          "mean": 12.94,
+          "median": 12.94,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 12.94,
+          "max": 12.94,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.cssSheets": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.requests": {
+          "runs": [
+            13
+          ],
+          "n": 1,
+          "mean": 13,
+          "median": 13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 13,
+          "max": 13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./faq/contact.totalKbGzip": {
+          "runs": [
+            80.51
+          ],
+          "n": 1,
+          "mean": 80.51,
+          "median": 80.51,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 80.51,
+          "max": 80.51,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.byOwnerKbGzip.my-account": {
+          "runs": [
+            93.9
+          ],
+          "n": 1,
+          "mean": 93.9,
+          "median": 93.9,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 93.9,
+          "max": 93.9,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.requests": {
+          "runs": [
+            14
+          ],
+          "n": 1,
+          "mean": 14,
+          "median": 14,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 14,
+          "max": 14,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./login.totalKbGzip": {
+          "runs": [
+            130.62
+          ],
+          "n": 1,
+          "mean": 130.62,
+          "median": 130.62,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 130.62,
+          "max": 130.62,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.cart": {
+          "runs": [
+            45.84
+          ],
+          "n": 1,
+          "mean": 45.84,
+          "median": 45.84,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 45.84,
+          "max": 45.84,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.chrome": {
+          "runs": [
+            3.72
+          ],
+          "n": 1,
+          "mean": 3.72,
+          "median": 3.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.72,
+          "max": 3.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.faq": {
+          "runs": [
+            48.02
+          ],
+          "n": 1,
+          "mean": 48.02,
+          "median": 48.02,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 48.02,
+          "max": 48.02,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.media": {
+          "runs": [
+            15.13
+          ],
+          "n": 1,
+          "mean": 15.13,
+          "median": 15.13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 15.13,
+          "max": 15.13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.my-account": {
+          "runs": [
+            104.12
+          ],
+          "n": 1,
+          "mean": 104.12,
+          "median": 104.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 104.12,
+          "max": 104.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.byOwnerKbGzip.product": {
+          "runs": [
+            65.16
+          ],
+          "n": 1,
+          "mean": 65.16,
+          "median": 65.16,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 65.16,
+          "max": 65.16,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.requests": {
+          "runs": [
+            32
+          ],
+          "n": 1,
+          "mean": 32,
+          "median": 32,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 32,
+          "max": 32,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account.totalKbGzip": {
+          "runs": [
+            281.99
+          ],
+          "n": 1,
+          "mean": 281.99,
+          "median": 281.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 281.99,
+          "max": 281.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.byOwnerKbGzip.chrome": {
+          "runs": [
+            3.72
+          ],
+          "n": 1,
+          "mean": 3.72,
+          "median": 3.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.72,
+          "max": 3.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.byOwnerKbGzip.my-account": {
+          "runs": [
+            104.01
+          ],
+          "n": 1,
+          "mean": 104.01,
+          "median": 104.01,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 104.01,
+          "max": 104.01,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.requests": {
+          "runs": [
+            14
+          ],
+          "n": 1,
+          "mean": 14,
+          "median": 14,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 14,
+          "max": 14,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/orders.totalKbGzip": {
+          "runs": [
+            124.73
+          ],
+          "n": 1,
+          "mean": 124.73,
+          "median": 124.73,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 124.73,
+          "max": 124.73,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.byOwnerKbGzip.chrome": {
+          "runs": [
+            3.72
+          ],
+          "n": 1,
+          "mean": 3.72,
+          "median": 3.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3.72,
+          "max": 3.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.byOwnerKbGzip.my-account": {
+          "runs": [
+            95.9
+          ],
+          "n": 1,
+          "mean": 95.9,
+          "median": 95.9,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 95.9,
+          "max": 95.9,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.requests": {
+          "runs": [
+            13
+          ],
+          "n": 1,
+          "mean": 13,
+          "median": 13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 13,
+          "max": 13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./my-account/profile.totalKbGzip": {
+          "runs": [
+            116.62
+          ],
+          "n": 1,
+          "mean": 116.62,
+          "median": 116.62,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 116.62,
+          "max": 116.62,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.byOwnerKbGzip.cart": {
+          "runs": [
+            16.99
+          ],
+          "n": 1,
+          "mean": 16.99,
+          "median": 16.99,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 16.99,
+          "max": 16.99,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.byOwnerKbGzip.media": {
+          "runs": [
+            57.95
+          ],
+          "n": 1,
+          "mean": 57.95,
+          "median": 57.95,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 57.95,
+          "max": 57.95,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.byOwnerKbGzip.product": {
+          "runs": [
+            20.03
+          ],
+          "n": 1,
+          "mean": 20.03,
+          "median": 20.03,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 20.03,
+          "max": 20.03,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.12
+          ],
+          "n": 1,
+          "mean": 40.12,
+          "median": 40.12,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.12,
+          "max": 40.12,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.cssKbGzip": {
+          "runs": [
+            13.03
+          ],
+          "n": 1,
+          "mean": 13.03,
+          "median": 13.03,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 13.03,
+          "max": 13.03,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.cssSheets": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.requests": {
+          "runs": [
+            20
+          ],
+          "n": 1,
+          "mean": 20,
+          "median": 20,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 20,
+          "max": 20,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product.totalKbGzip": {
+          "runs": [
+            154.81
+          ],
+          "n": 1,
+          "mean": 154.81,
+          "median": 154.81,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 154.81,
+          "max": 154.81,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.byOwnerKbGzip.cart": {
+          "runs": [
+            59.9
+          ],
+          "n": 1,
+          "mean": 59.9,
+          "median": 59.9,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 59.9,
+          "max": 59.9,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.byOwnerKbGzip.chrome": {
+          "runs": [
+            19.72
+          ],
+          "n": 1,
+          "mean": 19.72,
+          "median": 19.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 19.72,
+          "max": 19.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.byOwnerKbGzip.media": {
+          "runs": [
+            77.85
+          ],
+          "n": 1,
+          "mean": 77.85,
+          "median": 77.85,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 77.85,
+          "max": 77.85,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.byOwnerKbGzip.product": {
+          "runs": [
+            20.59
+          ],
+          "n": 1,
+          "mean": 20.59,
+          "median": 20.59,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 20.59,
+          "max": 20.59,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.byOwnerKbGzip.storefront": {
+          "runs": [
+            40.54
+          ],
+          "n": 1,
+          "mean": 40.54,
+          "median": 40.54,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 40.54,
+          "max": 40.54,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.cssKbGzip": {
+          "runs": [
+            17
+          ],
+          "n": 1,
+          "mean": 17,
+          "median": 17,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 17,
+          "max": 17,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.cssSheets": {
+          "runs": [
+            6
+          ],
+          "n": 1,
+          "mean": 6,
+          "median": 6,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 6,
+          "max": 6,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.leakedKbGzip": {
+          "runs": [
+            0
+          ],
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0,
+          "max": 0,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.requests": {
+          "runs": [
+            32
+          ],
+          "n": 1,
+          "mean": 32,
+          "median": 32,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 32,
+          "max": 32,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "perRoute./product/p-0001.totalKbGzip": {
+          "runs": [
+            218.61
+          ],
+          "n": 1,
+          "mean": 218.61,
+          "median": 218.61,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 218.61,
+          "max": 218.61,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.coresUsed": {
+          "runs": [
+            1.483
+          ],
+          "n": 1,
+          "mean": 1.483,
+          "median": 1.483,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1.483,
+          "max": 1.483,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.cpuPerRequestMs": {
+          "runs": [
+            0.846
+          ],
+          "n": 1,
+          "mean": 0.846,
+          "median": 0.846,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.846,
+          "max": 0.846,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.cpuSystemMs": {
+          "runs": [
+            533.1
+          ],
+          "n": 1,
+          "mean": 533.1,
+          "median": 533.1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 533.1,
+          "max": 533.1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.cpuUserMs": {
+          "runs": [
+            11348.59
+          ],
+          "n": 1,
+          "mean": 11348.59,
+          "median": 11348.59,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 11348.59,
+          "max": 11348.59,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.eventLoopUtilization": {
+          "runs": [
+            0.8664
+          ],
+          "n": 1,
+          "mean": 0.8664,
+          "median": 0.8664,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.8664,
+          "max": 0.8664,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.gcPauseMs": {
+          "runs": [
+            136.38
+          ],
+          "n": 1,
+          "mean": 136.38,
+          "median": 136.38,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 136.38,
+          "max": 136.38,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.heapUsedMb": {
+          "runs": [
+            89.64
+          ],
+          "n": 1,
+          "mean": 89.64,
+          "median": 89.64,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 89.64,
+          "max": 89.64,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.p50Ms": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.p99Ms": {
+          "runs": [
+            6
+          ],
+          "n": 1,
+          "mean": 6,
+          "median": 6,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 6,
+          "max": 6,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.rps": {
+          "runs": [
+            1754.38
+          ],
+          "n": 1,
+          "mean": 1754.38,
+          "median": 1754.38,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1754.38,
+          "max": 1754.38,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./.rssMb": {
+          "runs": [
+            388.44
+          ],
+          "n": 1,
+          "mean": 388.44,
+          "median": 388.44,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 388.44,
+          "max": 388.44,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.coresUsed": {
+          "runs": [
+            1.428
+          ],
+          "n": 1,
+          "mean": 1.428,
+          "median": 1.428,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1.428,
+          "max": 1.428,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.cpuPerRequestMs": {
+          "runs": [
+            0.338
+          ],
+          "n": 1,
+          "mean": 0.338,
+          "median": 0.338,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.338,
+          "max": 0.338,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.cpuSystemMs": {
+          "runs": [
+            1060.07
+          ],
+          "n": 1,
+          "mean": 1060.07,
+          "median": 1060.07,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1060.07,
+          "max": 1060.07,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.cpuUserMs": {
+          "runs": [
+            10377.95
+          ],
+          "n": 1,
+          "mean": 10377.95,
+          "median": 10377.95,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 10377.95,
+          "max": 10377.95,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.eventLoopUtilization": {
+          "runs": [
+            0.9554
+          ],
+          "n": 1,
+          "mean": 0.9554,
+          "median": 0.9554,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.9554,
+          "max": 0.9554,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.gcPauseMs": {
+          "runs": [
+            121.54
+          ],
+          "n": 1,
+          "mean": 121.54,
+          "median": 121.54,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 121.54,
+          "max": 121.54,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.heapUsedMb": {
+          "runs": [
+            59.74
+          ],
+          "n": 1,
+          "mean": 59.74,
+          "median": 59.74,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 59.74,
+          "max": 59.74,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.p50Ms": {
+          "runs": [
+            1
+          ],
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1,
+          "max": 1,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.p99Ms": {
+          "runs": [
+            3
+          ],
+          "n": 1,
+          "mean": 3,
+          "median": 3,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 3,
+          "max": 3,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.rps": {
+          "runs": [
+            4229
+          ],
+          "n": 1,
+          "mean": 4229,
+          "median": 4229,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4229,
+          "max": 4229,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./my-account.rssMb": {
+          "runs": [
+            307.11
+          ],
+          "n": 1,
+          "mean": 307.11,
+          "median": 307.11,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 307.11,
+          "max": 307.11,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.coresUsed": {
+          "runs": [
+            1.357
+          ],
+          "n": 1,
+          "mean": 1.357,
+          "median": 1.357,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1.357,
+          "max": 1.357,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.cpuPerRequestMs": {
+          "runs": [
+            1.138
+          ],
+          "n": 1,
+          "mean": 1.138,
+          "median": 1.138,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1.138,
+          "max": 1.138,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.cpuSystemMs": {
+          "runs": [
+            775.39
+          ],
+          "n": 1,
+          "mean": 775.39,
+          "median": 775.39,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 775.39,
+          "max": 775.39,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.cpuUserMs": {
+          "runs": [
+            10097.13
+          ],
+          "n": 1,
+          "mean": 10097.13,
+          "median": 10097.13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 10097.13,
+          "max": 10097.13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.eventLoopUtilization": {
+          "runs": [
+            0.8692
+          ],
+          "n": 1,
+          "mean": 0.8692,
+          "median": 0.8692,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.8692,
+          "max": 0.8692,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.gcPauseMs": {
+          "runs": [
+            202.58
+          ],
+          "n": 1,
+          "mean": 202.58,
+          "median": 202.58,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 202.58,
+          "max": 202.58,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.heapUsedMb": {
+          "runs": [
+            90.58
+          ],
+          "n": 1,
+          "mean": 90.58,
+          "median": 90.58,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 90.58,
+          "max": 90.58,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.p50Ms": {
+          "runs": [
+            6
+          ],
+          "n": 1,
+          "mean": 6,
+          "median": 6,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 6,
+          "max": 6,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.p99Ms": {
+          "runs": [
+            14
+          ],
+          "n": 1,
+          "mean": 14,
+          "median": 14,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 14,
+          "max": 14,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.rps": {
+          "runs": [
+            1193.13
+          ],
+          "n": 1,
+          "mean": 1193.13,
+          "median": 1193.13,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1193.13,
+          "max": 1193.13,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product.rssMb": {
+          "runs": [
+            449.06
+          ],
+          "n": 1,
+          "mean": 449.06,
+          "median": 449.06,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 449.06,
+          "max": 449.06,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.coresUsed": {
+          "runs": [
+            1.355
+          ],
+          "n": 1,
+          "mean": 1.355,
+          "median": 1.355,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1.355,
+          "max": 1.355,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.cpuPerRequestMs": {
+          "runs": [
+            0.795
+          ],
+          "n": 1,
+          "mean": 0.795,
+          "median": 0.795,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.795,
+          "max": 0.795,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.cpuSystemMs": {
+          "runs": [
+            531.72
+          ],
+          "n": 1,
+          "mean": 531.72,
+          "median": 531.72,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 531.72,
+          "max": 531.72,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.cpuUserMs": {
+          "runs": [
+            10320.47
+          ],
+          "n": 1,
+          "mean": 10320.47,
+          "median": 10320.47,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 10320.47,
+          "max": 10320.47,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.eventLoopUtilization": {
+          "runs": [
+            0.8453
+          ],
+          "n": 1,
+          "mean": 0.8453,
+          "median": 0.8453,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.8453,
+          "max": 0.8453,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.gcPauseMs": {
+          "runs": [
+            134.38
+          ],
+          "n": 1,
+          "mean": 134.38,
+          "median": 134.38,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 134.38,
+          "max": 134.38,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.heapUsedMb": {
+          "runs": [
+            136.54
+          ],
+          "n": 1,
+          "mean": 136.54,
+          "median": 136.54,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 136.54,
+          "max": 136.54,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.p50Ms": {
+          "runs": [
+            4
+          ],
+          "n": 1,
+          "mean": 4,
+          "median": 4,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 4,
+          "max": 4,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.p99Ms": {
+          "runs": [
+            8
+          ],
+          "n": 1,
+          "mean": 8,
+          "median": 8,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 8,
+          "max": 8,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.rps": {
+          "runs": [
+            1706
+          ],
+          "n": 1,
+          "mean": 1706,
+          "median": 1706,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 1706,
+          "max": 1706,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "server./product/p-0001.rssMb": {
+          "runs": [
+            412.16
+          ],
+          "n": 1,
+          "mean": 412.16,
+          "median": 412.16,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 412.16,
+          "max": 412.16,
+          "range": 0,
+          "stability": "deterministic"
+        },
+        "sustainedHeap.perRequestKb": {
+          "runs": [
+            0.033
+          ],
+          "n": 1,
+          "mean": 0.033,
+          "median": 0.033,
+          "stdev": 0,
+          "cvPct": 0,
+          "min": 0.033,
+          "max": 0.033,
+          "range": 0,
+          "stability": "deterministic"
+        }
+      }
+    }
+  },
+  "comparisons": {},
+  "machine": {
+    "cpu": "Apple M4 Pro",
+    "cores": 14,
+    "memoryGb": 48,
+    "ci": false
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "v8": "13.6.233.10-node.28",
+    "platform": "darwin-arm64"
+  }
+}
