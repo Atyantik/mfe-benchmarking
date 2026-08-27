@@ -27,8 +27,22 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 export function groupedBars({ title, subtitle, rows, unit, threshold = null, lowerIsBetter = true }) {
   if (!rows.length) return '';
 
+  /**
+   * A chart of zeros is not a chart.
+   *
+   * Total Blocking Time and Cumulative Layout Shift are zero on almost every route here, which
+   * is the best possible result and the least possible bar. Six rows of invisible slivers
+   * labelled `0.0000` reads as a broken render; one sentence reads as the finding it is.
+   */
+  const everyValue = rows.flatMap((r) => r.series.map((s) => s.mean));
+  if (everyValue.every((v) => v === 0)) {
+    return `<div class="c-flat"><strong>${esc(title)}</strong><span>zero on every route, both stacks — ` +
+      `the best available result, and nothing to plot.</span></div>`;
+  }
+
   const LABEL_W = 132;
-  const PLOT_W = 430;
+  // Leaves room for a value label to the right of the widest whisker.
+  const PLOT_W = 396;
   const BAR_H = 13;
   const GAP = 4;
   const ROW_PAD = 13;
@@ -92,8 +106,11 @@ export function groupedBars({ title, subtitle, rows, unit, threshold = null, low
           `<line x1="${x(s.max).toFixed(1)}" y1="${y0 - 3}" x2="${x(s.max).toFixed(1)}" y2="${y0 + 3}" class="c-whisker"/>`,
         );
       }
+      // Placed clear of the whisker rather than at the bar end, so a wide spread does not draw
+      // a line through its own label.
+      const labelX = LABEL_W + Math.max(w, s.max * scale) + 7;
       parts.push(
-        `<text x="${(LABEL_W + w + 6).toFixed(1)}" y="${y + BAR_H - 3}" class="c-value">${fmtValue(s.mean, unit)}</text>`,
+        `<text x="${labelX.toFixed(1)}" y="${y + BAR_H - 3}" class="c-value">${fmtValue(s.mean, unit)}</text>`,
       );
     });
   });
@@ -133,4 +150,7 @@ export const CHART_STYLE = `
 .c-whisker{stroke:var(--ink-900);stroke-width:1;opacity:.55}
 .c-threshold{stroke:var(--stop);stroke-width:1;stroke-dasharray:3 3;opacity:.75}
 .c-threshold-label{font-size:9px;fill:var(--stop);font-family:"IBM Plex Mono",monospace}
+.c-flat{display:flex;flex-direction:column;gap:.2rem;padding:.7rem .8rem;border-left:2px solid var(--ok);background:var(--sunken);border-radius:2px;font-family:Archivo,sans-serif}
+.c-flat strong{font-size:.8rem;color:var(--ink-900)}
+.c-flat span{font-size:.75rem;color:var(--ink-500)}
 `;
