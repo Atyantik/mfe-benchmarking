@@ -15,6 +15,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
 import { describe } from './lib/dictionary.mjs';
+import { renderHtml } from './lib/report-html.mjs';
 
 const datasetPath = process.argv[2];
 if (!datasetPath) {
@@ -290,3 +291,14 @@ w('');
 const md = L.join('\n');
 writeFileSync(join(outDir, 'report.md'), `${md}\n`);
 console.log(`\nwrote ${join(outDir, 'report.md')} (${(md.length / 1024).toFixed(1)} kB)`);
+
+/**
+ * The same dataset as a page.
+ *
+ * The markdown is the archival record — it lives in git and reviews cleanly. This is what gets
+ * sent to someone who has to make a decision from it, and it exists beside rather than instead
+ * of the markdown for that reason.
+ */
+const html = renderHtml(data);
+writeFileSync(join(outDir, 'report.html'), `${html}\n`);
+console.log(`wrote ${join(outDir, 'report.html')} (${(html.length / 1024).toFixed(1)} kB)`);

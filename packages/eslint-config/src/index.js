@@ -173,6 +173,19 @@ export function defineAppLint({ tsconfigRootDir }) {
         'no-console': 'off',
       },
     },
+    /**
+     * The bench's report renderers emit a STANDALONE page.
+     *
+     * `no-raw-color` is right for application code: a hex literal there is a value that
+     * survives a rebrand and nobody can find. A generated report has no design system to draw
+     * from — it is a single self-contained artifact with no access to the app's tokens, and
+     * pointing it at `var(--color-brand-700)` would produce a page that renders unstyled
+     * everywhere except inside the application it is reporting on.
+     */
+    {
+      files: ['packages/bench/src/lib/report-html.mjs', 'packages/bench/src/report.mjs'],
+      rules: { 'mf/no-raw-color': 'off' },
+    },
     // Build configuration is not application code.
     {
       files: [
