@@ -77,10 +77,17 @@ put 19.9 kB of cart CSS on every page of the site, measuring **0% used** on `/fa
 byte budgets did not catch it: they measure what an app builds, not what a page fetches.
 Making the badge self-contained took `/` from 29.1 to 9.24 kB gzip of CSS.
 
-**Throughput needs more than one run before it is a result.** Server request rate reversed
-sign between two runs of the same builds — Svelte +7…+11% in one, −11…−14% in the next. Byte
-counts and main-thread times reproduce exactly; SSR throughput does not, and an earlier
-version of the comparison reported that first run as a difference. It was not.
+**A measurement harness needs the same scepticism as the thing it measures.** Server throughput
+was claimed from one run, retracted as noise from two more, and finally resolved at n=3 through
+a harness that verifies the right stack is serving before it measures: Svelte is faster by
+6.6–10.0%, at 0.4–3.8% variance. Both earlier positions were under-evidenced, and the middle
+pair was most likely contaminated by a server that outlived its stack — the exact condition the
+harness now refuses to measure through.
+
+**A crash is not a failed check, and tooling that conflates them costs hours.** The behaviours
+suite ended two 45-minute research runs by dying inside a Playwright route handler, where an
+unhandled rejection ends the process. Both times it presented as a hang: two sections of output
+and a summary saying "scroll up for the failing checks" with none to find.
 
 **A framework's size is a property of how many times you pay for it.** Svelte's runtime is
 3.3× smaller than React's — and cannot be shared between remotes, while React's can. Measured
