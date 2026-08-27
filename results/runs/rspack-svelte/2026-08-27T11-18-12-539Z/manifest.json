@@ -1,0 +1,815 @@
+{
+  "generatedAt": "2026-08-27T11:18:12.539Z",
+  "stack": "rspack-svelte",
+  "specVersion": 4,
+  "catalogHash": "c3b6a5fafb68",
+  "git": {
+    "commit": "61ac3d162271c02ce6f8ea76a9c467481aa58f2e",
+    "shortCommit": "61ac3d1",
+    "branch": "main",
+    "dirty": false
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "v8": "13.6.233.10-node.28",
+    "platform": "darwin-arm64"
+  },
+  "machine": {
+    "cpu": "Apple M4 Pro",
+    "cores": 14,
+    "memoryGb": 48,
+    "ci": false
+  },
+  "profile": {
+    "id": "constrained",
+    "label": "Constrained device on Slow 4G, reference viewport",
+    "describe": "Lighthouse mobile conditions at the reference viewport: 4x CPU slowdown, 1.6 Mbps down, 750 Kbps up, 150 ms RTT, four cores, 512 MB heap cap."
+  },
+  "benchEnv": {
+    "mfConfig": "site",
+    "optimize": false,
+    "esm": false
+  },
+  "parameters": {
+    "profile": {
+      "id": "constrained",
+      "label": "Constrained device on Slow 4G, reference viewport",
+      "cpuThrottleRate": 4,
+      "network": {
+        "downloadKbps": 1638,
+        "uploadKbps": 750,
+        "latencyMs": 150
+      },
+      "hardwareConcurrency": 4,
+      "v8HeapCapMb": 512,
+      "viewport": "reference (unchanged)",
+      "available": [
+        "desktop",
+        "constrained",
+        "mobile"
+      ]
+    },
+    "environment": {
+      "MF_RUNS": "3",
+      "MF_STACK": "rspack-svelte"
+    },
+    "toolchain": {
+      "node": "v24.11.1",
+      "v8": "13.6.233.10-node.28",
+      "playwright": "1.62.1",
+      "rspack": "2.1.10",
+      "rsbuild": "2.1.13",
+      "moduleFederation": "2.8.2",
+      "react": "19.2.8",
+      "svelte": "5.56.10",
+      "tailwindcss": "4.3.3",
+      "autocannon": "8.0.0",
+      "axeCore": "4.10.3",
+      "webVitals": "6.1.1"
+    },
+    "topology": {
+      "hosts": [
+        {
+          "name": "storefront",
+          "port": 3110,
+          "prefix": "/",
+          "navigation": "document"
+        },
+        {
+          "name": "my-account",
+          "port": 3120,
+          "prefix": "/my-account",
+          "navigation": "zone"
+        }
+      ],
+      "remotes": [
+        {
+          "name": "chrome",
+          "port": 3104,
+          "kind": "component"
+        },
+        {
+          "name": "faq",
+          "port": 3101,
+          "kind": "route"
+        },
+        {
+          "name": "product",
+          "port": 3102,
+          "kind": "route"
+        },
+        {
+          "name": "cart",
+          "port": 3103,
+          "kind": "route+component"
+        }
+      ],
+      "routeCount": 10,
+      "documentRoutes": [
+        "/",
+        "/faq",
+        "/faq/contact",
+        "/product",
+        "/product/p-0001",
+        "/cart"
+      ],
+      "zoneRoutes": [
+        "/login",
+        "/my-account",
+        "/my-account/orders",
+        "/my-account/profile"
+      ]
+    },
+    "sharedDependencies": {
+      "@mf-eval/media": {
+        "version": "0.0.0",
+        "singleton": true,
+        "requiredVersion": null
+      },
+      "@mf-eval/contracts": {
+        "version": "0.0.0",
+        "singleton": true,
+        "requiredVersion": null
+      }
+    },
+    "budgets": {
+      "vitals": {
+        "document": {
+          "LCP": 2500,
+          "CLS": 0.1,
+          "INP": 200,
+          "TBT": 300,
+          "TTFB": 800,
+          "FCP": 1800
+        },
+        "soft": {
+          "LCP": 1200,
+          "CLS": 0.02,
+          "INP": 200
+        },
+        "cpu": {
+          "taskMs": 600,
+          "jsHeapMb": 40
+        },
+        "waivers": {
+          "/": {
+            "LCP": {
+              "limit": 3000,
+              "reason": "the LCP element is the hero video's poster (110 kB AVIF) on a media-heavy page. Cropping it to the video ratio and moving it off JPEG took it from 180 kB to 110 kB and LCP from 2964 ms to 2644 ms; a high-priority preload measured as a no-op because the page is bandwidth-bound rather than discovery-bound. Affects both stacks equally. See docs/media.md."
+            }
+          }
+        }
+      },
+      "suites": {
+        "behaviors": {
+          "behaviorGzip": 3000,
+          "pageBehaviorGzip": 8000,
+          "attachMs": 64,
+          "longTaskMs": 50,
+          "runtimeMs": 240,
+          "coveragePct": 20
+        },
+        "css": {
+          "moduleGzip": 2000,
+          "minCoveragePct": 25,
+          "minSheetUsePct": 5,
+          "routeCssGzip": 24000
+        },
+        "dx": {
+          "coldBuildS": 600,
+          "warmBuildS": 300,
+          "incrementalS": 120,
+          "startupS": 120,
+          "unblockedS": 900
+        },
+        "media": {
+          "imageBytes": 300000,
+          "routeImageBytes": 1100000,
+          "videoBytes": 950000,
+          "oversizeFactor": 2.5
+        },
+        "ssr": {
+          "cpuPerRequestMs": 40,
+          "p99Ms": 400,
+          "loopDelayP99Ms": 120,
+          "heapPerRequestKb": 4,
+          "gcPauseMs": 120
+        },
+        "vitals": {
+          "document": {
+            "LCP": 2500,
+            "CLS": 0.1,
+            "INP": 200,
+            "TBT": 300,
+            "TTFB": 800,
+            "FCP": 1800
+          },
+          "soft": {
+            "LCP": 1200,
+            "CLS": 0.02,
+            "INP": 200
+          },
+          "cpu": {
+            "taskMs": 600,
+            "jsHeapMb": 40
+          },
+          "waivers": {
+            "/": {
+              "LCP": {
+                "limit": 3000,
+                "reason": "the LCP element is the hero video's poster (110 kB AVIF) on a media-heavy page. Cropping it to the video ratio and moving it off JPEG took it from 180 kB to 110 kB and LCP from 2964 ms to 2644 ms; a high-priority preload measured as a no-op because the page is bandwidth-bound rather than discovery-bound. Affects both stacks equally. See docs/media.md."
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "suites": {
+    "a11y": {
+      "file": "a11y.json",
+      "generatedAt": "2026-08-27T11:15:59.224Z"
+    },
+    "auth": {
+      "file": "auth.json",
+      "generatedAt": "2026-08-27T11:12:38.549Z",
+      "passed": 40,
+      "total": 40,
+      "failed": 0
+    },
+    "behaviors": {
+      "file": "behaviors.site.json",
+      "generatedAt": "2026-08-27T11:14:06.499Z",
+      "passed": 117,
+      "total": 117,
+      "failed": 0
+    },
+    "contract": {
+      "file": "contract.json",
+      "generatedAt": "2026-08-27T11:12:34.792Z",
+      "passed": 22,
+      "total": 22,
+      "failed": 0
+    },
+    "css": {
+      "file": "css.site.json",
+      "generatedAt": "2026-08-27T11:12:55.559Z",
+      "passed": 65,
+      "total": 65,
+      "failed": 0
+    },
+    "dx": {
+      "file": "dx.json",
+      "generatedAt": "2026-08-27T11:18:12.159Z",
+      "passed": 12,
+      "total": 12,
+      "failed": 0
+    },
+    "hosts": {
+      "file": "hosts.json",
+      "generatedAt": "2026-08-27T11:11:26.003Z",
+      "passed": 43,
+      "total": 43,
+      "failed": 0
+    },
+    "leakage": {
+      "file": "leakage.json",
+      "generatedAt": "2026-08-27T11:12:19.304Z"
+    },
+    "media": {
+      "file": "media.json",
+      "generatedAt": "2026-08-27T11:13:08.636Z",
+      "passed": 27,
+      "total": 27,
+      "failed": 0
+    },
+    "ssr": {
+      "file": "ssr.json",
+      "generatedAt": "2026-08-27T11:17:16.623Z",
+      "passed": 11,
+      "total": 11,
+      "failed": 0
+    },
+    "vitals": {
+      "file": "vitals.json",
+      "generatedAt": "2026-08-27T11:15:44.937Z",
+      "passed": 14,
+      "total": 14,
+      "failed": 0
+    },
+    "waste-audit": {
+      "file": "waste-audit.baseline.json",
+      "generatedAt": "2026-08-27T11:15:59.602Z"
+    },
+    "widgets": {
+      "file": "widgets.json",
+      "generatedAt": "2026-08-27T11:12:48.180Z",
+      "passed": 17,
+      "total": 17,
+      "failed": 0
+    }
+  },
+  "headline": {
+    "perRoute": {
+      "/": {
+        "requests": 23,
+        "totalKbGzip": 889.43,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "cart": 16.99,
+          "media": 812.6
+        },
+        "cssKbGzip": 9.26,
+        "cssSheets": 3
+      },
+      "/faq": {
+        "requests": 13,
+        "totalKbGzip": 80.52,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "faq": 3.68,
+          "cart": 16.99
+        },
+        "cssKbGzip": 12.94,
+        "cssSheets": 4
+      },
+      "/faq/contact": {
+        "requests": 13,
+        "totalKbGzip": 80.52,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "faq": 3.68,
+          "cart": 16.99
+        },
+        "cssKbGzip": 12.94,
+        "cssSheets": 4
+      },
+      "/product": {
+        "requests": 20,
+        "totalKbGzip": 154.81,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.12,
+          "chrome": 19.73,
+          "product": 20.03,
+          "cart": 16.99,
+          "media": 57.95
+        },
+        "cssKbGzip": 13.03,
+        "cssSheets": 4
+      },
+      "/product/p-0001": {
+        "requests": 32,
+        "totalKbGzip": 218.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.54,
+          "chrome": 19.73,
+          "product": 20.59,
+          "cart": 59.92,
+          "media": 77.85
+        },
+        "cssKbGzip": 17,
+        "cssSheets": 6
+      },
+      "/cart": {
+        "requests": 19,
+        "totalKbGzip": 126.13,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "storefront": 40.54,
+          "chrome": 19.73,
+          "cart": 65.87
+        },
+        "cssKbGzip": 12.9,
+        "cssSheets": 4
+      },
+      "/login": {
+        "requests": 14,
+        "totalKbGzip": 130.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 93.92,
+          "chrome": 19.73,
+          "cart": 16.99
+        }
+      },
+      "/my-account": {
+        "requests": 32,
+        "totalKbGzip": 282.01,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 104.13,
+          "chrome": 3.72,
+          "cart": 45.84,
+          "product": 65.16,
+          "faq": 48.02,
+          "media": 15.13
+        }
+      },
+      "/my-account/orders": {
+        "requests": 14,
+        "totalKbGzip": 124.74,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 104.03,
+          "chrome": 3.72,
+          "cart": 16.99
+        }
+      },
+      "/my-account/profile": {
+        "requests": 13,
+        "totalKbGzip": 116.63,
+        "leakedKbGzip": 0,
+        "byOwnerKbGzip": {
+          "my-account": 95.92,
+          "chrome": 3.72,
+          "cart": 16.99
+        }
+      }
+    },
+    "documents": {
+      "/": {
+        "LCP": 2648,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1000,
+        "TTFB": 7,
+        "taskMs": 383.23,
+        "scriptMs": 41.974,
+        "layoutMs": 34.354,
+        "styleMs": 42.681,
+        "jsHeapMb": 2.6190834045410156,
+        "domNodes": 1005,
+        "domElements": 323,
+        "headLinks": 7,
+        "longTasks": 0
+      },
+      "/faq": {
+        "LCP": 820,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 820,
+        "TTFB": 6.899999976158142,
+        "taskMs": 291.352,
+        "scriptMs": 41.54,
+        "layoutMs": 23.168000000000003,
+        "styleMs": 33.215,
+        "jsHeapMb": 2.9402389526367188,
+        "domNodes": 734,
+        "domElements": 245,
+        "headLinks": 8,
+        "longTasks": 0
+      },
+      "/faq/contact": {
+        "LCP": 828,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 828,
+        "TTFB": 2.5,
+        "taskMs": 289.983,
+        "scriptMs": 41.666000000000004,
+        "layoutMs": 26.346,
+        "styleMs": 32.256,
+        "jsHeapMb": 3.01934814453125,
+        "domNodes": 573,
+        "domElements": 182,
+        "headLinks": 8,
+        "longTasks": 0
+      },
+      "/product": {
+        "LCP": 1112,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1112,
+        "TTFB": 7.600000023841858,
+        "taskMs": 339.185,
+        "scriptMs": 46.057,
+        "layoutMs": 35.787,
+        "styleMs": 39.353,
+        "jsHeapMb": 3.1516265869140625,
+        "domNodes": 1339,
+        "domElements": 486,
+        "headLinks": 10,
+        "longTasks": 0
+      },
+      "/product/p-0001": {
+        "LCP": 1128,
+        "CLS": 0,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 1128,
+        "TTFB": 2.799999952316284,
+        "taskMs": 374.756,
+        "scriptMs": 47.684999999999995,
+        "layoutMs": 35.034000000000006,
+        "styleMs": 39.429,
+        "jsHeapMb": 3.6587066650390625,
+        "domNodes": 912,
+        "domElements": 335,
+        "headLinks": 15,
+        "longTasks": 0
+      },
+      "/cart": {
+        "LCP": 992,
+        "CLS": 0.007739325629340278,
+        "INP": 8,
+        "TBT": 0,
+        "FCP": 992,
+        "TTFB": 6.099999904632568,
+        "taskMs": 309.216,
+        "scriptMs": 43.976,
+        "layoutMs": 17.892000000000003,
+        "styleMs": 31.601999999999997,
+        "jsHeapMb": 3.8323020935058594,
+        "domNodes": 456,
+        "domElements": 120,
+        "headLinks": 11,
+        "longTasks": 0
+      }
+    },
+    "softNavigations": [
+      {
+        "index": 0,
+        "label": "/my-account",
+        "type": "navigate",
+        "metrics": {
+          "LCP": {
+            "value": 2432,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 40,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 1,
+        "label": "/my-account/orders",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 403.60000002384186,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 2,
+        "label": "/my-account/orders/o-0001",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 342.6999999284744,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 3,
+        "label": "/my-account/orders",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 22.899999976158142,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          },
+          "INP": {
+            "value": 8,
+            "samples": 3
+          }
+        }
+      },
+      {
+        "index": 4,
+        "label": "/my-account/profile",
+        "type": "soft-navigation",
+        "metrics": {
+          "LCP": {
+            "value": 341.10000002384186,
+            "samples": 3
+          },
+          "CLS": {
+            "value": 0,
+            "samples": 3
+          }
+        }
+      }
+    ],
+    "server": {
+      "/": {
+        "rps": 1773.5,
+        "p50Ms": 4,
+        "p99Ms": 6,
+        "cpuPerRequestMs": 0.832,
+        "cpuUserMs": 11267.74,
+        "cpuSystemMs": 543.01,
+        "coresUsed": 1.475,
+        "rssMb": 384.67,
+        "heapUsedMb": 149.76,
+        "eventLoopUtilization": 0.8756,
+        "gcPauseMs": 145.6
+      },
+      "/product": {
+        "rps": 1200.13,
+        "p50Ms": 6,
+        "p99Ms": 13,
+        "cpuPerRequestMs": 1.122,
+        "cpuUserMs": 10002.36,
+        "cpuSystemMs": 784.48,
+        "coresUsed": 1.346,
+        "rssMb": 392.05,
+        "heapUsedMb": 33.07,
+        "eventLoopUtilization": 0.8728,
+        "gcPauseMs": 205.09
+      },
+      "/product/p-0001": {
+        "rps": 1877.25,
+        "p50Ms": 4,
+        "p99Ms": 6,
+        "cpuPerRequestMs": 0.744,
+        "cpuUserMs": 10624.23,
+        "cpuSystemMs": 555.22,
+        "coresUsed": 1.396,
+        "rssMb": 417.56,
+        "heapUsedMb": 111.82,
+        "eventLoopUtilization": 0.8687,
+        "gcPauseMs": 145.55
+      },
+      "/my-account": {
+        "rps": 4520.5,
+        "p50Ms": 1,
+        "p99Ms": 3,
+        "cpuPerRequestMs": 0.321,
+        "cpuUserMs": 10536.34,
+        "cpuSystemMs": 1058.61,
+        "coresUsed": 1.447,
+        "rssMb": 307.69,
+        "heapUsedMb": 97.03,
+        "eventLoopUtilization": 0.971,
+        "gcPauseMs": 125.47
+      }
+    },
+    "sustainedHeap": {
+      "perRequestKb": 0.035,
+      "monotonic": true,
+      "samples": [
+        {
+          "block": 1,
+          "heapUsedMb": 25.77,
+          "rssMb": 421.73,
+          "requests": 4859,
+          "collected": true
+        },
+        {
+          "block": 2,
+          "heapUsedMb": 25.78,
+          "rssMb": 421.14,
+          "requests": 9468,
+          "collected": true
+        },
+        {
+          "block": 3,
+          "heapUsedMb": 25.84,
+          "rssMb": 421.47,
+          "requests": 13972,
+          "collected": true
+        },
+        {
+          "block": 4,
+          "heapUsedMb": 26.09,
+          "rssMb": 421.7,
+          "requests": 18467,
+          "collected": true
+        }
+      ]
+    },
+    "behaviors": {
+      "chrome.account": {
+        "gzip": 572,
+        "brotli": 460
+      },
+      "product.autosubmit": {
+        "gzip": 541,
+        "brotli": 437
+      },
+      "product.gallery": {
+        "gzip": 770,
+        "brotli": 641
+      },
+      "cart.mini": {
+        "gzip": 662,
+        "brotli": 567
+      }
+    },
+    "widgets": [
+      {
+        "slot": "account.cart",
+        "owner": "cart",
+        "testid": "widget-account-cart",
+        "placeholder": "placeholder-account-cart"
+      },
+      {
+        "slot": "account.recommended",
+        "owner": "product",
+        "testid": "widget-account-recommended",
+        "placeholder": "placeholder-account-recommended"
+      },
+      {
+        "slot": "account.support",
+        "owner": "faq",
+        "testid": "widget-account-support",
+        "placeholder": "placeholder-account-support"
+      }
+    ],
+    "cssModules": {
+      "modules": 2,
+      "identifiers": 8,
+      "wouldHaveCollided": 3,
+      "coverageRatio": 0.8138982773340194
+    },
+    "testIds": {
+      "routes": null
+    },
+    "dx": {
+      "coldBuildMs": 7833,
+      "warmBuildMs": 5048,
+      "cacheSaving": 0.356,
+      "incrementalMs": 916,
+      "startupMs": 3360,
+      "unblockedMs": 11193,
+      "editToBrowserMs": 5394,
+      "hasHotUpdate": false,
+      "lintMs": 9728,
+      "typecheckMs": 7690,
+      "testMs": 5070,
+      "perApp": {
+        "chrome": {
+          "coldMs": 1256,
+          "ok": true,
+          "warmMs": 842
+        },
+        "faq": {
+          "coldMs": 1225,
+          "ok": true,
+          "warmMs": 832
+        },
+        "product": {
+          "coldMs": 1502,
+          "ok": true,
+          "warmMs": 845
+        },
+        "cart": {
+          "coldMs": 1367,
+          "ok": true,
+          "warmMs": 842
+        },
+        "storefront": {
+          "coldMs": 1141,
+          "ok": true,
+          "warmMs": 841
+        },
+        "my-account": {
+          "coldMs": 1342,
+          "ok": true,
+          "warmMs": 846
+        }
+      }
+    }
+  }
+}

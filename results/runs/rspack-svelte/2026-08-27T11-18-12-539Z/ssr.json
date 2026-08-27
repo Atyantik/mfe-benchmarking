@@ -1,0 +1,419 @@
+{
+  "generatedAt": "2026-08-27T11:17:16.623Z",
+  "method": {
+    "connections": 8,
+    "warmupSeconds": 3,
+    "durationSeconds": 8
+  },
+  "budget": {
+    "cpuPerRequestMs": 40,
+    "p99Ms": 400,
+    "loopDelayP99Ms": 120,
+    "heapPerRequestKb": 4,
+    "gcPauseMs": 120
+  },
+  "hosts": [
+    {
+      "name": "storefront",
+      "port": 3110
+    },
+    {
+      "name": "my-account",
+      "port": 3120
+    }
+  ],
+  "routes": {
+    "/": {
+      "target": {
+        "host": "storefront",
+        "path": "/",
+        "label": "home (hero video, 10 images)"
+      },
+      "run": {
+        "rps": 1773.5,
+        "p50": 4,
+        "p90": 5,
+        "p99": 6,
+        "max": 14,
+        "non2xx": 0,
+        "totalRequests": 14188
+      },
+      "metrics": {
+        "windowMs": 8009.71,
+        "requests": 14197,
+        "collected": false,
+        "cpu": {
+          "userMs": 11267.74,
+          "systemMs": 543.01,
+          "totalMs": 11810.75,
+          "perRequestMs": 0.832,
+          "coresUsed": 1.475
+        },
+        "memory": {
+          "rssMb": 384.67,
+          "heapUsedMb": 149.76,
+          "heapTotalMb": 264.66,
+          "externalMb": 7.84,
+          "arrayBuffersMb": 4.24
+        },
+        "heap": {
+          "usedMb": 149.77,
+          "totalMb": 264.66,
+          "limitMb": 4288,
+          "headroom": 0.965
+        },
+        "eventLoop": {
+          "utilization": 0.8756,
+          "activeMs": 7013.58,
+          "idleMs": 996.25,
+          "delay": {
+            "meanMs": 10.606,
+            "p50Ms": 10.33,
+            "p90Ms": 12.05,
+            "p99Ms": 12.755,
+            "maxMs": 13.459
+          }
+        },
+        "gc": {
+          "count": 234,
+          "totalPauseMs": 145.6,
+          "maxPauseMs": 1.86,
+          "byKind": {
+            "minor": {
+              "count": 208,
+              "totalMs": 121.62
+            },
+            "weakCallbacks": {
+              "count": 13,
+              "totalMs": 2.57
+            },
+            "incremental": {
+              "count": 13,
+              "totalMs": 21.4
+            }
+          }
+        }
+      }
+    },
+    "/product": {
+      "target": {
+        "host": "storefront",
+        "path": "/product",
+        "label": "catalogue (12 cards, facets)"
+      },
+      "run": {
+        "rps": 1200.13,
+        "p50": 6,
+        "p90": 7,
+        "p99": 13,
+        "max": 15,
+        "non2xx": 0,
+        "totalRequests": 9601
+      },
+      "metrics": {
+        "windowMs": 8015.57,
+        "requests": 9610,
+        "collected": false,
+        "cpu": {
+          "userMs": 10002.36,
+          "systemMs": 784.48,
+          "totalMs": 10786.84,
+          "perRequestMs": 1.122,
+          "coresUsed": 1.346
+        },
+        "memory": {
+          "rssMb": 392.05,
+          "heapUsedMb": 33.07,
+          "heapTotalMb": 167.16,
+          "externalMb": 4.44,
+          "arrayBuffersMb": 0.83
+        },
+        "heap": {
+          "usedMb": 33.08,
+          "totalMb": 167.16,
+          "limitMb": 4288,
+          "headroom": 0.992
+        },
+        "eventLoop": {
+          "utilization": 0.8728,
+          "activeMs": 6995.82,
+          "idleMs": 1019.84,
+          "delay": {
+            "meanMs": 12.403,
+            "p50Ms": 12.706,
+            "p90Ms": 13.582,
+            "p99Ms": 15.761,
+            "maxMs": 22.413
+          }
+        },
+        "gc": {
+          "count": 160,
+          "totalPauseMs": 205.09,
+          "maxPauseMs": 5.68,
+          "byKind": {
+            "minor": {
+              "count": 132,
+              "totalMs": 122.99
+            },
+            "weakCallbacks": {
+              "count": 14,
+              "totalMs": 6.8
+            },
+            "incremental": {
+              "count": 14,
+              "totalMs": 75.29
+            }
+          }
+        }
+      }
+    },
+    "/product/p-0001": {
+      "target": {
+        "host": "storefront",
+        "path": "/product/p-0001",
+        "label": "detail (gallery)"
+      },
+      "run": {
+        "rps": 1877.25,
+        "p50": 4,
+        "p90": 4,
+        "p99": 6,
+        "max": 10,
+        "non2xx": 0,
+        "totalRequests": 15018
+      },
+      "metrics": {
+        "windowMs": 8010.73,
+        "requests": 15027,
+        "collected": false,
+        "cpu": {
+          "userMs": 10624.23,
+          "systemMs": 555.22,
+          "totalMs": 11179.45,
+          "perRequestMs": 0.744,
+          "coresUsed": 1.396
+        },
+        "memory": {
+          "rssMb": 417.56,
+          "heapUsedMb": 111.82,
+          "heapTotalMb": 246.91,
+          "externalMb": 6.06,
+          "arrayBuffersMb": 2.46
+        },
+        "heap": {
+          "usedMb": 111.82,
+          "totalMb": 246.91,
+          "limitMb": 4288,
+          "headroom": 0.974
+        },
+        "eventLoop": {
+          "utilization": 0.8687,
+          "activeMs": 6958.86,
+          "idleMs": 1051.97,
+          "delay": {
+            "meanMs": 10.7,
+            "p50Ms": 10.543,
+            "p90Ms": 12.116,
+            "p99Ms": 12.567,
+            "maxMs": 14.983
+          }
+        },
+        "gc": {
+          "count": 234,
+          "totalPauseMs": 145.55,
+          "maxPauseMs": 2.06,
+          "byKind": {
+            "minor": {
+              "count": 208,
+              "totalMs": 121.14
+            },
+            "weakCallbacks": {
+              "count": 13,
+              "totalMs": 2.12
+            },
+            "incremental": {
+              "count": 13,
+              "totalMs": 22.29
+            }
+          }
+        }
+      }
+    },
+    "/my-account": {
+      "target": {
+        "host": "my-account",
+        "path": "/my-account",
+        "label": "account overview (3 remote widgets)",
+        "auth": true
+      },
+      "run": {
+        "rps": 4520.5,
+        "p50": 1,
+        "p90": 2,
+        "p99": 3,
+        "max": 7,
+        "non2xx": 0,
+        "totalRequests": 36159
+      },
+      "metrics": {
+        "windowMs": 8011.44,
+        "requests": 36168,
+        "collected": false,
+        "cpu": {
+          "userMs": 10536.34,
+          "systemMs": 1058.61,
+          "totalMs": 11594.94,
+          "perRequestMs": 0.321,
+          "coresUsed": 1.447
+        },
+        "memory": {
+          "rssMb": 307.69,
+          "heapUsedMb": 97.03,
+          "heapTotalMb": 210.28,
+          "externalMb": 6.07,
+          "arrayBuffersMb": 2.47
+        },
+        "heap": {
+          "usedMb": 97.03,
+          "totalMb": 210.28,
+          "limitMb": 4288,
+          "headroom": 0.977
+        },
+        "eventLoop": {
+          "utilization": 0.971,
+          "activeMs": 7778.84,
+          "idleMs": 232.71,
+          "delay": {
+            "meanMs": 10.008,
+            "p50Ms": 10.011,
+            "p90Ms": 10.355,
+            "p99Ms": 10.732,
+            "maxMs": 11.428
+          }
+        },
+        "gc": {
+          "count": 249,
+          "totalPauseMs": 125.47,
+          "maxPauseMs": 1.46,
+          "byKind": {
+            "minor": {
+              "count": 219,
+              "totalMs": 104.54
+            },
+            "weakCallbacks": {
+              "count": 15,
+              "totalMs": 2.42
+            },
+            "incremental": {
+              "count": 15,
+              "totalMs": 18.51
+            }
+          }
+        }
+      }
+    }
+  },
+  "sustained": {
+    "samples": [
+      {
+        "block": 1,
+        "heapUsedMb": 25.77,
+        "rssMb": 421.73,
+        "requests": 4859,
+        "collected": true
+      },
+      {
+        "block": 2,
+        "heapUsedMb": 25.78,
+        "rssMb": 421.14,
+        "requests": 9468,
+        "collected": true
+      },
+      {
+        "block": 3,
+        "heapUsedMb": 25.84,
+        "rssMb": 421.47,
+        "requests": 13972,
+        "collected": true
+      },
+      {
+        "block": 4,
+        "heapUsedMb": 26.09,
+        "rssMb": 421.7,
+        "requests": 18467,
+        "collected": true
+      }
+    ],
+    "growthMb": 0.31,
+    "perRequestKb": 0.035,
+    "monotonic": true
+  },
+  "checks": [
+    {
+      "section": "load",
+      "label": "every request under load returns 2xx",
+      "ok": true,
+      "detail": "no errors or timeouts"
+    },
+    {
+      "section": "load",
+      "label": "p99 stays under 400 ms at 8 connections",
+      "ok": true,
+      "detail": "worst p99 13 ms"
+    },
+    {
+      "section": "cpu",
+      "label": "a render costs under 40 ms of CPU",
+      "ok": true,
+      "detail": "worst 1.1 ms per render"
+    },
+    {
+      "section": "cpu",
+      "label": "work is dominated by user time, not system calls",
+      "ok": true,
+      "detail": "rendering, not syscall overhead"
+    },
+    {
+      "section": "memory",
+      "label": "the heap stays well below its limit",
+      "ok": true,
+      "detail": "worst headroom 0.965"
+    },
+    {
+      "section": "eventLoop",
+      "label": "delay p99 stays under 120 ms",
+      "ok": true,
+      "detail": "requests are not queuing behind renders"
+    },
+    {
+      "section": "eventLoop",
+      "label": "a saturated loop still serves promptly",
+      "ok": true,
+      "detail": "no route is both saturated and queuing"
+    },
+    {
+      "section": "gc",
+      "label": "no single collection pauses longer than 120 ms",
+      "ok": true,
+      "detail": "worst pause 5.7 ms"
+    },
+    {
+      "section": "caching",
+      "label": "serving a route again resolves nothing again",
+      "ok": true,
+      "detail": "9613 requests, zero new resolutions"
+    },
+    {
+      "section": "sustained",
+      "label": "memory is sampled after a forced collection",
+      "ok": true,
+      "detail": "figures are retention, not allocation"
+    },
+    {
+      "section": "sustained",
+      "label": "heap retention stays under 4 kB per request, or is not a trend",
+      "ok": true,
+      "detail": "0.04 kB per request across 3 blocks, growing every block"
+    }
+  ]
+}

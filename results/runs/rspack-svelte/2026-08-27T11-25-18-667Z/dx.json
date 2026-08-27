@@ -1,0 +1,163 @@
+{
+  "generatedAt": "2026-08-27T11:25:18.277Z",
+  "stack": "rspack-svelte",
+  "specVersion": 4,
+  "catalogHash": "c3b6a5fafb68",
+  "git": {
+    "commit": "61ac3d162271c02ce6f8ea76a9c467481aa58f2e",
+    "shortCommit": "61ac3d1",
+    "branch": "main",
+    "dirty": false
+  },
+  "runtime": {
+    "node": "v24.11.1",
+    "v8": "13.6.233.10-node.28",
+    "platform": "darwin-arm64"
+  },
+  "machine": {
+    "cpu": "Apple M4 Pro",
+    "cores": 14,
+    "memoryGb": 48,
+    "ci": false
+  },
+  "profile": {
+    "id": "constrained",
+    "label": "Constrained device on Slow 4G, reference viewport",
+    "describe": "Lighthouse mobile conditions at the reference viewport: 4x CPU slowdown, 1.6 Mbps down, 750 Kbps up, 150 ms RTT, four cores, 512 MB heap cap."
+  },
+  "benchEnv": {
+    "mfConfig": "site",
+    "optimize": false,
+    "esm": false
+  },
+  "limits": {
+    "coldBuildS": 600,
+    "warmBuildS": 300,
+    "incrementalS": 120,
+    "startupS": 120,
+    "unblockedS": 900
+  },
+  "apps": {
+    "chrome": {
+      "coldMs": 1239,
+      "ok": true,
+      "warmMs": 841
+    },
+    "faq": {
+      "coldMs": 1217,
+      "ok": true,
+      "warmMs": 848
+    },
+    "product": {
+      "coldMs": 1475,
+      "ok": true,
+      "warmMs": 851
+    },
+    "cart": {
+      "coldMs": 1357,
+      "ok": true,
+      "warmMs": 862
+    },
+    "storefront": {
+      "coldMs": 1137,
+      "ok": true,
+      "warmMs": 852
+    },
+    "my-account": {
+      "coldMs": 1316,
+      "ok": true,
+      "warmMs": 839
+    }
+  },
+  "coldMs": 7741,
+  "warmMs": 5094,
+  "cacheSaving": 0.342,
+  "incrementalMs": 906,
+  "startupMs": 3353,
+  "unblockedMs": 11094,
+  "firstPageMs": 724,
+  "loop": {
+    "totalMs": 5379,
+    "rebuildMs": 1065,
+    "restartMs": 3353,
+    "seen": true
+  },
+  "lintMs": 9766,
+  "typecheckMs": 7769,
+  "testMs": 5112,
+  "gatesMs": 22647,
+  "checks": [
+    {
+      "section": "cold",
+      "label": "every app builds from a clean tree",
+      "ok": true,
+      "detail": "6 apps"
+    },
+    {
+      "section": "cold",
+      "label": "a cold build finishes inside 600s",
+      "ok": true,
+      "detail": "7.74s for 6 apps, sequential"
+    },
+    {
+      "section": "warm",
+      "label": "a warm build finishes inside 300s",
+      "ok": true,
+      "detail": "5.09s"
+    },
+    {
+      "section": "incremental",
+      "label": "one app rebuilds inside 120s",
+      "ok": true,
+      "detail": "0.91s median of 3, product"
+    },
+    {
+      "section": "startup",
+      "label": "the stack is healthy inside 120s",
+      "ok": true,
+      "detail": "3.35s for 9 processes"
+    },
+    {
+      "section": "unblocked",
+      "label": "the first page renders once the stack is up",
+      "ok": true,
+      "detail": "0.72s"
+    },
+    {
+      "section": "unblocked",
+      "label": "a developer is unblocked inside 900s from a clean tree",
+      "ok": true,
+      "detail": "11.82s"
+    },
+    {
+      "section": "loop",
+      "label": "an edit reaches the browser",
+      "ok": true,
+      "detail": "5.38s end to end"
+    },
+    {
+      "section": "loop",
+      "label": "the edit-to-browser loop is a full rebuild and restart",
+      "ok": true,
+      "detail": "no watch mode or HMR in this stack — 5.38s per edit"
+    },
+    {
+      "section": "gates",
+      "label": "lint passes",
+      "ok": true,
+      "detail": "9.77s"
+    },
+    {
+      "section": "gates",
+      "label": "typecheck passes",
+      "ok": true,
+      "detail": "7.77s"
+    },
+    {
+      "section": "gates",
+      "label": "test passes",
+      "ok": true,
+      "detail": "5.11s"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "generatedAt": "2026-08-27T11:15:59.224Z",
+  "standard": "WCAG 2.1 A + AA",
+  "findings": [
+    {
+      "route": "/",
+      "violations": []
+    },
+    {
+      "route": "/faq",
+      "violations": []
+    },
+    {
+      "route": "/faq/contact",
+      "violations": []
+    },
+    {
+      "route": "/product",
+      "violations": []
+    },
+    {
+      "route": "/product/p-0001",
+      "violations": []
+    },
+    {
+      "route": "/cart",
+      "violations": []
+    },
+    {
+      "route": "/login",
+      "violations": []
+    },
+    {
+      "route": "/my-account",
+      "violations": []
+    },
+    {
+      "route": "/my-account/orders",
+      "violations": []
+    },
+    {
+      "route": "/my-account/profile",
+      "violations": []
+    }
+  ]
+}

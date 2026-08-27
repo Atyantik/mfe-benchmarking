@@ -178,3 +178,43 @@ open http://localhost:3200
 
 To see the silent hang for yourself, add `'svelte/internal/client'` to `sharedWeb` in
 `spike/rspack-svelte/remote/rsbuild.config.ts` and rebuild.
+
+
+---
+
+## Lighter, and slower: what a real connection showed
+
+Measured on localhost, `/cart` and `/product/p-0001` were flatly better in Svelte — 22% and 14%
+fewer bytes. Measured on Slow 4G at 150 ms round trip, the same two pages paint **later**:
+
+| route | total transfer | first paint |
+|---|---|---|
+| `/cart` | 161.9 → 126.1 kB gz (**−22%**) | 887 → 995 ms (**+12%**) |
+| `/product/p-0001` | 254.9 → 218.6 kB gz (**−14%**) | 1013 → 1133 ms (**+12%**) |
+
+Both stacks have FCP equal to LCP on those routes, so this is about when rendering *starts*, not
+about a large image arriving late. Three candidates were checked and two eliminated:
+
+- **HTML size.** Svelte's anchor comments do inflate the document, but only by 140–270 bytes
+  gzipped — about a millisecond on this connection. Not it.
+- **Stylesheets.** Identical: same count, same bytes, to the kilobyte.
+- **The eagerly preloaded set.** This is it.
+
+```
+React  /cart   1 modulepreload chunk    3.7 kB gz
+Svelte /cart   2 modulepreload chunks   5.2 + 22.8 = 28.0 kB gz
+```
+
+Svelte ships **22% fewer bytes overall and seven times more bytes in the critical path**,
+because its client runtime is bundled into the island chunk rather than shared from the host.
+Those chunks are `modulepreload` — fetched eagerly, at high priority, competing directly with
+the stylesheets and markup first paint is waiting for.
+
+The arithmetic closes: 24.3 kB of extra critical-path transfer at 205 kB/s is **118 ms**, against
+an observed **108 ms** of additional paint delay.
+
+**This is the unshareable runtime again, in its third form.** It has now cost bytes per remote
+(the account page, +31.6%), correctness (a component cannot cross the boundary), and now latency
+— by moving weight from the part of the page that can wait into the part that cannot.
+
+None of it was visible on localhost, where the two routes reported identical paint times.
