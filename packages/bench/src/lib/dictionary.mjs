@@ -90,7 +90,16 @@ export const DICTIONARY = [
     label: 'DOM elements',
     unit: 'count',
     instrument: 'document.querySelectorAll("*").length, in the page',
-    how: 'ELEMENTS only. The frozen spec holds DOM structure constant, so this is the conformance check: a divergence means the two stacks stopped rendering the same document.',
+    how: 'BODY elements only. The frozen spec holds DOM structure constant, so this is the conformance check: a divergence means the two stacks stopped rendering the same document.',
+    caveat: 'Excludes <head>, because stylesheet and preload links are chunking rather than structure — counting them once made a one-<link> difference look like a structural one. See headLinks.',
+    lowerIsBetter: true,
+  },
+  {
+    match: /\.headLinks$/,
+    label: 'Head links',
+    unit: 'count',
+    instrument: 'document.head.querySelectorAll("link").length',
+    how: 'Stylesheets and preload hints in the document head. A real cost and a real difference between bundlers, kept out of the structural count on purpose.',
     lowerIsBetter: true,
   },
   {

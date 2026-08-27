@@ -99,6 +99,7 @@ function headline() {
         'jsHeapMb',
         'domNodes',
         'domElements',
+        'headLinks',
         'longTasks',
       ].map((key) => [
         key,
