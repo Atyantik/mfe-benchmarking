@@ -10,6 +10,8 @@ results/*.json
 # Archived runs ARE the record. A dated, committed baseline is the only way a second stack's
 # numbers can be compared to this one's months later — see packages/bench/src/archive.mjs.
 !results/runs/**
+# Research datasets and reports are the deliverable, not working output.
+!results/research/**
 # Runtime logs from scripts/stack.mjs — megabytes of server output, regenerated every run.
 .logs/
 .mf/

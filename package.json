@@ -21,7 +21,9 @@
     "bench": "pnpm --filter @mf-eval/bench run all",
     "measure": "pnpm --filter @mf-eval/bench run measure && pnpm --filter @mf-eval/bench run audit && pnpm --filter @mf-eval/bench run warm",
     "edge": "node scripts/edge.mjs",
-    "media": "pnpm --filter @mf-eval/media run build"
+    "media": "pnpm --filter @mf-eval/media run build",
+    "research": "node packages/bench/src/research.mjs",
+    "report": "node packages/bench/src/report.mjs"
   },
   "devDependencies": {
     "typescript": "catalog:",

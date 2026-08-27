@@ -171,6 +171,16 @@ async function chromeMetrics(cdp) {
     taskMs: get('TaskDuration') * 1000,
     /** What the document is holding in the browser, not the server. */
     jsHeapMb: get('JSHeapUsedSize') / (1024 * 1024),
+    /**
+     * EVERY node — elements, text and comments.
+     *
+     * Not a conformance metric, and the first report generated from it explained why: Svelte
+     * emits anchor comments around every block, so `/cart` read 456 nodes against React's 259
+     * and looked like a 76% DOM divergence. The element counts were 137 and 136.
+     *
+     * Kept because it is a real cost — the browser walks these — but `domElements` is the
+     * figure that says whether two stacks rendered the same document.
+     */
     domNodes: get('Nodes'),
   };
 }
@@ -201,6 +211,14 @@ async function measureDocument(browser, route) {
   const raw = await page.evaluate(() => window.__vitals);
   const longTasks = await page.evaluate(() => window.__longTasks ?? []);
   const chrome = await chromeMetrics(cdp);
+  /**
+   * Elements only — the figure that says whether two stacks rendered the same document.
+   *
+   * Counted in the page rather than taken from CDP's `Nodes`, which includes text and comment
+   * nodes. Svelte emits anchor comments around every block, so the two counts differ by more
+   * than 70% on a page whose element structure is identical.
+   */
+  const elementCount = await page.evaluate(() => document.querySelectorAll('*').length);
   await ctx.close();
 
   const navs = finalise(raw);
@@ -217,6 +235,7 @@ async function measureDocument(browser, route) {
     taskMs: { value: chrome.taskMs },
     jsHeapMb: { value: chrome.jsHeapMb },
     domNodes: { value: chrome.domNodes },
+    domElements: { value: elementCount },
   };
 }
 
@@ -261,7 +280,7 @@ for (const route of DOCUMENT_ROUTES) {
   const runs = [];
   for (let i = 0; i < RUNS; i += 1) runs.push(await measureDocument(browser, route));
   const merged = {};
-  for (const name of ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'taskMs', 'scriptMs', 'layoutMs', 'styleMs', 'jsHeapMb', 'domNodes', 'longTasks', 'longestTask']) {
+  for (const name of ['LCP', 'CLS', 'INP', 'TBT', 'FCP', 'TTFB', 'taskMs', 'scriptMs', 'layoutMs', 'styleMs', 'jsHeapMb', 'domNodes', 'domElements', 'longTasks', 'longestTask']) {
     const values = runs.map((r) => r[name]?.value).filter((v) => typeof v === 'number');
     if (values.length) merged[name] = { value: median(values), samples: values.length };
   }

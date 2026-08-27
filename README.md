@@ -117,7 +117,8 @@ pnpm dev            # start the whole stack
 open http://localhost:3100
 
 pnpm check          # lint → typecheck → test → build → budget
-pnpm bench          # 16 suites, 368 checks, against the running stack
+pnpm bench          # 16 suites, 368 checks, one run against the running stack
+MF_RUNS=3 pnpm research     # every stack, every suite, 3x, with statistics and a report
 
 MF_STACK=rspack-svelte pnpm dev     # the Svelte implementation
 MF_STACK=rspack-svelte pnpm bench   # the same suites, unmodified
@@ -172,6 +173,7 @@ A partial or failing run is deliberately not archived: a baseline is a run that 
 ## Layout
 
 ```
+docs/methodology.md         how every number is produced, and what it does not mean
 docs/constraints.md         verified Module Federation facts, with dates and sources
 docs/decision-log.md        what was decided, why, and what would reverse it
 docs/media.md               the media profile the fixtures are built to
