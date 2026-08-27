@@ -170,10 +170,23 @@ results/runs/<stack>/<timestamp>/
 results/runs/<stack>/latest.json     pointer to the newest run
 ```
 
-Each record carries `SPEC_VERSION`, the catalog hash, the git commit, and the CPU it was taken
-on. **Never compare across `SPEC_VERSION`** — a different spec is a different application,
-however similar the numbers look. Build times are the most hardware-sensitive figures in the
-record and are only comparable on the same machine.
+A **research** run — `MF_RUNS=3 pnpm research` — aggregates several of those into one dataset
+with statistics, and writes three renderings of it:
+
+```
+results/research/<timestamp>/
+    dataset.json         every metric, every run, mean / sd / cv / stability class
+    report.md            the archival record — reviews cleanly in git
+    report.html          the technical report, as a page
+    report-plain.html    the same measurements explained for a non-specialist
+```
+
+Each record carries the **measurement profile**, `SPEC_VERSION`, the catalog hash, the git
+commit, and the CPU it was taken on. **Never compare across `SPEC_VERSION`** — a different spec is a different application,
+however similar the numbers look, and **never across measurement profiles** — a throttled run
+and an unthrottled one describe different conditions, and the aggregator refuses to average
+them. Build times are the most hardware-sensitive figures in the record and are only comparable
+on the same machine.
 
 A partial or failing run is deliberately not archived: a baseline is a run that passed.
 
